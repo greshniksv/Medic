@@ -7,7 +7,7 @@ class Logging
 
     function __construct($db,$session) {
         $this->db=$db;
-        $this->$session=$session;
+        $this->session=$session;
     }
 
     function Write($head, $message)
@@ -15,7 +15,7 @@ class Logging
         $guid = UUID::v4();
         $date = date("Y-m-d H:i:s");
         $this->db->Exec("INSERT INTO `Logs`(`id`,`SessionId`,`DateTime`,`Head`,`Message`)
-          VALUE ('{$guid}','{$this->$session}','NOW()','{$head}','{$message}'); ");
+          VALUE ('{$guid}','{$this->session}','{$date}','{$head}','{$message}'); ");
     }
 
 

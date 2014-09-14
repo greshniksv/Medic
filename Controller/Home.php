@@ -1,12 +1,24 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: Administrator
- * Date: 13.09.14
- * Time: 20:57
- */
 
-$guid = UUID::v4();
+switch($action)
+{
+    // ACTION =========================
+    case "index":
+        Mvc::View(basename(__FILE__,".php"));
+    break;
 
-$db->Exec("INSERT INTO Users ( id, Login, Pasword, Hash, FirstName, LastName, Premition)
-VALUE ( '{$guid}','Logf1', 'pas', 'H', 'f', 'l', '0' ) ");
+
+    default: echo "Controller not found"; break;
+}
+
+
+
+
+
+
+
+
+
+
+
+

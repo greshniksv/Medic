@@ -32,7 +32,7 @@ class Database{
         {
             $this->dblink = new mysqli($this->host, $this->user, $this->password, $this->database);
             if ($this->dblink->connect_error) {
-                die('Connect Error (' . $mysqli->connect_errno . ') '
+                die('Connect Error (' . $this->dblink->connect_errno . ') '
                     . $mysqli->connect_error);
                 return false;
             }
@@ -63,10 +63,60 @@ class Database{
     public function Exec($sql) {
         if ($this->type == DatabaseType::MySql) {
             if ($this->dblink->query($sql) === FALSE) {
-                printf("Error: %s\n", $this->dblink->error);
+                printf("Error: %s\n<br /> SQL:".$sql, $this->dblink->error);
                 return FALSE;
             }
             return true;
+        }
+    }
+
+
+    public function QueryOne($sql,$buffered=true)
+    {
+        $assoc=true;
+        $one=false;
+
+        if ($this->type == DatabaseType::Sqlite) {
+            $this->query = sqlite_query($this->dblink, $sql);
+        }
+
+        if ($this->type == DatabaseType::MySql) {
+            if($buffered){
+                $this->query = $this->dblink->query($sql);
+            }
+            else {
+                $this->query = $this->dblink->unbufferedQuery($sql);
+            }
+
+            if($this->query==FALSE) echo "Error exec:".$this->dblink->error;
+        }
+
+        if ($this->type == DatabaseType::Sqlite) {
+            if($assoc==true){
+                $rez =  sqlite_fetch_array($this->query, SQLITE_ASSOC);
+                if($one){ $stopFetch = StopFetch(); }
+                return $rez;
+            }
+            else{
+                $rez =  sqlite_fetch_array($this->query, SQLITE_NUM);
+                if($one){ $stopFetch = StopFetch(); }
+                return $rez;
+            }
+        }
+
+        if ($this->type == DatabaseType::MySql) {
+
+            if($assoc==true)
+            {
+                $rez = @$this->query->fetch_array(MYSQL_ASSOC);
+                if($one){ $this->StopFetch(); }
+                return $rez;
+            }
+            else{
+                $rez = @$this->query->fetch_array(MYSQL_NUM);
+                if($one){ $this->StopFetch(); }
+                return $rez;
+            }
         }
     }
 
