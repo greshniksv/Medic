@@ -7,7 +7,7 @@
     <table>
         <tr><td>Login:</td><td><input id="user" type="text" value="log" /></td></tr>
         <tr><td>Password:</td><td><input id="password" type="password" /></td></tr>
-        <tr><td colspan="2" style="text-align: center"> <label id="login_result">bla bla</label> </td></tr>
+        <tr><td colspan="2" style="text-align: center"> <label id="login_result"></label> </td></tr>
         <tr><td colspan="2" style="text-align: center"> <input type="button" value="Login" onclick="login()"> </td></tr>
     </table>
 </div>
@@ -48,8 +48,8 @@
             else
             {
                 $( "#login" ).dialog("open");
-                $("#login_result").fadeIn(1);
                 $("#login_result").text("Incorrect login !");
+                $("#login_result").fadeIn(1);
                 $("#login_result").fadeOut(9000);
             }
 
@@ -60,14 +60,6 @@
 </script>
 
 
-<?php
-
-/**
- * Created by PhpStorm.
- * User: Administrator
- * Date: 14.09.14
- * Time: 18:06
- */
 
 
 
