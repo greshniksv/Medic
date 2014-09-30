@@ -144,12 +144,10 @@ class Database{
         if ($this->type == DatabaseType::Sqlite) {
             if($assoc==true){
                 $rez =  sqlite_fetch_array($this->query, SQLITE_ASSOC);
-                if($one){ $stopFetch = StopFetch(); }
                 return $rez;
             }
             else{
                 $rez =  sqlite_fetch_array($this->query, SQLITE_NUM);
-                if($one){ $stopFetch = StopFetch(); }
                 return $rez;
             }
         }
@@ -159,12 +157,10 @@ class Database{
             if($assoc==true)
             {
                 $rez = @$this->query->fetch_array(MYSQL_ASSOC);
-                if($one){ $this->StopFetch(); }
                 return $rez;
             }
             else{
                 $rez = @$this->query->fetch_array(MYSQL_NUM);
-                if($one){ $this->StopFetch(); }
                 return $rez;
             }
         }

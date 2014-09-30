@@ -2,10 +2,12 @@
 
 switch ($action) {
 
+
     // ACTION =========================
     case "login":
         $log = $_REQUEST["login"];
         $pas = $_REQUEST["password"];
+        Session::DeleteUnusedSession();
 
         $pas = stripslashes($pas);
         $log = trim(preg_replace("/[^a-zA-Z0-9_\-]+/", "", $log));
@@ -21,12 +23,12 @@ switch ($action) {
                 exit();
             }
         } else {
-            if (crypt($d["Password"], "bla bla bla +-*/ ☺") != $pas) {
+            if (crypt($d["Password"], "mc05wBF&IТПШРnw4ton*R +-*/ ☺") != $pas) {
                 echo "no";
                 exit();
             }
         }
-        $sessionid = GenSession($d["id"]);
+        $sessionid = Session::GenId($d["id"]);
         setcookie("session", $sessionid, time()+3600);
 
         die("ok");
@@ -35,28 +37,18 @@ switch ($action) {
 
 
 
+    case "logout":
+        setcookie('session', null, -1);
+        die("ok");
+        break;
 
 
 
     default:
-        echo "Controller not found";
+        echo "Action not found";
         break;
 }
 
-function GenSession($userid)
-{
-    global $db;
 
-    $guid = UUID::v4();
-    $date = date("Y-m-d H:i:s");
-    $dateExt   = new DateTime;
-    $dateExt->modify( '+1 hour' );
-    $def = $dateExt->format("Y-m-d H:i:s");
-
-    $db->Exec("INSERT INTO `Session`(`id`,`UserId`,`CreateDate`,`ExpireDate`)
-                      VALUE ('{$guid}','{$userid}','{$date}','{$def}'); ");
-
-    return $guid;
-}
 
 

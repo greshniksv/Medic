@@ -1,63 +1,51 @@
-<div id="brain">
-    <img src="Image/brain_cr.jpg">
+<link rel="stylesheet" href="Css/home.css">
+<link rel="stylesheet" href="Css/button.css">
+
+<div id="header" class="navbar navbar-default navbar-fixed-top" role="navigator">
+    <ul class="nav navbar-nav navbar-right">
+
+        <li class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown" > Админка <span class="caret"></span> </a>
+            <ul class="dropdown-menu" role="menu">
+                <li><a href="#" onclick="">Загрузить прайс</a></li>
+                <li><a href="#">Просмотр загр. прайса</a></li>
+                <li><a href="#">Производители</a></li>
+                <li><a href="#" onclick="GoToUsers()">Пользователи</a></li>
+                <li><a href="#">Журнал активности</a></li>
+                <li><a href="#">Выключить сайт</a></li>
+            </ul>
+        </li>
+
+        <li id="exit" class="active"><a href="#">Выход</a></li>
+
+    </ul>
 </div>
 
-<div id="login2">
-<div id="login" title="Авторизация">
-    <table>
-        <tr><td>Login:</td><td><input id="user" type="text" value="log" /></td></tr>
-        <tr><td>Password:</td><td><input id="password" type="password" /></td></tr>
-        <tr><td colspan="2" style="text-align: center"> <label id="login_result"></label> </td></tr>
-        <tr><td colspan="2" style="text-align: center"> <input type="button" value="Login" onclick="login()"> </td></tr>
-    </table>
+<div id="main_frame">
+bla bla bla
+
 </div>
-</div>
+
+
 
 <script type="application/javascript">
 
     $(function() {
+        GoToUsers();
 
-        $( "#login" ).dialog({
-            autoOpen: true,
-            show: {
-                effect: "bounce",
-                duration: 1000
-            },
-            hide: {
-                effect: "explode",
-                duration: 1000
-            }
-
-        });
 
     });
 
-    function login()
+    function GoToUsers()
     {
-        $( "#login" ).dialog("close");
-        var log = $("#user").val();
-        var pas = $("#password").val();
-        $.get("index.php?c=Account&a=login&login="+log+"&password="+pas,function(data){
-
-            if(data.trim()=="ok")
-            {
-
-                window.location = "index.php";
-
-            }
-            else
-            {
-                $( "#login" ).dialog("open");
-                $("#login_result").text("Incorrect login !");
-                $("#login_result").fadeIn(1);
-                $("#login_result").fadeOut(9000);
-            }
-
+        $.get("index.php?c=Users",function(data){
+            $( "#main_frame").html(data);
         });
     }
 
 
 </script>
+
 
 
 

@@ -1,4 +1,6 @@
 <?php
+ini_set('display_errors', 1);
+error_reporting(~0);
 
 $AJAX=0;
 if(!empty($_SERVER['HTTP_X_REQUESTED_WITH']) &&
@@ -13,13 +15,19 @@ if($AJAX==0){
     <meta charset="UTF-8">
 </head>
 
-<link rel="stylesheet" href="Css/main.css">
 <link rel="stylesheet" href="Helper/jquery-ui-1.11.1.custom/jquery-ui.min.css">
-<link rel="stylesheet" href="Helper/bootflat.github.io-master/css/bootstrap.min.css">
+<link rel="stylesheet" href="Helper/jquery-ui-1.11.1.custom/jquery-ui.theme.min.css">
+<link rel="stylesheet" href="Helper/bootstrap-3.2.0-dist/css/bootstrap.min.css">
+<link rel="stylesheet" href="Helper/bootstrap-3.2.0-dist/css/bootstrap-theme.min.css">
+<link rel="stylesheet" href="Helper/dataTables.bootstrap.css">
 
 <script src="Helper/jquery-2.1.1.min.js"></script>
-<script src="Helper/bootflat.github.io-master/js/bootstrap.min.js"></script>
+<script src="Helper/bootstrap-3.2.0-dist/js/bootstrap.min.js"></script>
 <script src="Helper/jquery-ui-1.11.1.custom/jquery-ui.min.js"></script>
+<script src="Helper/dataTables.bootstrap.js"></script>
+<script src="Helper/jquery.dataTables.min.js"></script>
+<script src="Helper/dataTables.tableTools.min.js"></script>
+<script src="Helper/dataTables.editor.min.js"></script>
 
 <body>
 <?php
@@ -30,20 +38,29 @@ require_once 'Helper/Database.php';
 require_once 'Helper/UUID.php';
 require_once 'Helper/logging.php';
 require_once 'Helper/Mvc.php';
-
-$controller = $_REQUEST["c"];
-$session = $_REQUEST["s"];
-$action = $_REQUEST["a"];
-
-if(strlen($controller)<1) $controller="Home";
-if(strlen($action)<1) $action="index";
-if(strlen($session)<1) $session="none";
+require_once 'Helper/Session.php';
 
 $db = new Database($DB_HOST, $DB_NAME, $DB_USER, $DB_PASS);
 $db -> Connect();
 
-$log = new Logging($db,$session);
+$controller = @$_REQUEST["c"];
+$action = @$_REQUEST["a"];
+$cookie = @$_COOKIE["session"];
 
+if(strlen($controller)<1)
+{
+    if(!Session::IsActiveSession($cookie))
+    {
+        $controller="Login";
+    }
+    else
+    {
+        $controller="Home";
+    }
+}
+
+if(strlen($action)<1) $action="index";
+$log = new Logging($db,$cookie);
 $log->Write("index","Togo controller: ".$controller);
 
 
