@@ -16,7 +16,7 @@
             </ul>
         </li>
 
-        <li id="exit" class="active"><a href="#">Выход</a></li>
+        <li id="exit" onclick="Exit()" class="active"><a href="#">Выход</a></li>
 
     </ul>
 </div>
@@ -32,8 +32,6 @@ bla bla bla
 
     $(function() {
         GoToUsers();
-
-
     });
 
     function GoToUsers()
@@ -43,6 +41,10 @@ bla bla bla
         });
     }
 
+    function Exit() {
+        document.cookie = 'session=; expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+        window.location = "index.php";
+    }
 
 </script>
 

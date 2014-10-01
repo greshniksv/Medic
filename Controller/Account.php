@@ -23,7 +23,7 @@ switch ($action) {
                 exit();
             }
         } else {
-            if (crypt($d["Password"], "mc05wBF&IТПШРnw4ton*R +-*/ ☺") != $pas) {
+            if (crypt($pas, "mc05wBF&IТПШРnw4ton*R +-*/ ☺") !=$d["Password"] ) {
                 echo "no";
                 exit();
             }

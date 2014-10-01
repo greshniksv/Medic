@@ -36,7 +36,7 @@ class Session
     {
         global $db;
         $dateExt   = new DateTime;
-        $dateExt->modify( '+1 hour' );
+        //$dateExt->modify( '+1 hour' );
         $def = $dateExt->format("Y-m-d H:i:s");
 
         $db->Exec("delete from `Session` where `ExpireDate`< CAST('{$def}' as datetime) ");

@@ -22,7 +22,7 @@
 /* ###################### Users form */
 
 #users_form{
-    width: 800px;
+    width: 950px;
     height: 400px;
     #background-color: #bfe4fc;
 }
@@ -39,10 +39,10 @@
 
 #users_list{
     position: absolute;
-    width: 640px;
+    width: 790px;
     height: 400px;
     #background-color: #dcdcdc;
-    top: -50px;
+    top: -20px;
 }
 .DTTT{
     display: none;

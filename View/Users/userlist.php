@@ -2,6 +2,7 @@
 
     <thead>
     <tr>
+        <th>id</th>
         <th>Логин</th>
         <th>Имя</th>
         <th>Фамилия</th>
@@ -11,6 +12,7 @@
 
     <tfoot>
     <tr>
+        <th>id</th>
         <th>Логин</th>
         <th>Имя</th>
         <th>Фамилия</th>
@@ -30,19 +32,39 @@
         var table = $('#example').DataTable( {
             lengthChange: false,
             "oLanguage": {
-                "sInfo": "Всего _TOTAL_ показано (_START_ по _END_)"
+                "sLoadingRecords": "Пожалуйста подождите - загружается..."
             },
+            "oLanguage": {
+                "sLengthMenu": "Показать _MENU_ записей"
+            },
+            "oLanguage": {
+                "sInfo": "Всего _TOTAL_ показано с _START_ по _END_ "
+            },
+
             ajax: "index.php?c=Users&a=UserData",
             columns: [
+                { data: "id"},
                 { data: "Login"},
                 { data: "FirstName" },
                 { data: "LastName" },
-                { data: "Permission" }//,
-                //{ data: "salary", render: $.fn.dataTable.render.number( ',', '.', 0, '$' ) }
-                /*{ data: null, render: function ( data, type, row ) {
+                //{ data: "Permission" }
+                { data: null, render: function ( data, type, row ) {
                     // Combine the first and last names into a single table field
-                    return data.first_name+' '+data.last_name;
-                } },*/
+                    switch(data.Permission)
+                    {
+                        case "0": return "Администратор"; break;
+                        case "1": return "Журналист"; break;
+                        case "2": return "Пользователь"; break;
+                        default: return "None";
+                    }
+
+                } }
+            ],
+            "columnDefs": [
+                {
+                    "targets": [ 0 ],
+                    "visible": false
+                }
             ]
         } );
 
