@@ -45,6 +45,7 @@ DROP TABLE IF EXISTS `Manufacturer`;
 CREATE TABLE `Manufacturer` (
   `id` varchar(36) NOT NULL,
   `Name` varchar(200) DEFAULT NULL,
+  `FullName` varchar(200) DEFAULT NULL,
   `City` varchar(100) DEFAULT NULL,
   `Address` varchar(150) DEFAULT NULL,
   `Phone` varchar(50) DEFAULT NULL,
@@ -123,6 +124,23 @@ CREATE TABLE `Session` (
   PRIMARY KEY (`id`),
   KEY `UserId` (`UserId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+#
+# Structure for the `Uploads` table : 
+#
+
+DROP TABLE IF EXISTS `Uploads`;
+
+CREATE TABLE `Uploads` (
+  `id` varchar(36) NOT NULL,
+  `FileName` varchar(150) DEFAULT NULL,
+  `ManufacturerId` varchar(36) DEFAULT NULL,
+  `DateTime` datetime DEFAULT NULL,
+  `UserId` varchar(36) DEFAULT NULL,
+  `Status` varchar(50) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AVG_ROW_LENGTH=1489;
 
 #
 # Structure for the `Users` table : 
