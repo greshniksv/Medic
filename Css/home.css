@@ -33,6 +33,18 @@
     right: 0px;
 }
 
+#upload_form{
+    width: 950px;
+    height: 400px;
+    margin-top: 70px;
+}
+
+#upload_manage_buttons{
+    #width: 790px;
+    #position: absolute;
+    right: 0px;
+}
+
 #manage_buttons button{
     margin-top: 5px;
 }
@@ -44,6 +56,15 @@
     #background-color: #dcdcdc;
     top: -20px;
 }
+
+#uploaded_list{
+    #position: absolute;
+    #width: 790px;
+    height: 400px;
+    #background-color: #dcdcdc;
+    top: -20px;
+}
+
 .DTTT{
     display: none;
 }

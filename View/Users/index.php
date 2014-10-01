@@ -61,10 +61,10 @@
 <script type="application/javascript">
 
     $(function() {
-        GoToUsers();
+        DrawUsers();
     });
 
-    function GoToUsers()
+    function DrawUsers()
     {
         $.get("index.php?c=Users&a=UserList",function(data){
             $( "#users_list").html(data);
@@ -103,7 +103,7 @@
                                 }
                             });
 
-                            GoToUsers();
+                            DrawUsers();
                             $( "#add_dialog" ).dialog( "close" );
                         }
                         else
@@ -182,7 +182,7 @@
                                     }
                                 });
 
-                                GoToUsers();
+                                DrawUsers();
                                 $( "#add_dialog" ).dialog( "close" );
                             }
                             else
@@ -230,7 +230,7 @@
                                 alert(data.trim())
                             }
 
-                            GoToUsers();
+                            DrawUsers();
                             $( "#remove_dialog" ).dialog( "close" );
                         });
                     });

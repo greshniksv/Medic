@@ -10,7 +10,7 @@
         <li class="dropdown">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown" > Админка <span class="caret"></span> </a>
             <ul class="dropdown-menu" role="menu">
-                <li><a href="#" onclick="">Загрузить прайс</a></li>
+                <li><a href="#"  onclick="GoToUpload()">Загрузить прайс</a></li>
                 <li><a href="#">Просмотр загр. прайса</a></li>
                 <li><a href="#">Производители</a></li>
                 <li><a href="#" onclick="GoToUsers()">Пользователи</a></li>
@@ -33,7 +33,7 @@
 <script type="application/javascript">
 
     $(function() {
-        GoToUsers();
+        GoToUpload();
         GetSiteStatus();
 
         $("#site_status").click(function(){
@@ -76,6 +76,13 @@
     function GoToUsers()
     {
         $.get("index.php?c=Users",function(data){
+            $( "#main_frame").html(data);
+        });
+    }
+
+    function GoToUpload()
+    {
+        $.get("index.php?c=UploadPrice",function(data){
             $( "#main_frame").html(data);
         });
     }

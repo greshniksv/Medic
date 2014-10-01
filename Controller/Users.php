@@ -19,11 +19,10 @@ switch ($action) {
 
     case "UserData":
         $db->Query("select id, Login, FirstName, LastName,Permission from Users order by Login");
-        //$data[]=Array();
         while($buf=$db->Fetch())
         {
             $data[]=array("id"=>$buf["id"],"Login"=>$buf["Login"],"FirstName"=>$buf["FirstName"],
-                "LastName"=>$buf["LastName"],"Permission"=>$buf["Permission"],);
+                "LastName"=>$buf["LastName"],"Permission"=>$buf["Permission"]);
         }
         $db->StopFetch();
 

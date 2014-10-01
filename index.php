@@ -29,6 +29,7 @@ if($AJAX==0){
 <script src="Helper/dataTables.tableTools.min.js"></script>
 <script src="Helper/dataTables.editor.min.js"></script>
 <script src="Helper/jquery.collapse.js"></script>
+<script src="Helper/jquery.fileupload.js"></script>
 
 
 <body>
