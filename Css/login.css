@@ -7,12 +7,12 @@
     width: 340px;
     height: 190px;
     text-align: center;
-    border: 2px;
-    border-color: #2989d8;
-    border-style: solid;
-    background: #7db9e8;
+    #border: 2px;
+    #border-color: #2989d8;
+    #border-style: solid;
+    #background: #7db9e8;
 }
-
+/*
 #login_result{
     color: #DC3023;
     font-weight: bold;
@@ -29,8 +29,8 @@
     text-align: left;
     margin-left: 10px;
 }
-
-.htext{
+*/
+.htext1{
     font-weight: bold;
     background: #1e5799; /* Old browsers */
     background: -moz-linear-gradient(top,  #1e5799 0%, #207cca 45%, #207cca 47%, #207cca 47%, #2989d8 53%, #7db9e8 100%); /* FF3.6+ */
@@ -56,7 +56,31 @@ input[type=button] {
     height: 30px;
 }
 
+.navbar .nav,
+.navbar .nav > li {
+    float:none;
+    display:inline-block;
+    *display:inline; /* ie7 fix */
+    *zoom:1; /* hasLayout ie7 trigger */
+    vertical-align: top;
+}
 
+.navbar-inner {
+    text-align:center;
+}
 
+#login_container .input-group
+{
+    margin-top: 5px;
+}
+
+#login_container button
+{
+    margin-top: 10px;
+}
+
+#info{
+    display: none;
+}
 
 

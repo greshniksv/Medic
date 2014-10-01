@@ -2,7 +2,10 @@
 <link rel="stylesheet" href="Css/button.css">
 
 <div id="header" class="navbar navbar-default navbar-fixed-top" role="navigator">
+
     <ul class="nav navbar-nav navbar-right">
+
+        <li id="status_off" class="active"><a href="#">Внимание! Сайт выключен.</a></li>
 
         <li class="dropdown">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown" > Админка <span class="caret"></span> </a>
@@ -12,7 +15,7 @@
                 <li><a href="#">Производители</a></li>
                 <li><a href="#" onclick="GoToUsers()">Пользователи</a></li>
                 <li><a href="#">Журнал активности</a></li>
-                <li><a href="#">Выключить сайт</a></li>
+                <li><a id="site_status" href="#">Выключить сайт</a></li>
             </ul>
         </li>
 
@@ -22,7 +25,6 @@
 </div>
 
 <div id="main_frame">
-bla bla bla
 
 </div>
 
@@ -32,7 +34,44 @@ bla bla bla
 
     $(function() {
         GoToUsers();
+        GetSiteStatus();
+
+        $("#site_status").click(function(){
+            ToggleSiteStatus();
+        });
+
     });
+
+    function ToggleSiteStatus()
+    {
+        $.get("index.php?c=Options&a=Get&param=Active",function(data){
+            if(data.trim()=="true")
+            {
+                $.get("index.php?c=Options&a=Set&param=Active&value=false",function(data){ GetSiteStatus(); });
+            }
+            else
+            {
+                $.get("index.php?c=Options&a=Set&param=Active&value=true",function(data){ GetSiteStatus(); });
+            }
+
+        });
+    }
+
+    function GetSiteStatus()
+    {
+        $.get("index.php?c=Options&a=Get&param=Active",function(data){
+            if(data.trim()=="true")
+            {
+                $("#status_off").fadeOut(1000);
+                $("#site_status").html("Выключить сайт");
+            }
+            else
+            {
+                $("#status_off").fadeIn(1000);
+                $("#site_status").html("Включить сайт");
+            }
+        });
+    }
 
     function GoToUsers()
     {

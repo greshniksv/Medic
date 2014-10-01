@@ -71,8 +71,8 @@ switch ($action) {
         $guid = UUID::v4();
 
         // permission: 0-admin,1-uploader,2-searcher
-        $sql = " update `Users` set `Login`='{$log}',`Password`='{$hpass}',".
-            " `Hash`='1',`FirstName`='{$fir}',`LastName`='{$las}'". ($pas==""?"":" ,`Permission`='{$per}'") ."  where `id`='{$userid}'";
+        $sql = " update `Users` set `Login`='{$log}',".($pas==""?"":"`Password`='{$hpass}',").
+            " `Hash`='1',`FirstName`='{$fir}',`LastName`='{$las}' ,`Permission`='{$per}'  where `id`='{$userid}'";
 
         if(!$db->Exec($sql))
         {

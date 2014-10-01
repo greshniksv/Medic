@@ -12,20 +12,25 @@ switch ($action) {
         $pas = stripslashes($pas);
         $log = trim(preg_replace("/[^a-zA-Z0-9_\-]+/", "", $log));
         $pas = trim(preg_replace("/[^a-zA-Z0-9_\-]+/", "", $pas));
-        if (strlen($log) < 1) die("Incorrect login!");
-        if (strlen($pas) < 1) die("Incorrect password!");
+        if (strlen($log) < 1) die("Логин или пароль не верен!");
+        if (strlen($pas) < 1) die("Логин или пароль не верен!");
 
-        $d = $db->QueryOne("select Password,Hash,id from Users where login = '{$log}' ");
+        $d = $db->QueryOne("select Password,Hash,id,Permission from Users where login = '{$log}' ");
+
+        $r = $db->QueryOne("select Value from Options where Param='Active' ");
+        if($r["Value"]!="true" && $d["Permission"]=="2")
+        {
+            die("Сайт временно не доступен!<br>Обновляется база данных.");
+        }
+
         if ($d["Hash"] == '0') {
 
             if ($d["Password"] != $pas) {
-                echo "no";
-                exit();
+                die("Логин или пароль не верен!");
             }
         } else {
             if (crypt($pas, "mc05wBF&IТПШРnw4ton*R +-*/ ☺") !=$d["Password"] ) {
-                echo "no";
-                exit();
+                die("Логин или пароль не верен!");
             }
         }
         $sessionid = Session::GenId($d["id"]);

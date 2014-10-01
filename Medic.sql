@@ -44,8 +44,26 @@ DROP TABLE IF EXISTS `Manufacturer`;
 
 CREATE TABLE `Manufacturer` (
   `id` varchar(36) NOT NULL,
-  `Name` varchar(1000) DEFAULT NULL,
-  PRIMARY KEY (`id`)
+  `Name` varchar(200) DEFAULT NULL,
+  `City` varchar(100) DEFAULT NULL,
+  `Address` varchar(150) DEFAULT NULL,
+  `Phone` varchar(50) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `Name` (`Name`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+#
+# Structure for the `Options` table : 
+#
+
+DROP TABLE IF EXISTS `Options`;
+
+CREATE TABLE `Options` (
+  `id` varchar(36) NOT NULL,
+  `Param` varchar(50) DEFAULT NULL,
+  `Value` varchar(500) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `Param` (`Param`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 #

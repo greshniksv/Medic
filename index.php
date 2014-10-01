@@ -28,6 +28,8 @@ if($AJAX==0){
 <script src="Helper/jquery.dataTables.min.js"></script>
 <script src="Helper/dataTables.tableTools.min.js"></script>
 <script src="Helper/dataTables.editor.min.js"></script>
+<script src="Helper/jquery.collapse.js"></script>
+
 
 <body>
 <?php

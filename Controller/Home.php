@@ -8,7 +8,7 @@ switch($action)
     break;
 
 
-    default: echo "Controller not found"; break;
+    default: echo "Action not found"; break;
 }
 
 

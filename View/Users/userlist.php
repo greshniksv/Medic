@@ -10,15 +10,6 @@
     </tr>
     </thead>
 
-    <tfoot>
-    <tr>
-        <th>id</th>
-        <th>Логин</th>
-        <th>Имя</th>
-        <th>Фамилия</th>
-        <th>Доступ</th>
-    </tr>
-    </tfoot>
 </table>
 
 <script src="Helper/dataTables.bootstrap.js"></script>
