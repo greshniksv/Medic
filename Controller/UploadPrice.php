@@ -30,6 +30,10 @@ switch($action)
             $db->Query("insert into Uploads (id, FileName,DateTime,UserId,ManufacturerId,Status) values ".
                 " ('{$guid}','{$upl_name}','{$date}','{$user}','{$manuf}','Загружено') ");
 
+            // Start price processing
+            $worker = new ProcessPriceWorker($guid,$upl_file);
+            $worker->run();
+
             $data = array('success' => 'Form was submitted');
             die(json_encode($data));
         }

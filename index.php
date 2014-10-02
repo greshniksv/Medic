@@ -42,6 +42,7 @@ require_once 'Helper/UUID.php';
 require_once 'Helper/logging.php';
 require_once 'Helper/Mvc.php';
 require_once 'Helper/Session.php';
+require_once 'Helper/ProcessPriceWorker.php';
 
 $db = new Database($DB_HOST, $DB_NAME, $DB_USER, $DB_PASS);
 $db -> Connect();
@@ -65,7 +66,6 @@ if(strlen($controller)<1)
 if(strlen($action)<1) $action="index";
 $log = new Logging($db,$cookie);
 $log->Write("index","Togo controller: ".$controller);
-
 
 include "Controller/".$controller.".php";
 

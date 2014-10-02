@@ -11,4 +11,5 @@ $DB_NAME="Medic";
 $DB_USER="root";
 $DB_PASS="1";
 
+$PHP="/usr/bin/php";
 

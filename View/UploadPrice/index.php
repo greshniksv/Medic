@@ -40,6 +40,12 @@
     $(function() {
 
         $("#upload").click(function () {
+            if($("#manuf").val()==null)
+            {
+                alert("Вы не выбрали производителя!");
+                return;
+            }
+
             $("#fileupload").trigger('click');
         });
 
@@ -73,6 +79,7 @@
         {
             data.append(key, value);
         });
+        files=null;
 
         $.ajax({
             url: 'index.php?c=UploadPrice&a=upload&manuf='+$("#manuf").val(),
