@@ -28,12 +28,12 @@ DROP TABLE IF EXISTS `Logs`;
 
 CREATE TABLE `Logs` (
   `id` varchar(36) NOT NULL,
-  `SessionId` varchar(36) DEFAULT NULL,
+  `UserId` varchar(36) DEFAULT NULL,
   `DateTime` datetime DEFAULT NULL,
   `Head` varchar(100) DEFAULT NULL,
   `Message` text,
   PRIMARY KEY (`id`),
-  KEY `SessionId` (`SessionId`)
+  KEY `SessionId` (`UserId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 #

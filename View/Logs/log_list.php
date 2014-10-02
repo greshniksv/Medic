@@ -3,11 +3,10 @@
     <thead>
     <tr>
         <th>id</th>
-        <th>Файл</th>
-        <th>Дата</th>
         <th>Кто</th>
-        <th>Поставщик</th>
-        <th>Статус</th>
+        <th>Дата</th>
+        <th>Заголовок</th>
+        <th>Сообщение</th>
     </tr>
     </thead>
 
@@ -22,31 +21,31 @@
     $(document).ready(function() {
 
         var table = $('#example').DataTable( {
-            lengthChange: false,
+            lengthChange: true,
             "oLanguage": {
-                "sLoadingRecords": "Пожалуйста подождите - загружается...",
+                "sInfo": "Всего _TOTAL_ показано с _START_ по _END_ ",
                 "sLengthMenu": "Показать _MENU_ записей",
-                "sInfo": "Всего _TOTAL_ показано с _START_ по _END_ "
+                "sLoadingRecords": "Пожалуйста подождите - загружается..."
             },
-            ajax: "index.php?c=UploadPrice&a=get_upload_list_data",
+
+            ajax: "index.php?c=Logs&a=get_log_list_data",
             columns: [
                 { data: "id"},
-                { data: "FileName"},
+                { data: "user"},
                 { data: "DateTime" },
-                { data: "UserId" },
-                { data: "ManufacturerId" },
-                { data: "Status" }
+                { data: "Head" },
+                { data: "Message" }
                 /*{ data: null, render: function ( data, type, row ) {
-                    // Combine the first and last names into a single table field
-                    switch(data.Permission)
-                    {
-                        case "0": return "Администратор"; break;
-                        case "1": return "Журналист"; break;
-                        case "2": return "Пользователь"; break;
-                        default: return "None";
-                    }
+                 // Combine the first and last names into a single table field
+                 switch(data.Permission)
+                 {
+                 case "0": return "Администратор"; break;
+                 case "1": return "Журналист"; break;
+                 case "2": return "Пользователь"; break;
+                 default: return "None";
+                 }
 
-                } }*/
+                 } }*/
             ],
             "columnDefs": [
                 {

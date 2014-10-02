@@ -3,11 +3,11 @@
     <thead>
     <tr>
         <th>id</th>
-        <th>Файл</th>
-        <th>Дата</th>
-        <th>Кто</th>
-        <th>Поставщик</th>
-        <th>Статус</th>
+        <th>Наименование</th>
+        <th>ФИО</th>
+        <th>Город</th>
+        <th>Адрес</th>
+        <th>Телефон</th>
     </tr>
     </thead>
 
@@ -28,25 +28,14 @@
                 "sLengthMenu": "Показать _MENU_ записей",
                 "sInfo": "Всего _TOTAL_ показано с _START_ по _END_ "
             },
-            ajax: "index.php?c=UploadPrice&a=get_upload_list_data",
+            ajax: "index.php?c=Manufacturer&a=get_list_data",
             columns: [
                 { data: "id"},
-                { data: "FileName"},
-                { data: "DateTime" },
-                { data: "UserId" },
-                { data: "ManufacturerId" },
-                { data: "Status" }
-                /*{ data: null, render: function ( data, type, row ) {
-                    // Combine the first and last names into a single table field
-                    switch(data.Permission)
-                    {
-                        case "0": return "Администратор"; break;
-                        case "1": return "Журналист"; break;
-                        case "2": return "Пользователь"; break;
-                        default: return "None";
-                    }
-
-                } }*/
+                { data: "Name"},
+                { data: "FullName" },
+                { data: "City" },
+                { data: "Address" },
+                { data: "Phone" }
             ],
             "columnDefs": [
                 {
@@ -54,7 +43,7 @@
                     "visible": false
                 }
             ],
-            "order": [[ 2, "desc" ]]
+            "order": [[ 1, "asc" ]]
         } );
 
         var tableTools = new $.fn.dataTable.TableTools( table, {

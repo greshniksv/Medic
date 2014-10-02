@@ -13,9 +13,7 @@ class ProcessPriceWorker
         $outputfile="/var/www/Medic/out.txt";
         $pidfile="pid.txt";
         exec(sprintf("%s > %s 2>&1 & echo $! >> %s",$PHP." ".__FILE__, $outputfile, $pidfile));
-
     }
-
 }
 
 if(!isset($PHP))

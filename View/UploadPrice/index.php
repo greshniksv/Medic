@@ -122,7 +122,7 @@
 
     function GetManufList()
     {
-        $.get("index.php?c=Manufacturer&a=get_list",function(data){
+        $.get("index.php?c=Manufacturer&a=get_list_data",function(data){
             var obj = JSON.parse(data);
             for(var i=0;i<obj.data.length;i++)
             {

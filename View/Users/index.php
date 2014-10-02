@@ -163,7 +163,7 @@
                 width: 300,
                 modal: true,
                 buttons: {
-                    "Добавить": function() {
+                    "Изменить": function() {
 
                         $.get("index.php?c=Users&a=GetIdByLogin&login="+$("#login").val(),function(data){
                             if(data.length<5 || old_login == $("#login").val())

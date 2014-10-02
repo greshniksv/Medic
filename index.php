@@ -65,7 +65,7 @@ if(strlen($controller)<1)
 
 if(strlen($action)<1) $action="index";
 $log = new Logging($db,$cookie);
-$log->Write("index","Togo controller: ".$controller);
+//$log->Write("index","Перешел на страницу: ".$controller);
 
 include "Controller/".$controller.".php";
 

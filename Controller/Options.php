@@ -6,6 +6,9 @@ switch($action)
     case "Set":
         $par = $_REQUEST["param"];
         $val = $_REQUEST["value"];
+
+        $log->Write(basename(__FILE__,".php"),"Изменение конфигурации. Параметр:".$par." Значение: ".$val);
+
         $r = $db->QueryOne("select Value from Options where Param='{$par}' ");
         if($r["Value"]=="")
         {

@@ -12,9 +12,9 @@
             <ul class="dropdown-menu" role="menu">
                 <li><a href="#"  onclick="GoToUpload()">Загрузить прайс</a></li>
                 <li><a href="#">Просмотр загр. прайса</a></li>
-                <li><a href="#">Производители</a></li>
+                <li><a href="#" onclick="GoToManufacturer()">Производители</a></li>
                 <li><a href="#" onclick="GoToUsers()">Пользователи</a></li>
-                <li><a href="#">Журнал активности</a></li>
+                <li><a href="#" onclick="GoToLog()">Журнал активности</a></li>
                 <li><a id="site_status" href="#">Выключить сайт</a></li>
             </ul>
         </li>
@@ -33,7 +33,7 @@
 <script type="application/javascript">
 
     $(function() {
-        GoToUpload();
+        GoToManufacturer();
         GetSiteStatus();
 
         $("#site_status").click(function(){
@@ -86,6 +86,21 @@
             $( "#main_frame").html(data);
         });
     }
+
+    function GoToLog()
+    {
+        $.get("index.php?c=Logs",function(data){
+            $( "#main_frame").html(data);
+        });
+    }
+
+    function GoToManufacturer()
+    {
+        $.get("index.php?c=Manufacturer",function(data){
+            $( "#main_frame").html(data);
+        });
+    }
+
 
     function Exit() {
         document.cookie = 'session=; expires=Thu, 01 Jan 1970 00:00:01 GMT;';

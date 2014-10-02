@@ -33,7 +33,7 @@ class Database{
             $this->dblink = new mysqli($this->host, $this->user, $this->password, $this->database);
             if ($this->dblink->connect_error) {
                 die('Connect Error (' . $this->dblink->connect_errno . ') '
-                    . $mysqli->connect_error);
+                    . $this->dblink->connect_error);
                 return false;
             }
             return true;

@@ -23,15 +23,10 @@
         var table = $('#example').DataTable( {
             lengthChange: false,
             "oLanguage": {
-                "sLoadingRecords": "Пожалуйста подождите - загружается..."
-            },
-            "oLanguage": {
-                "sLengthMenu": "Показать _MENU_ записей"
-            },
-            "oLanguage": {
+                "sLoadingRecords": "Пожалуйста подождите - загружается...",
+                "sLengthMenu": "Показать _MENU_ записей",
                 "sInfo": "Всего _TOTAL_ показано с _START_ по _END_ "
             },
-
             ajax: "index.php?c=Users&a=UserData",
             columns: [
                 { data: "id"},

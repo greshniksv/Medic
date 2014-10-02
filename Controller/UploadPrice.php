@@ -16,6 +16,8 @@ switch($action)
             $upl_name = $_FILES[0]['name'];
             $manuf = $_REQUEST["manuf"];
 
+            $log->Write(basename(__FILE__,".php"),"Загрузка прайса:".$upl_name);
+
             $myfile = fopen($upl_file, "r") or die("Unable to open file!");
             // Output one line until end-of-file
             //while(!feof($myfile)) {
