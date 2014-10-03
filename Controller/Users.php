@@ -7,7 +7,7 @@ switch ($action) {
         break;
 
     case "UserList":
-        Mvc::View(basename(__FILE__,".php"),"userlist");
+        Mvc::View(basename(__FILE__,".php"),"list");
         break;
 
     case "GetIdByLogin":

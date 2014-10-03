@@ -29,7 +29,7 @@ switch($action)
             $date = date("Y-m-d H:i:s");
             $user = Session::GetUserId($cookie);
 
-            $db->Query("insert into Uploads (id, FileName,DateTime,UserId,ManufacturerId,Status) values ".
+            $db->Exec("insert into Uploads (id, FileName,DateTime,UserId,ProviderId,Status) values ".
                 " ('{$guid}','{$upl_name}','{$date}','{$user}','{$manuf}','Загружено') ");
 
             // Start price processing
@@ -47,22 +47,31 @@ switch($action)
 
 
     case "get_upload_list":
-        Mvc::View(basename(__FILE__,".php"),"uploaded_list");
+        Mvc::View(basename(__FILE__,".php"),"list");
         break;
 
     case "get_upload_list_data":
         $db->Query("select id, FileName,DateTime,(select concat(FirstName,' ',LastName) from Users where id=UserId) as UserId,".
-            "(select Name from `Manufacturer` where id=ManufacturerId)as ManufacturerId,Status from Uploads order by DateTime desc");
+            "(select Name from `Provider` where id=ProviderId)as ProviderId,Status from Uploads order by DateTime desc");
         while($buf=$db->Fetch())
         {
             $data[]=array("id"=>$buf["id"],"FileName"=>$buf["FileName"],"DateTime"=>$buf["DateTime"],
-                "UserId"=>$buf["UserId"],"ManufacturerId"=>$buf["ManufacturerId"],"Status"=>$buf["Status"]);
+                "UserId"=>$buf["UserId"],"ProviderId"=>$buf["ProviderId"],"Status"=>$buf["Status"]);
         }
         $db->StopFetch();
 
         echo "{\"data\": ".json_encode($data)."}";
         //print_r($data);
         die();
+        break;
+
+    case "clear_provider":
+        $manuf = $_REQUEST["manuf"];
+        if($db->Exec("delete from Products where ProviderId='{$manuf}' "))
+            die("Продукты данного постащика удалены!");
+        else
+            die("Ошибка удаления товаров!");
+
         break;
 
 

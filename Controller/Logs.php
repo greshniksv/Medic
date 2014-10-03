@@ -8,7 +8,7 @@ switch($action)
         break;
 
     case "get_log_list":
-        Mvc::View(basename(__FILE__,".php"),"log_list");
+        Mvc::View(basename(__FILE__,".php"),"list");
         break;
 
     case "get_log_list_data":

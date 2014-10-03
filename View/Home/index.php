@@ -12,7 +12,7 @@
             <ul class="dropdown-menu" role="menu">
                 <li><a href="#"  onclick="GoToUpload()">Загрузить прайс</a></li>
                 <li><a href="#">Просмотр загр. прайса</a></li>
-                <li><a href="#" onclick="GoToManufacturer()">Производители</a></li>
+                <li><a href="#" onclick="GoToManufacturer()">Поставщики</a></li>
                 <li><a href="#" onclick="GoToUsers()">Пользователи</a></li>
                 <li><a href="#" onclick="GoToLog()">Журнал активности</a></li>
                 <li><a id="site_status" href="#">Выключить сайт</a></li>
@@ -33,7 +33,7 @@
 <script type="application/javascript">
 
     $(function() {
-        GoToManufacturer();
+        GoToUpload();
         GetSiteStatus();
 
         $("#site_status").click(function(){
@@ -96,7 +96,7 @@
 
     function GoToManufacturer()
     {
-        $.get("index.php?c=Manufacturer",function(data){
+        $.get("index.php?c=Provider",function(data){
             $( "#main_frame").html(data);
         });
     }

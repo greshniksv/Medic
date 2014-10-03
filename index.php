@@ -43,6 +43,9 @@ require_once 'Helper/logging.php';
 require_once 'Helper/Mvc.php';
 require_once 'Helper/Session.php';
 require_once 'Helper/ProcessPriceWorker.php';
+require_once 'Helper/Permission.php';
+
+
 
 $db = new Database($DB_HOST, $DB_NAME, $DB_USER, $DB_PASS);
 $db -> Connect();
@@ -50,6 +53,8 @@ $db -> Connect();
 $controller = @$_REQUEST["c"];
 $action = @$_REQUEST["a"];
 $cookie = @$_COOKIE["session"];
+$permission=Permission::Get();
+
 
 if(strlen($controller)<1)
 {

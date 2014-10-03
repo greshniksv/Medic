@@ -10,7 +10,7 @@ switch($action)
         break;
 
     case "get_list_data":
-        $db->Query("select id, Name,FullName,City,Address,Phone from Manufacturer order by Name desc");
+        $db->Query("select id, Name,FullName,City,Address,Phone from Provider order by Name desc");
         while($buf=$db->Fetch())
         {
             $data[]=array("id"=>$buf["id"],"Name"=>$buf["Name"],"FullName"=>$buf["FullName"],
@@ -26,7 +26,7 @@ switch($action)
 
     case "GetIdByName":
         $name = $_REQUEST["name"];
-        $r = $db->QueryOne("select id from Manufacturer where Name='{$name}' ");
+        $r = $db->QueryOne("select id from Provider where Name='{$name}' ");
         die($r["id"]);
         break;
 
@@ -40,7 +40,7 @@ switch($action)
 
         $log->Write(basename(__FILE__,".php"),"Создание постащика".$name);
 
-        $sql = " INSERT INTO `Manufacturer` (`id`,  `Name`,  `FullName`,  `City`,  `Address`,  `Phone`)".
+        $sql = " INSERT INTO `Provider` (`id`,  `Name`,  `FullName`,  `City`,  `Address`,  `Phone`)".
             " VALUE ('{$guid}','{$name}','{$fullname}','{$city}','{$address}','{$phone}');";
 
         if(!$db->Exec($sql))
@@ -61,7 +61,7 @@ switch($action)
 
         $log->Write(basename(__FILE__,".php"),"Изменение постащика".$name);
 
-        $sql = " update `Manufacturer` set `Name`='{$name}',`FullName`='{$fullname}',".
+        $sql = " update `Provider` set `Name`='{$name}',`FullName`='{$fullname}',".
             "`City`='{$city}',`Address`='{$address}' ,`Phone`='{$phone}'  where `id`='{$manufid}'";
 
         if(!$db->Exec($sql))
@@ -74,10 +74,10 @@ switch($action)
 
     case "Delete":
         $manufid = $_REQUEST["manufid"];
-        $r = $db->QueryOne("select Name from Manufacturer where id='{$manufid}' ");
+        $r = $db->QueryOne("select Name from Provider where id='{$manufid}' ");
         $log->Write(basename(__FILE__,".php"),"Удаление постащика".$r["Name"]);
 
-        $sql = " delete from `Manufacturer` where `id`='{$manufid}'";
+        $sql = " delete from `Provider` where `id`='{$manufid}'";
 
         if(!$db->Exec($sql))
         {

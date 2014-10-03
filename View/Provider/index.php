@@ -59,7 +59,7 @@
 
     function DrawManuf()
     {
-        $.get("index.php?c=Manufacturer&a=get_list",function(data){
+        $.get("index.php?c=Provider&a=get_list",function(data){
             $( "#users_list").html(data);
         });
     }
@@ -79,7 +79,7 @@
             buttons: {
                 "Добавить": function() {
 
-                    $.get("index.php?c=Manufacturer&a=GetIdByName&name="+$("#name").val(),function(data){
+                    $.get("index.php?c=Provider&a=GetIdByName&name="+$("#name").val(),function(data){
                         if(data.length<5)
                         {
                             var url="&name="+$("#name").val();
@@ -127,7 +127,7 @@
             return;
         }
 
-        $.get("index.php?c=Manufacturer&a=GetIdByName&name="+old_name,function(data){
+        $.get("index.php?c=Provider&a=GetIdByName&name="+old_name,function(data){
             if(data.length<5)
             {
                 alert("Пользователь не найден!");
@@ -148,7 +148,7 @@
                 buttons: {
                     "Изменить": function() {
 
-                        $.get("index.php?c=Manufacturer&a=GetIdByName&name="+$("#name").val(),function(data){
+                        $.get("index.php?c=Provider&a=GetIdByName&name="+$("#name").val(),function(data){
                             if(data.length<5 || old_name == $("#name").val())
                             {
                                 var url="&name="+$("#name").val();
@@ -204,9 +204,9 @@
             buttons: {
                 "Удалить": function() {
 
-                    $.get("index.php?c=Manufacturer&a=GetIdByName&name="+name,function(data){
+                    $.get("index.php?c=Provider&a=GetIdByName&name="+name,function(data){
                         var manufid = data.trim();
-                        $.get("index.php?c=Manufacturer&a=Delete&manufid="+manufid,function(data){
+                        $.get("index.php?c=Provider&a=Delete&manufid="+manufid,function(data){
                             if(data.trim()!="ok")
                             {
                                 alert(data.trim())

@@ -76,3 +76,11 @@
 #status_off{
     display: none;
 }
+
+#uploaded_list TD,TH{
+    font-size:14px
+}
+
+#users_list TD,TH{
+    font-size:14px
+}

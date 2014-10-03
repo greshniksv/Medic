@@ -7,19 +7,27 @@
 
             <div class="row">
 
-                <div class="col-md-10">
+                <div class="col-xs-8">
                     <select id="manuf" name="manf" class="form-control">
                         <option selected disabled value="0">Выберите поставщика</option>
                     </select>
                 </div>
 
-                <div class="col-md-2">
+                <div class="col-xs-2">
+
+                    <button onclick="ClearProvider()" type="" class="btn btn-default">
+                        <span class="glyphicon glyphicon-trash"></span> Очистить </button>
+
+                    <input id="fileupload" name="Выбирите файл" class="form-control" style="display: none" type="file" >
+
+                </div>
+
+                <div class="col-sx-2">
 
                     <button id="upload" type="" class="btn btn-default">
                         <span class="glyphicon glyphicon-upload"></span> Загрузить </button>
 
                 <input id="fileupload" name="Выбирите файл" class="form-control" style="display: none" type="file" >
-
 
                 </div>
             </div>
@@ -64,6 +72,20 @@
 
         $('form').on('submit', uploadFiles);
     });
+
+    function ClearProvider()
+    {
+        if($("#manuf").val()==null)
+        {
+            alert("Вы не выбрали производителя!");
+            return;
+        }
+
+        $.get("index.php?c=UploadPrice&a=clear_provider&manuf="+$("#manuf").val(),function(data){
+            alert(data);
+        });
+    }
+
 
     // Catch the form submit and upload the files
     function uploadFiles(event)
@@ -122,7 +144,7 @@
 
     function GetManufList()
     {
-        $.get("index.php?c=Manufacturer&a=get_list_data",function(data){
+        $.get("index.php?c=Provider&a=get_list_data",function(data){
             var obj = JSON.parse(data);
             for(var i=0;i<obj.data.length;i++)
             {

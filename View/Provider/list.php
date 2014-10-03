@@ -25,10 +25,27 @@
             lengthChange: false,
             "oLanguage": {
                 "sLoadingRecords": "Пожалуйста подождите - загружается...",
-                "sLengthMenu": "Показать _MENU_ записей",
-                "sInfo": "Всего _TOTAL_ показано с _START_ по _END_ "
+                "sProcessing":   "Подождите...",
+                "sLengthMenu":   "Показать _MENU_ записей",
+                "sZeroRecords":  "Записи отсутствуют.",
+                "sInfo":         "Записи с _START_ до _END_ из _TOTAL_ записей",
+                "sInfoEmpty":    "Записи с 0 до 0 из 0 записей",
+                "sInfoFiltered": "(отфильтровано из _MAX_ записей)",
+                "sInfoPostFix":  "",
+                "sSearch":       "Поиск:",
+                "sUrl":          "",
+                "oPaginate": {
+                    "sFirst": "Первая",
+                    "sPrevious": "Предыдущая",
+                    "sNext": "Следующая",
+                    "sLast": "Последняя"
+                },
+                "oAria": {
+                    "sSortAscending":  ": активировать для сортировки столбца по возрастанию",
+                    "sSortDescending": ": активировать для сортировки столбцов по убыванию"
+                }
             },
-            ajax: "index.php?c=Manufacturer&a=get_list_data",
+            ajax: "index.php?c=Provider&a=get_list_data",
             columns: [
                 { data: "id"},
                 { data: "Name"},
