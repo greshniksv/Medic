@@ -43,7 +43,7 @@
 
 
 <script type="application/javascript">
-    var files;
+    var files=null;
 
     $(function() {
 
@@ -66,6 +66,7 @@
         // Grab the files and set them to our variable
         function prepareUpload(event)
         {
+            alert("1");
             files = event.target.files;
             $("#fupload_form").trigger('submit');
         }
@@ -90,11 +91,14 @@
     // Catch the form submit and upload the files
     function uploadFiles(event)
     {
+
+        alert("2");
         event.stopPropagation(); // Stop stuff happening
         event.preventDefault(); // Totally stop stuff happening
 
         // START A LOADING SPINNER HERE
 
+        if(files==null) return;
         // Create a formdata object and add the files
         var data = new FormData();
         $.each(files, function(key, value)

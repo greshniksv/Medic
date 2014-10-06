@@ -10,25 +10,27 @@
 
                             <div class="input-group">
                                 <span class="input-group-addon">#</span>
-                                <input type="text" id="user" class="form-control" placeholder="Торговое наименование">
+                                <input type="text" id="fname" class="form-control" placeholder="Торговое наименование">
                             </div>
 
                             <div class="input-group">
                                 <span class="input-group-addon">#</span>
-                                <input type="password" id="password" class="form-control" placeholder="Поставщика">
+                                <select id="provider" class="form-control">
+                                    <option selected value="0">Все</option>
+                                </select>
                             </div>
 
                             <div class="input-group">
                                 <span class="input-group-addon">#</span>
-                                <input type="password" id="password" class="form-control" placeholder="Цена">
+                                <input type="text" id="price" class="form-control" placeholder="Цена">
                             </div>
 
                             <div class="input-group">
                                 <span class="input-group-addon">#</span>
-                                <input type="password" id="password" class="form-control" placeholder="Остаток">
+                                <input type="text" id="rest" class="form-control" placeholder="Остаток">
                             </div>
 
-                            <button type="button" class="btn btn-default btn col-xs-12" onclick="login()">
+                            <button type="button" class="btn btn-default btn col-xs-12" onclick="DrawSearchList()">
                                 <span class="glyphicon glyphicon-search"></span> Найти
                             </button>
 
@@ -46,14 +48,14 @@
 
                             <div class="input-group">
                                 <span class="input-group-addon"><span class="glyphicon glyphicon-search"></span></span>
-                                <input type="text" id="user" class="form-control" placeholder="Начать поиск">
+                                <input type="text" id="serach" class="form-control" placeholder="Начать поиск">
                             </div>
 
                         </div>
 
                         <div class="col-xs-2">
 
-                            <button onclick="ClearProvider()" type="" class="btn btn-default">
+                            <button onclick="DrawSearchList()" type="" class="btn btn-default">
                                 <span class="glyphicon glyphicon-search"></span> Начать поиск </button>
 
                         </div>
@@ -80,24 +82,35 @@
     $(function() {
 
         DrawSearchList();
+        GetProviderList();
+
+        $("#serach").keyup(function (e) {
+            if (e.keyCode == 13) {
+                DrawSearchList();
+            }
+        });
 
     });
 
 
     function DrawSearchList()
     {
-        $.get("index.php?c=Search&a=get_list",function(data){
+        var adv = "&fname="+$("#fname").val()+"&provider="+
+            ($("#provider").val()==null ||$("#provider").val()==0 ?"":$("#provider").val())+
+            "&price="+$("#price").val()+"&rest="+$("#rest").val();
+
+        $.get("index.php?c=Search&a=get_list&search="+$( "#serach").val()+adv,function(data){
             $( "#search_list").html(data);
         });
     }
 
-    function GetManufList()
+    function GetProviderList()
     {
         $.get("index.php?c=Provider&a=get_list_data",function(data){
             var obj = JSON.parse(data);
             for(var i=0;i<obj.data.length;i++)
             {
-                $("#manuf").append("<option value='"+obj.data[i].id+"'>"+obj.data[i].Name+"</option>");
+                $("#provider").append("<option value='"+obj.data[i].id+"'>"+obj.data[i].Name+"</option>");
             }
         });
     }

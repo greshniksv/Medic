@@ -1,3 +1,4 @@
+
 <table id="example" class="table table-striped table-bordered" cellspacing="0" width="100%">
 
     <thead>
@@ -24,6 +25,9 @@
 
     $(document).ready(function() {
 
+        var adv = "<?php echo "&search=".$DATA["search"]."&fname=".$DATA["fname"].
+        "&provider=".$DATA["provider"]."&price=".$DATA["price"]."&rest=".$DATA["rest"] ?>";
+
         var table = $('#example').DataTable( {
             lengthChange: true,
             "bSort": false,
@@ -49,7 +53,7 @@
                     "sSortDescending": ": активировать для сортировки столбцов по убыванию"
                 }
             },
-            ajax: "index.php?c=Search&a=get_list_data",
+            ajax: "index.php?c=Search&a=get_list_data"+adv,
             columns: [
                 { data: "id"},
                 { data: "Number"},
