@@ -33,14 +33,19 @@ switch($action)
                 " ('{$guid}','{$upl_name}','{$date}','{$user}','{$manuf}','Загружено') ");
 
             // Start price processing
-            $worker = new ProcessPriceWorker($guid,$upl_file);
-            $worker->run();
+            $worker = new ProcessPriceWorker($manuf,$upl_file);
+            $ret = $worker->run();
+            if($ret!="ok")
+            {
+                $data = array('error' => $ret);
+                die(json_encode($data));
+            }
 
             $data = array('success' => 'Form was submitted');
             die(json_encode($data));
         }
 
-        $data = array('success' => 'File not found!');
+        $data = array('error' => 'File not found!');
         die(json_encode($data));
 
         break;

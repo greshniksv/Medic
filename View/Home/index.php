@@ -11,8 +11,7 @@
             <a href="#" class="dropdown-toggle" data-toggle="dropdown" > Админка <span class="caret"></span> </a>
             <ul class="dropdown-menu" role="menu">
                 <li><a href="#"  onclick="GoToUpload()">Загрузить прайс</a></li>
-                <li><a href="#">Просмотр загр. прайса</a></li>
-                <li><a href="#" onclick="GoToManufacturer()">Поставщики</a></li>
+                <li><a href="#" onclick="GoToProvider()">Поставщики</a></li>
                 <li><a href="#" onclick="GoToUsers()">Пользователи</a></li>
                 <li><a href="#" onclick="GoToLog()">Журнал активности</a></li>
                 <li><a id="site_status" href="#">Выключить сайт</a></li>
@@ -33,7 +32,7 @@
 <script type="application/javascript">
 
     $(function() {
-        GoToUpload();
+        GoToSearch();
         GetSiteStatus();
 
         $("#site_status").click(function(){
@@ -94,9 +93,16 @@
         });
     }
 
-    function GoToManufacturer()
+    function GoToProvider()
     {
         $.get("index.php?c=Provider",function(data){
+            $( "#main_frame").html(data);
+        });
+    }
+
+    function GoToSearch()
+    {
+        $.get("index.php?c=Search",function(data){
             $( "#main_frame").html(data);
         });
     }

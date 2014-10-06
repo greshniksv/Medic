@@ -2,34 +2,68 @@
 
 class ProcessPriceWorker
 {
-    public function __construct($id,$file_name){
-        $this->id=$id;
-        $this->file_name=$file_name;
+    public function __construct($id, $file_name)
+    {
+        $this->id = $id;
+        $this->file_name = $file_name;
     }
 
-    public function run(){
+    public function run()
+    {
         global $PHP;
 
-        $outputfile="/var/www/Medic/out.txt";
-        $pidfile="pid.txt";
-        exec(sprintf("%s > %s 2>&1 & echo $! >> %s",$PHP." ".__FILE__." {$this->id} {$this->file_name} ", $outputfile, $pidfile));
+        $handle = @fopen($this->file_name, "r");
+        if (!$handle) {
+            die("Error open file!");
+        }
+
+        if (($buffer = fgets($handle, 4096)) !== false) {
+            $c = substr_count($buffer, ';');
+            if (substr_count($buffer, ';') != 6) {
+                fclose($handle);
+                return "Формат файла не верен:" . $c;
+            }
+        } else {
+            return "Невозможно открыть файл";
+        }
+        fclose($handle);
+
+        $new_file = getcwd() . "/Files/" . $guid = UUID::v4() . "";
+        if (!move_uploaded_file($this->file_name, $new_file)) {
+            return "Невозможно переместить файл";
+        }
+        exec("iconv -f windows-1251 -t utf-8 {$new_file} -o {$new_file}.csv");
+
+        $outputfile = "/var/www/Medic/out.txt";
+        $pidfile = "pid.txt";
+        exec(sprintf("%s > %s 2>&1 & echo $! >> %s", $PHP . " " . __FILE__ . " {$this->id} {$new_file}.csv ", $outputfile, $pidfile));
+        return "ok";
     }
 }
 
-if(!isset($PHP))
-{
-   // Do process file
+if (!isset($PHP)) {
+    // Do process file
 
     require_once 'Helper/UUID.php';
     require_once 'config.php';
 
 
-    /*require_once 'Helper/Database.php';
-    $db = new Database($DB_HOST, $DB_NAME, $DB_USER, $DB_PASS);
-    $db -> Connect();
+    $handle = @fopen($argv[2], "r");
+    if (!$handle) {
+        die("Error open file!");
+    }
 
-    $db->Exec("INSERT INTO Products(id,Number,NumberProvider,Name,FullName,BasicCharacteristics,ProviderId,Price,Rest) VALUE ('cc9cce8c-1afb-4151-8612-d5b91589c3d8','0','0','0','0','0','ba8b733a-5154-4e7a-aeaa-f9d90258a238','9','9');");
-*/
+    if (($buffer = fgets($handle, 4096)) !== false) {
+        if (substr_count($buffer, ';') != 6) {
+            fclose($handle);
+            die("Incorrect file format");
+        }
+    } else {
+        die("Can't open file");
+    }
+
+    //echo $buffer;
+
 
     $dbh;
     try {
@@ -38,36 +72,47 @@ if(!isset($PHP))
         //$sth = $dbh->exec("DROP TABLE fruit");
 
 
-        $sql = "INSERT INTO `Products`(`id`,`Number`,`NumberProvider`,`Name`,`FullName`,`BasicCharacteristics`,`ProviderId`,".
-            "`Price`,`Rest`) VALUE (?,?,?,?,?,?,?,?,?);";
+        $sql = "INSERT INTO `Products`(`id`,`NumberProvider`,`Name`,`FullName`,`BasicCharacteristics`,`ProviderId`," .
+            "`Price`,`Rest`) VALUE (?,?,?,?,?,?,?,?);";
         $sql2 = "INSERT INTO `ProductsSearch`(`ProductId`,`SearchString`) VALUE (?,?);";
 
         $sth = $dbh->prepare($sql);
         $sth2 = $dbh->prepare($sql2);
 
-        for($i=0;$i<50;$i++)
-        {
-            echo $i;
-            sleep(1);
+        while (($buffer = fgets($handle, 4096)) !== false) {
+            //echo $buffer."\n";
+            //$buffer = iconv("UTF-8", "CP1251//IGNORE", $buffer);
+            //echo $buffer."\n";
+            $elem = explode(";", $buffer);
             $guid = UUID::v4();
 
             $sth->execute(array(
-                $guid,'0','0','0','0','0',$argv[1],'9','9'.$i
+                $guid, $elem[0], $elem[1], $elem[2], $elem[3], $argv[1], $elem[4], $elem[5]
             ));
 
+            $fsearch = str_replace(array(" ", ";"), "", $buffer);
+
             $sth2->execute(array(
-                $guid,'0sdfgsdgdfgfdgdfgfdgdfgfdgfd'.$i
+                $guid, $fsearch
             ));
         }
 
         $dbh->commit();
 
+
     } catch (PDOException $e) {
         $dbh->rollBack();
-        print "Error!: " . $e->getMessage() . "<br/>";
-        die();
+        die("Error!: " . $e->getMessage() . "<br/>");
     }
 
+
+    if (!feof($handle)) {
+        echo "Error: unexpected fgets() fail\n";
+    }
+
+    fclose($handle);
+    sleep(1);
+    //unlink($argv[2]);
 
     print_r($argv);
 }

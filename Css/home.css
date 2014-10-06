@@ -15,7 +15,7 @@
 }
 
 .fullscreen{
-    width: 100%;
+    width: 98%;
     height: 80%;
 }
 
@@ -83,4 +83,33 @@
 
 #users_list TD,TH{
     font-size:14px
+}
+
+#search_list{
+    #position: absolute;
+    #width: 790px;
+    height: 400px;
+    #background-color: #dcdcdc;
+
+}
+
+#search_form{
+    #margin-top: 60px;
+    #width: 600px;
+}
+
+#search_list TD,TH{
+    font-size:12px
+}
+
+#search_list{
+    margin-top: 10px;
+}
+
+#search_list #example_paginate{
+    font-size: 11;
+}
+
+#example_length{
+    font-size: 12px;
 }
