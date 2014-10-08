@@ -72,8 +72,11 @@ switch($action)
 
     case "clear_provider":
         $manuf = $_REQUEST["manuf"];
-        if($db->Exec("delete from Products where ProviderId='{$manuf}' "))
+        if($db->Exec("delete from Products where ProviderId='{$manuf}'; "))
+        {
+            $db->Exec("call FixSearch();");
             die("Продукты данного постащика удалены!");
+        }
         else
             die("Ошибка удаления товаров!");
 

@@ -22,7 +22,7 @@ switch($action)
         $price = @$_REQUEST["price"];
         $rest = @$_REQUEST["rest"];
 
-        $db->Query("select `id`,`Number`,`NumberProvider`,Name,FullName,`BasicCharacteristics`,`Price`,`Rest`, ".
+        $sql = "select `id`,`Number`,`NumberProvider`,Name,FullName,`BasicCharacteristics`,`Price`,`Rest`, ".
             " (select Name from Provider where id=`ProviderId`) as ProviderId  ".
             " from `Products` ".
             " where id in (select ProductId from `ProductsSearch` where SearchString like '%{$search}%') ".
@@ -30,7 +30,9 @@ switch($action)
             (strlen($price)>0?" and Price like '%{$price}%' ":"").
             (strlen($provider)>0?" and ProviderId ='{$provider}' ":"").
             (strlen($rest)>0?" and Rest like '%{$rest}%' ":"").
-            " order by Name ");
+            " order by Name ";
+
+        $db->Query($sql);
         while($buf=$db->Fetch())
         {
             $data[]=array("id"=>$buf["id"],"Number"=>$buf["Number"],"NumberProvider"=>$buf["NumberProvider"],
