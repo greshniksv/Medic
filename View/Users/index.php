@@ -80,44 +80,51 @@
         $("#perm").val(2);
 
         $( "#add_dialog" ).dialog({
-            height:300,
-            width: 300,
+            height:350,
+            width: 350,
             modal: true,
-            buttons: {
-                "Добавить": function() {
-
-                    $.get("index.php?c=Users&a=GetIdByLogin&login="+$("#login").val(),function(data){
-                        if(data.length<5)
-                        {
-                            var url="&login="+$("#login").val();
-                            url+="&password="+$("#pass").val();
-                            url+="&firstname="+$("#name").val();
-                            url+="&lastname="+$("#last").val();
-                            url+="&permission="+$("#perm").val();
-
-
-                            $.get("index.php?c=Users&a=Create"+url,function(data){
-                                if(data.trim()!="ok")
-                                {
-                                    alert(data);
-                                }
-                            });
-
-                            DrawUsers();
-                            $( "#add_dialog" ).dialog( "close" );
-                        }
-                        else
-                        {
-                            alert("Такой логин уже существует!");
-                        }
-                    });
+            buttons:
+            [
+                {
+                    text: "  Добавить",
+                    "class": '',
+                    click: function () {
+                        $.get("index.php?c=Users&a=GetIdByLogin&login="+$("#login").val(),function(data){
+                            if(data.length<5)
+                            {
+                                var url="&login="+$("#login").val();
+                                url+="&password="+$("#pass").val();
+                                url+="&firstname="+$("#name").val();
+                                url+="&lastname="+$("#last").val();
+                                url+="&permission="+$("#perm").val();
 
 
+                                $.get("index.php?c=Users&a=Create"+url,function(data){
+                                    if(data.trim()!="ok")
+                                    {
+                                        alert(data);
+                                    }
+                                });
+
+                                DrawUsers();
+                                $( "#add_dialog" ).dialog( "close" );
+                            }
+                            else
+                            {
+                                alert("Такой логин уже существует!");
+                            }
+                        });
+                    }
                 },
-                "Закрыть": function() {
-                    $( this ).dialog( "close" );
+                {
+                    text: "  Закрыть",
+                    "class": 'cancel-button',
+                    click: function () {
+                        $(this).dialog("close");
+                    }
                 }
-            }
+            ]
+
         });
     }
 
@@ -159,43 +166,52 @@
 
 
             $( "#add_dialog" ).dialog({
-                height:300,
-                width: 300,
+                height:350,
+                width: 350,
                 modal: true,
-                buttons: {
-                    "Изменить": function() {
+                buttons:
+                [
+                    {
+                        text: "  Изменить",
+                        "class": '',
+                        click: function () {
+                            $.get("index.php?c=Users&a=GetIdByLogin&login="+$("#login").val(),function(data){
+                                if(data.length<5 || old_login == $("#login").val())
+                                {
+                                    var url="&login="+$("#login").val();
+                                    url+="&userid="+$("#userid").val();
+                                    url+="&password="+$("#pass").val();
+                                    url+="&firstname="+$("#name").val();
+                                    url+="&lastname="+$("#last").val();
+                                    url+="&permission="+$("#perm").val();
 
-                        $.get("index.php?c=Users&a=GetIdByLogin&login="+$("#login").val(),function(data){
-                            if(data.length<5 || old_login == $("#login").val())
-                            {
-                                var url="&login="+$("#login").val();
-                                url+="&userid="+$("#userid").val();
-                                url+="&password="+$("#pass").val();
-                                url+="&firstname="+$("#name").val();
-                                url+="&lastname="+$("#last").val();
-                                url+="&permission="+$("#perm").val();
+                                    $.get("index.php?c=Users&a=Edit"+url,function(data){
+                                        if(data.trim()!="ok")
+                                        {
+                                            alert(data);
+                                        }
+                                    });
 
-                                $.get("index.php?c=Users&a=Edit"+url,function(data){
-                                    if(data.trim()!="ok")
-                                    {
-                                        alert(data);
-                                    }
-                                });
-
-                                DrawUsers();
-                                $( "#add_dialog" ).dialog( "close" );
-                            }
-                            else
-                            {
-                                alert("Такой логин уже существует!");
-                            }
-                        });
-
+                                    DrawUsers();
+                                    $( "#add_dialog" ).dialog( "close" );
+                                }
+                                else
+                                {
+                                    alert("Такой логин уже существует!");
+                                }
+                            });
+                        }
                     },
-                    "Закрыть": function() {
-                        $( this ).dialog( "close" );
+                    {
+                        text: "  Закрыть",
+                        "class": 'cancel-button',
+                        click: function () {
+                            $(this).dialog("close");
+                        }
                     }
-                }
+                ]
+
+
             });
 
         });
@@ -219,27 +235,35 @@
             height:250,
             width: 350,
             modal: true,
-            buttons: {
-                "Удалить": function() {
+            buttons:
+            [
+                {
+                    text: "  Закрыть",
+                    "class": '',
+                    click: function () {
+                        $.get("index.php?c=Users&a=GetIdByLogin&login="+login,function(data){
+                            var userid = data.trim();
+                            $.get("index.php?c=Users&a=Delete&userid="+userid,function(data){
+                                if(data.trim()!="ok")
+                                {
+                                    alert(data.trim())
+                                }
 
-                    $.get("index.php?c=Users&a=GetIdByLogin&login="+login,function(data){
-                        var userid = data.trim();
-                        $.get("index.php?c=Users&a=Delete&userid="+userid,function(data){
-                            if(data.trim()!="ok")
-                            {
-                                alert(data.trim())
-                            }
-
-                            DrawUsers();
-                            $( "#remove_dialog" ).dialog( "close" );
+                                DrawUsers();
+                                $( "#remove_dialog" ).dialog( "close" );
+                            });
                         });
-                    });
-
+                    }
                 },
-                "Закрыть": function() {
-                    $( this ).dialog( "close" );
+                {
+                    text: "  Закрыть",
+                    "class": 'cancel-button',
+                    click: function () {
+                        $(this).dialog("close");
+                    }
                 }
-            }
+            ]
+
         });
 
 

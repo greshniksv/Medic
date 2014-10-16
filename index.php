@@ -15,8 +15,8 @@ if($AJAX==0){
     <meta charset="UTF-8">
 </head>
 
-<link rel="stylesheet" href="Helper/jquery-ui-1.11.1.custom/jquery-ui.min.css">
-<link rel="stylesheet" href="Helper/jquery-ui-1.11.1.custom/jquery-ui.theme.min.css">
+<link rel="stylesheet" href="Helper/jquery-ui-1.11.1.custom/jquery-ui.css">
+<link rel="stylesheet" href="Helper/jquery-ui-1.11.1.custom/jquery-ui.theme.css">
 <link rel="stylesheet" href="Helper/bootstrap-3.2.0-dist/css/bootstrap.min.css">
 <link rel="stylesheet" href="Helper/bootstrap-3.2.0-dist/css/bootstrap-theme.min.css">
 <link rel="stylesheet" href="Helper/dataTables.bootstrap.css">

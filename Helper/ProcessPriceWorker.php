@@ -98,7 +98,7 @@ if (!isset($PHP)) {
                  END IF;
 
                  insert into `ProductsSearch` (ProductId,SearchString) values (_id,
-                 (select concat(`NumberProvider`,p.`Name`,p.`FullName`,`BasicCharacteristics`,`Price`,`Rest`,pr.Name,pr.FullName,City,Address,Phone)
+                 (select REPLACE(LOWER(concat(`NumberProvider`,p.`Name`,p.`FullName`,`BasicCharacteristics`,`Price`,`Rest`,pr.Name,pr.FullName,City,Address,Phone)),' ','')
                     from `Products` p,`Provider` pr where pr.id = p.`ProviderId` and p.id=_id));
 
                 END LOOP testLoop;

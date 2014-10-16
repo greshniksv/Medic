@@ -20,8 +20,8 @@
                     <input type="password" id="password" class="form-control" placeholder="Пароль">
                 </div>
 
-                <button type="button" class="btn btn-default btn" onclick="login()">
-                    <span class="glyphicon glyphicon-hand-up"></span> Авторизоваться
+                <button type="button" class="btn blue-button" onclick="login()">
+                    <span><img src="images/ok.png"> </span> Авторизоваться
                 </button>
 
             </div>

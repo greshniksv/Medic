@@ -5,18 +5,25 @@
 
     <ul class="nav navbar-nav navbar-right">
 
-        <li id="status_off" class="active"><a href="#">Внимание! Сайт выключен.</a></li>
+        <li id="status_off" class="active"><a href="#" style="padding: 7px;"><img src="images/site_off.png"></a></li>
 
+        <?php if(Permission::Is(Access::Admin,Access::Uploader)){ ?>
         <li class="dropdown">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown" > Админка <span class="caret"></span> </a>
             <ul class="dropdown-menu" role="menu">
+                <li><a href="#"  onclick="GoToSearch()">Поиск</a></li>
                 <li><a href="#"  onclick="GoToUpload()">Загрузить прайс</a></li>
                 <li><a href="#" onclick="GoToProvider()">Поставщики</a></li>
+
+                <?php if(Permission::Is(Access::Admin)){ ?>
                 <li><a href="#" onclick="GoToUsers()">Пользователи</a></li>
                 <li><a href="#" onclick="GoToLog()">Журнал активности</a></li>
+                <?php }?>
+
                 <li><a id="site_status" href="#">Выключить сайт</a></li>
             </ul>
         </li>
+        <?php }?>
 
         <li id="exit" onclick="Exit()" class="active"><a href="#">Выход</a></li>
 

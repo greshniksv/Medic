@@ -4,7 +4,7 @@
     <thead>
     <tr>
         <th>id</th>
-        <th>Код товара в базе МК</th>
+        <th style="width: 63px;">Код товара в базе МК</th>
         <th>Код товара в базе постащика</th>
         <th>Наименование товара</th>
         <th>Торговое наименование</th>
@@ -18,12 +18,15 @@
 </table>
 
 <script src="Helper/dataTables.bootstrap.js"></script>
+<script src="Helper/bootstrap-tooltip.js"></script>
 
 <script type="application/javascript">
 
     var editor; // use a global for the submit and return data rendering in the examples
 
     $(document).ready(function() {
+
+        $('a').tooltip({placement: 'right'});
 
         var adv = "<?php echo "&search=".$DATA["search"]."&fname=".$DATA["fname"].
         "&provider=".$DATA["provider"]."&price=".$DATA["price"]."&rest=".$DATA["rest"] ?>";
@@ -63,23 +66,21 @@
                 { data: "BasicCharacteristics" },
                 { data: "Price" },
                 { data: "Rest" },
-                { data: "ProviderId" }
-                /*{ data: null, render: function ( data, type, row ) {
-                 // Combine the first and last names into a single table field
-                 switch(data.Permission)
-                 {
-                 case "0": return "Администратор"; break;
-                 case "1": return "Журналист"; break;
-                 case "2": return "Пользователь"; break;
-                 default: return "None";
-                 }
+                /*{ data: "ProviderId" }*/
 
-                 } }*/
+                { data: null, render: function ( data, type, row ) {
+                     return "<button type=\"button\" class=\"btn btn-default\" data-toggle=\"tooltip\" data-placement=\"left\" title=\"Tooltip on left\">Tooltip on left</button>";
+                 } }
             ],
+            "bAutoWidth": false,
             "columnDefs": [
                 {
                     "targets": [ 0 ],
                     "visible": false
+                },
+                {
+                    "targets": [ 1 ],
+                    "width": '65px'
                 }
             ],
             "order": [[ 2, "desc" ]]

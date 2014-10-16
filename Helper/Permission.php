@@ -24,7 +24,7 @@ class Permission{
         if($arg_num>0)
         {
             $arg_list = func_get_args();
-            for ($i = 0; $i < $arg_num; $i++) if($Permission==$arg_list[$i]) return true;
+            for ($i = 0; $i < $arg_num; $i++) if($permission==$arg_list[$i]) return true;
         }
 
         return false;
