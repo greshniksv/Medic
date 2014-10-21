@@ -7,6 +7,13 @@ switch($action)
         Mvc::View(basename(__FILE__,".php"));
         break;
 
+    case "get_status":
+        $id = $_REQUEST["id"];
+        $rez = $db->QueryOne("select Status from Uploads where id='{$id}'");
+        $data = array('status' => $rez["Status"]);
+        die(json_encode($data));
+        break;
+
     case "upload":
 
         if(count($_FILES)==1)
@@ -33,7 +40,7 @@ switch($action)
                 " ('{$guid}','{$upl_name}','{$date}','{$user}','{$manuf}','Загружено') ");
 
             // Start price processing
-            $worker = new ProcessPriceWorker($manuf,$upl_file);
+            $worker = new ProcessPriceWorker($manuf,$upl_file,$guid);
             $ret = $worker->run();
             if($ret!="ok")
             {

@@ -1,18 +1,19 @@
 
-<div class="fullscreen">
-    <div id="upload_form" class="absolute-center">
+<div class="">
+    <div id="upload_form" class="">
 
         <form id="fupload_form">
         <div id="upload_manage_buttons">
 
             <div class="row">
 
-                <div class="col-xs-8">
+                <div class="col-xs-6">
                     <select id="manuf" name="manf" class="form-control">
                         <option selected disabled value="0">Выберите поставщика</option>
                     </select>
                 </div>
 
+                <!--
                 <div class="col-xs-2">
 
                     <button onclick="ClearProvider()" type="" class="btn btn-default">
@@ -20,7 +21,7 @@
 
                     <input id="fileupload" name="Выбирите файл" class="form-control" style="display: none" type="file" >
 
-                </div>
+                </div>-->
 
                 <div class="col-sx-2">
 
@@ -46,6 +47,7 @@
     var files=null;
 
     $(function() {
+        window.setInterval(function(){ UpdateField(); },1000);
 
         $("#upload").click(function () {
             if($("#manuf").val()==null)
@@ -153,6 +155,28 @@
             }
         });
     }
+
+    function UpdateField()
+    {
+        $("p.upd").each(function (a) {
+
+            if ($(this).attr("state") == "done") return;
+            var _this = $(this);
+
+            var id = _this.attr("id");
+
+            $.get("index.php?c=UploadPrice&a=get_status&id="+id, function (data) {
+                var res = JSON.parse(data);
+                $("#"+id).html(res.status);
+                if(res.status.toLowerCase()=="готово")
+                {
+                    _this.attr("state","done");
+                }
+            });
+
+        });
+    }
+
 
 
 </script>

@@ -4,11 +4,12 @@
         <div id="users_list"></div>
 
         <div id="manage_buttons">
-        <button type="button" class="btn btn-default " onclick="ShowAddForm()">
+            <div> </div>
+        <button type="button" class="btn blue-button " onclick="ShowAddForm()">
             <span class="glyphicon glyphicon-plus"></span>  Добавить </button>
-        <button type="button" class="btn btn-default " onclick="ShowEditForm()">
+        <button type="button" class="btn green-button " onclick="ShowEditForm()">
             <span class="glyphicon glyphicon-pencil"></span>  Редактировать </button>
-        <button type="button" class="btn btn-default " onclick="Remove()">
+        <button type="button" class="btn blue-button " onclick="Remove()">
             <span class="glyphicon glyphicon-minus"></span>  Удалить </button>
         </div>
     </div>

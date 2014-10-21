@@ -9,7 +9,7 @@
 }
 
 #main_frame{
-    margin-top: 70px;
+    #margin-top: 70px;
 }
 
 
@@ -20,8 +20,12 @@
 }
 
 .fullscreen{
-    width: 98%;
+    width: 100%;
     height: 80%;
+}
+
+body{
+    overflow-x: hidden;
 }
 
 /* ###################### Users form */
@@ -30,16 +34,48 @@
     width: 100%;
     height: 400px;
     #background-color: #bfe4fc;
+    margin-top: 60px;
 }
 
 #manage_buttons{
     #width: 150px;
     position: absolute;
     right: 0px;
+    width: 20%;
+    margin-top: 7px;
+}
+
+#example_wrapper div.col-xs-6:first-of-type{
+    width: 230px;
+    padding: 0px 18px;
+}
+
+#example_wrapper div.dataTables_paginate{
+    float: left;
+}
+
+
+#example_wrapper div.col-xs-6:last-of-type{
+    width: 400px;
+    padding: 0px 18px;
+    float: left;
+}
+
+
+#manage_buttons button{
+    width: 100%;
+    height: 50px;
+}
+
+#manage_buttons div
+{
+    background-image: url("../images/table_caption.png");
+    background-repeat: repeat-x;
+    height: 50px;
 }
 
 #upload_form{
-    width: 950px;
+    #width: 950px;
     height: 400px;
     margin-top: 70px;
 }
@@ -50,24 +86,30 @@
     right: 0px;
 }
 
-#manage_buttons button{
-    margin-top: 5px;
-}
 
 #users_list{
     position: absolute;
 
     height: 400px;
     #background-color: #dcdcdc;
-    top: -20px;
+    #top: -20px;
+    width: 80%;
 }
 
 #uploaded_list{
     #position: absolute;
-    #width: 790px;
+    width: 100%;
     height: 400px;
     #background-color: #dcdcdc;
     top: -20px;
+}
+
+#uploaded_list table.dataTable{
+    margin-top: 0px !important;
+}
+
+#fupload_form{
+    margin: 0px;
 }
 
 .DTTT{
@@ -252,15 +294,28 @@ span.ui-icon-closethick{
     height: 50px;
 }
 
+#example tr{
+    height: 50px;
+}
+
 #example tr:first-of-type th{
     vertical-align: middle;
     text-transform: uppercase;
     font-family: arial;
 }
 
+#example tr td{
+    vertical-align: middle;
+}
+
+
 
 #example tr.odd td{
     background-color: #ecf6f8;
+}
+
+#example tr.active td{
+    background-color: #017ebc;
 }
 
 .dropdown-menu li a{
@@ -278,4 +333,8 @@ span.ui-icon-closethick{
 
 .dropdown-menu{
     padding: 0px 0;
+}
+
+.upd{
+    margin: 0px;
 }

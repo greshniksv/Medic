@@ -1,7 +1,7 @@
 
 <div class="fullscreen">
 
-    <table style="width: 100%" ><tr><td valign="top" style="width: 300px">
+    <table style="width: 100%;margin-top: 60px;" ><tr><td valign="top" style="width: 300px">
 
                 <div id="advanced_search" class="col-xs-12">
                     <div class="panel panel-default">
@@ -99,7 +99,7 @@
             ($("#provider").val()==null ||$("#provider").val()==0 ?"":$("#provider").val())+
             "&price="+$("#price").val()+"&rest="+$("#rest").val();
 
-        $.get("index.php?c=Search&a=get_list&search="+$( "#serach").val()+adv,function(data){
+        $.get("index.php?c=Search&a=get_list&search="+$("#serach").val().toLowerCase()+adv,function(data){
             $( "#search_list").html(data);
         });
     }

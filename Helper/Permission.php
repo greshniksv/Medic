@@ -8,6 +8,14 @@ abstract class Access{
 
 class Permission{
 
+    public static function CheckSession()
+    {
+        global $db,$cookie;
+        $r = $db->QueryOne("select count(*) as col from `Session` s where s.id='{$cookie}'");
+        return ($r["col"]==0?false:true);
+    }
+
+
     public static function Get()
     {
         global $db,$cookie;
@@ -29,5 +37,12 @@ class Permission{
 
         return false;
     }
+
+    public static function Prolong()
+    {
+        global $db,$cookie;
+        setcookie("session", $cookie, time()+900);
+    }
+
 }
 

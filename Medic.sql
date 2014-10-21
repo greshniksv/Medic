@@ -37,23 +37,6 @@ CREATE TABLE `Logs` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 #
-# Structure for the `Manufacturer` table : 
-#
-
-DROP TABLE IF EXISTS `Manufacturer`;
-
-CREATE TABLE `Manufacturer` (
-  `id` varchar(36) NOT NULL,
-  `Name` varchar(200) DEFAULT NULL,
-  `FullName` varchar(200) DEFAULT NULL,
-  `City` varchar(100) DEFAULT NULL,
-  `Address` varchar(150) DEFAULT NULL,
-  `Phone` varchar(50) DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `Name` (`Name`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
-#
 # Structure for the `Options` table : 
 #
 
@@ -89,13 +72,17 @@ DROP TABLE IF EXISTS `Products`;
 
 CREATE TABLE `Products` (
   `id` varchar(36) DEFAULT NULL,
-  `Number` varchar(50) DEFAULT NULL,
-  `Name` varchar(1000) DEFAULT NULL,
-  `ManufacturerId` varchar(36) DEFAULT NULL,
-  `Price1` double(15,8) DEFAULT NULL,
-  `Price2` double(15,8) DEFAULT NULL,
-  `Count` bigint(20) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+  `Number` bigint(20) NOT NULL AUTO_INCREMENT,
+  `NumberProvider` varchar(50) DEFAULT NULL,
+  `Name` varchar(100) DEFAULT NULL,
+  `FullName` varchar(100) DEFAULT NULL,
+  `BasicCharacteristics` varchar(200) DEFAULT NULL,
+  `ProviderId` varchar(36) DEFAULT NULL,
+  `Price` double(15,3) DEFAULT NULL,
+  `Rest` double(15,3) DEFAULT NULL,
+  `Updated` datetime DEFAULT NULL,
+  PRIMARY KEY (`Number`)
+) ENGINE=MyISAM AUTO_INCREMENT=71 DEFAULT CHARSET=utf8;
 
 #
 # Structure for the `ProductsSearch` table : 
@@ -109,6 +96,23 @@ CREATE TABLE `ProductsSearch` (
   PRIMARY KEY (`ProductId`),
   FULLTEXT KEY `SearchString_idx` (`SearchString`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+#
+# Structure for the `Provider` table : 
+#
+
+DROP TABLE IF EXISTS `Provider`;
+
+CREATE TABLE `Provider` (
+  `id` varchar(36) NOT NULL,
+  `Name` varchar(200) DEFAULT NULL,
+  `FullName` varchar(200) DEFAULT NULL,
+  `City` varchar(100) DEFAULT NULL,
+  `Address` varchar(150) DEFAULT NULL,
+  `Phone` varchar(50) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `Name` (`Name`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 #
 # Structure for the `Session` table : 
@@ -134,7 +138,7 @@ DROP TABLE IF EXISTS `Uploads`;
 CREATE TABLE `Uploads` (
   `id` varchar(36) NOT NULL,
   `FileName` varchar(150) DEFAULT NULL,
-  `ManufacturerId` varchar(36) DEFAULT NULL,
+  `ProviderId` varchar(36) DEFAULT NULL,
   `DateTime` datetime DEFAULT NULL,
   `UserId` varchar(36) DEFAULT NULL,
   `Status` varchar(50) DEFAULT NULL,
@@ -159,6 +163,43 @@ CREATE TABLE `Users` (
   UNIQUE KEY `idxLogin` (`Login`),
   KEY `id` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='Users list';
+
+#
+# Definition for the `FixSearch` procedure : 
+#
+
+DROP PROCEDURE IF EXISTS `FixSearch`;
+
+CREATE DEFINER = 'root'@'%' PROCEDURE `FixSearch`()
+    NOT DETERMINISTIC
+    CONTAINS SQL
+    SQL SECURITY DEFINER
+    COMMENT ''
+begin
+                DECLARE done BOOLEAN DEFAULT FALSE;
+                DECLARE _id VARCHAR(36);
+                DECLARE cur  CURSOR FOR select id from `Products` where id not in ( select ProductId from `ProductsSearch`);
+                DECLARE CONTINUE HANDLER FOR NOT FOUND SET done := TRUE;
+
+                delete from `ProductsSearch` where ProductId not in (select id from `Products`);
+
+                OPEN cur;
+
+                testLoop: LOOP
+                 FETCH cur INTO _id;
+                 IF done THEN
+                   LEAVE testLoop;
+                 END IF;
+
+                 insert into `ProductsSearch` (ProductId,SearchString) values (_id,
+                 (select REPLACE(LOWER(concat(`NumberProvider`,p.`Name`,p.`FullName`,`BasicCharacteristics`,`Price`,`Rest`,pr.Name,pr.FullName,City,Address,Phone)),' ','')
+                    from `Products` p,`Provider` pr where pr.id = p.`ProviderId` and p.id=_id));
+
+                END LOOP testLoop;
+
+              CLOSE cur;
+
+            end;
 
 
 

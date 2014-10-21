@@ -3,6 +3,10 @@
 switch ($action) {
 
 
+    case "check_session":
+            if(!Permission::CheckSession()) die("failed"); else die("alive");
+        break;
+
     // ACTION =========================
     case "login":
         $login = $_REQUEST["login"];
@@ -36,7 +40,7 @@ switch ($action) {
             }
         }
         $sessionid = Session::GenId($d["id"]);
-        setcookie("session", $sessionid, time()+3600);
+        setcookie("session", $sessionid, time()+900);
 
         die("ok");
         break;

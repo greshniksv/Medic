@@ -1,15 +1,16 @@
 <div class="fullscreen">
-    <div id="users_form" class="absolute-center">
-        <div id="users_list" class="col-xs-10"></div>
+    <div id="users_form" class="">
+        <div id="users_list" class=""></div>
 
-        <div id="manage_buttons" class="col-xs-2">
-            <button type="button" class="btn btn-default " onclick="ShowAddForm()">
+        <div id="manage_buttons" class="">
+            <div> </div>
+            <button type="button" class="btn blue-button" onclick="ShowAddForm()">
                 <span class="glyphicon glyphicon-plus"></span> Добавить
             </button>
-            <button type="button" class="btn btn-default " onclick="ShowEditForm()">
+            <button type="button" class="btn green-button " onclick="ShowEditForm()">
                 <span class="glyphicon glyphicon-pencil"></span> Редактировать
             </button>
-            <button type="button" class="btn btn-default " onclick="Remove()">
+            <button type="button" class="btn blue-button " onclick="Remove()">
                 <span class="glyphicon glyphicon-minus"></span> Удалить
             </button>
         </div>
@@ -17,9 +18,9 @@
 </div>
 
 
-<div id="remove_dialog" style="display: none" title="Удалить пользователя"></div>
+<div id="remove_dialog" style="display: none" title="Удалить поставщика"></div>
 
-<div id="add_dialog" style="display: none" title="Добавить пользователя">
+<div id="add_dialog" style="display: none" title="Добавить поставщика">
 
     <input id="manufid" type="hidden">
 
@@ -159,7 +160,7 @@
                                     url += "&address=" + $("#address").val();
                                     url += "&phone=" + $("#phone").val();
 
-                                    $.get("index.php?c=Manufacturer&a=Edit" + url, function (data) {
+                                    $.get("index.php?c=Provider&a=Edit" + url, function (data) {
                                         if (data.trim() != "ok") {
                                             alert(data);
                                         }

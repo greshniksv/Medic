@@ -35,7 +35,6 @@
 </div>
 
 
-
 <script type="application/javascript">
 
     $(function() {
@@ -45,8 +44,19 @@
         $("#site_status").click(function(){
             ToggleSiteStatus();
         });
-
+        window.setInterval(function(){ CheckSession(); },10000);
     });
+
+    function CheckSession()
+    {
+        $.get("index.php?c=Account&a=check_session", function (data) {
+            if(data.trim()!="alive")
+            {
+                alert("Время вышло.");
+                window.location = "index.php"
+            }
+        });
+    }
 
     function ToggleSiteStatus()
     {
@@ -113,7 +123,6 @@
             $( "#main_frame").html(data);
         });
     }
-
 
     function Exit() {
         document.cookie = 'session=; expires=Thu, 01 Jan 1970 00:00:01 GMT;';

@@ -47,8 +47,8 @@
                 "sUrl":          "",
                 "oPaginate": {
                     "sFirst": "Первая",
-                    "sPrevious": "Предыдущая",
-                    "sNext": "Следующая",
+                    "sPrevious": "<",
+                    "sNext": ">",
                     "sLast": "Последняя"
                 },
                 "oAria": {
@@ -66,11 +66,10 @@
                 { data: "BasicCharacteristics" },
                 { data: "Price" },
                 { data: "Rest" },
-                /*{ data: "ProviderId" }*/
-
-                { data: null, render: function ( data, type, row ) {
+                { data: "ProviderId" }
+                /*{ data: null, render: function ( data, type, row ) {
                      return "<button type=\"button\" class=\"btn btn-default\" data-toggle=\"tooltip\" data-placement=\"left\" title=\"Tooltip on left\">Tooltip on left</button>";
-                 } }
+                 } }*/
             ],
             "bAutoWidth": false,
             "columnDefs": [

@@ -36,8 +36,8 @@
                 "sUrl":          "",
                 "oPaginate": {
                     "sFirst": "Первая",
-                    "sPrevious": "Предыдущая",
-                    "sNext": "Следующая",
+                    "sPrevious": "<",
+                    "sNext": ">",
                     "sLast": "Последняя"
                 },
                 "oAria": {

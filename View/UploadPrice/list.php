@@ -36,8 +36,8 @@
                 "sUrl":          "",
                 "oPaginate": {
                     "sFirst": "Первая",
-                    "sPrevious": "Предыдущая",
-                    "sNext": "Следующая",
+                    "sPrevious": "<",
+                    "sNext": ">",
                     "sLast": "Последняя"
                 },
                 "oAria": {
@@ -52,7 +52,13 @@
                 { data: "DateTime" },
                 { data: "UserId" },
                 { data: "ProviderId" },
-                { data: "Status" }
+                //{ data: "Status" }
+                { data: null, render: function ( data, type, row ) {
+                    if(data.Status.toLowerCase()!="готово")
+                        return "<p id='"+data.id+"' class='upd'  status='' >"+data.Status+"</p>";
+                    else
+                        return data.Status;
+                } }
                 /*{ data: null, render: function ( data, type, row ) {
                     // Combine the first and last names into a single table field
                     switch(data.Permission)

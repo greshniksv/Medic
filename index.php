@@ -32,6 +32,7 @@ if($AJAX==0){
 <script src="Helper/jquery.fileupload.js"></script>
 
 
+
 <body>
 <?php
 }
@@ -44,6 +45,8 @@ require_once 'Helper/Mvc.php';
 require_once 'Helper/Session.php';
 require_once 'Helper/ProcessPriceWorker.php';
 require_once 'Helper/Permission.php';
+require_once 'Helper/Recombination.php';
+require_once 'Helper/FixSearch.php';
 
 
 
@@ -54,7 +57,7 @@ $controller = @$_REQUEST["c"];
 $action = @$_REQUEST["a"];
 $cookie = @$_COOKIE["session"];
 $permission=Permission::Get();
-
+Permission::Prolong();
 
 if(strlen($controller)<1)
 {
@@ -79,3 +82,4 @@ if($AJAX==0){
 </body>
 </html>
 <?php } ?>
+
