@@ -8,6 +8,7 @@
         <th>Город</th>
         <th>Адрес</th>
         <th>Телефон</th>
+        <th>ИИН</th>
     </tr>
     </thead>
 
@@ -52,7 +53,8 @@
                 { data: "FullName" },
                 { data: "City" },
                 { data: "Address" },
-                { data: "Phone" }
+                { data: "Phone" },
+                { data: "IIN" }
             ],
             "columnDefs": [
                 {

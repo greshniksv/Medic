@@ -47,17 +47,23 @@ require_once 'Helper/ProcessPriceWorker.php';
 require_once 'Helper/Permission.php';
 require_once 'Helper/Recombination.php';
 require_once 'Helper/FixSearch.php';
+require_once 'Helper/Mailer.php';
 
 
 
-$db = new Database($DB_HOST, $DB_NAME, $DB_USER, $DB_PASS);
+$db = new Database($CONFIG["DB_HOST"], $CONFIG["DB_NAME"],
+                        $CONFIG["DB_USER"], $CONFIG["DB_PASS"]);
 $db -> Connect();
 
 $controller = @$_REQUEST["c"];
 $action = @$_REQUEST["a"];
 $cookie = @$_COOKIE["session"];
 $permission=Permission::Get();
-Permission::Prolong();
+
+// if session alive prolong it.
+if(Permission::CheckSession()) Permission::Prolong();
+
+
 
 if(strlen($controller)<1)
 {

@@ -48,9 +48,32 @@
 
     function login()
     {
-        $( "#login" ).dialog("close");
         var log = $("#user").val();
         var pas = $("#password").val();
+
+        if(pas.length<1)
+        {
+            $("#info").removeClass( "alert-success alert-danger" ).addClass( "alert-success" );
+            $("#info").html("Отправка письма");
+            $("#info").fadeIn(1000,function(){});
+
+            // send password to mail
+            $.get("index.php?c=Account&a=send_password&login="+log,function(data){
+
+                $("#info").removeClass( "alert-success alert-danger" ).addClass( "alert-danger" );
+
+                if(data.trim()=="ok"){
+                    data="Письмо с паролем отправлено!";
+                    $("#info").removeClass( "alert-success alert-danger" ).addClass( "alert-success" );
+                }
+                $("#info").html(data.trim());
+                setTimeout(function(){
+                    $("#info").fadeOut(1000,function(){});
+                },3000);
+            });
+            return;
+        }
+
         $.get("index.php?c=Account&a=login&login="+log+"&password="+pas,function(data){
 
             if(data.trim()=="ok")
@@ -59,12 +82,12 @@
             }
             else
             {
+                $("#info").removeClass( "alert-success alert-danger" ).addClass( "alert-danger" );
                 $("#info").html(data.trim());
-                $("#login").dialog("open");
                 $("#info").fadeIn(1000,function(){
                     setTimeout(function(){
                         $("#info").fadeOut(1000,function(){});
-                    },1000);
+                    },3000);
                 });
             }
 

@@ -49,6 +49,10 @@
         <input type="text" id="phone" class="form-control" placeholder="Телефон">
     </div>
 
+    <div class="input-group">
+        <span class="input-group-addon">#</span>
+        <input type="text" id="iin" class="form-control" placeholder="ИИН">
+    </div>
 </div>
 
 
@@ -88,9 +92,10 @@
                                 url += "&city=" + $("#city").val();
                                 url += "&address=" + $("#address").val();
                                 url += "&phone=" + $("#phone").val();
+                                url += "&iin=" + $("#iin").val();
 
 
-                                $.get("index.php?c=Manufacturer&a=Create" + url, function (data) {
+                                $.get("index.php?c=Provider&a=Create" + url, function (data) {
                                     if (data.trim() != "ok") {
                                         alert(data);
                                     }
@@ -139,6 +144,7 @@
             $("#city").val($("tr.active").find('td:eq(2)').text());
             $("#address").val($("tr.active").find('td:eq(3)').text());
             $("#phone").val($("tr.active").find('td:eq(4)').text());
+            $("#iin").val($("tr.active").find('td:eq(5)').text());
 
             $("#add_dialog").dialog({
                 height: 350,
@@ -159,14 +165,15 @@
                                     url += "&city=" + $("#city").val();
                                     url += "&address=" + $("#address").val();
                                     url += "&phone=" + $("#phone").val();
+                                    url += "&iin=" + $("#iin").val();
 
                                     $.get("index.php?c=Provider&a=Edit" + url, function (data) {
                                         if (data.trim() != "ok") {
                                             alert(data);
                                         }
+                                        DrawManuf();
                                     });
 
-                                    DrawManuf();
                                     $("#add_dialog").dialog("close");
                                 }
                                 else {

@@ -1,0 +1,26 @@
+<?php
+/**
+ * Created by PhpStorm.
+ * User: Administrator
+ * Date: 13.09.14
+ * Time: 20:38
+ */
+
+$CONFIG=new ArrayObject();
+
+$CONFIG["DB_HOST"]="localhost";
+$CONFIG["DB_NAME"]="Medic";
+$CONFIG["DB_USER"]="root";
+$CONFIG["DB_PASS"]="1";
+
+$CONFIG["SMTP_HOST"]='';
+$CONFIG["SMTP_USER"]='';
+$CONFIG["SMTP_PASS"]='';
+$CONFIG["SMTP_SECURE"]='tls'; // Enable TLS encryption, `ssl` also accepted
+$CONFIG["SMTP_PORT"]=;
+
+$CONFIG["MAIL_FROM"]='s';
+$CONFIG["MAIL_FROM_NAME"]='Mailer';
+
+$PHP="/usr/bin/php";
+

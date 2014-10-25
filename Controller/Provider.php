@@ -10,11 +10,11 @@ switch($action)
         break;
 
     case "get_list_data":
-        $db->Query("select id, Name,FullName,City,Address,Phone from Provider order by Name desc");
+        $db->Query("select id, Name,FullName,City,Address,Phone,IIN from Provider order by Name desc");
         while($buf=$db->Fetch())
         {
             $data[]=array("id"=>$buf["id"],"Name"=>$buf["Name"],"FullName"=>$buf["FullName"],
-                "City"=>$buf["City"],"Address"=>$buf["Address"],"Phone"=>$buf["Phone"]);
+                "City"=>$buf["City"],"Address"=>$buf["Address"],"Phone"=>$buf["Phone"],"IIN"=>$buf["IIN"]);
         }
         $db->StopFetch();
         echo "{\"data\": ".json_encode($data)."}";
@@ -36,12 +36,13 @@ switch($action)
         $city = $_REQUEST["city"];
         $address = $_REQUEST["address"];
         $phone = $_REQUEST["phone"];
+        $iin = $_REQUEST["iin"];
         $guid = UUID::v4();
 
         $log->Write(basename(__FILE__,".php"),"Создание постащика".$name);
 
-        $sql = " INSERT INTO `Provider` (`id`,  `Name`,  `FullName`,  `City`,  `Address`,  `Phone`)".
-            " VALUE ('{$guid}','{$name}','{$fullname}','{$city}','{$address}','{$phone}');";
+        $sql = " INSERT INTO `Provider` (`id`,  `Name`,  `FullName`,  `City`,  `Address`,  `Phone`, `IIN`)".
+            " VALUE ('{$guid}','{$name}','{$fullname}','{$city}','{$address}','{$phone}','$iin');";
 
         if(!$db->Exec($sql))
         {
@@ -58,11 +59,12 @@ switch($action)
         $city = $_REQUEST["city"];
         $address = $_REQUEST["address"];
         $phone = $_REQUEST["phone"];
+        $iin = $_REQUEST["iin"];
 
         $log->Write(basename(__FILE__,".php"),"Изменение постащика".$name);
 
         $sql = " update `Provider` set `Name`='{$name}',`FullName`='{$fullname}',".
-            "`City`='{$city}',`Address`='{$address}' ,`Phone`='{$phone}'  where `id`='{$manufid}'";
+            "`City`='{$city}',`Address`='{$address}' ,`Phone`='{$phone}',`IIN`='{$iin}'  where `id`='{$manufid}'";
 
         if(!$db->Exec($sql))
         {

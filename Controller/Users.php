@@ -18,11 +18,11 @@ switch ($action) {
 
 
     case "UserData":
-        $db->Query("select id, Login, FirstName, LastName,Permission from Users order by Login");
+        $db->Query("select id, Login, FirstName, LastName,Permission, Mail from Users order by Login");
         while($buf=$db->Fetch())
         {
             $data[]=array("id"=>$buf["id"],"Login"=>$buf["Login"],"FirstName"=>$buf["FirstName"],
-                "LastName"=>$buf["LastName"],"Permission"=>$buf["Permission"]);
+                "LastName"=>$buf["LastName"],"Permission"=>$buf["Permission"],"Mail"=>$buf["Mail"]);
         }
         $db->StopFetch();
 
@@ -38,6 +38,7 @@ switch ($action) {
         $fir = $_REQUEST["firstname"];
         $las = $_REQUEST["lastname"];
         $per = $_REQUEST["permission"];
+        $mail = $_REQUEST["mail"];
 
         $log->Write(basename(__FILE__,".php"),"Добавление пользователя:".$login);
 
@@ -46,8 +47,8 @@ switch ($action) {
 
         // permission: 0-admin,1-uploader,2-searcher
 
-        $sql = " INSERT INTO `Users` (`id`,  `Login`,  `Password`,  `Hash`,  `FirstName`,  `LastName`,  `Permission`)".
-                " VALUE ('{$guid}','{$login}','{$hpass}','1','{$fir}','{$las}','{$per}');";
+        $sql = " INSERT INTO `Users` (`id`,  `Login`,  `Password`,  `Hash`,  `FirstName`,  `LastName`,  `Permission`, `Mail`)".
+                " VALUE ('{$guid}','{$login}','{$hpass}','1','{$fir}','{$las}','{$per}','{$mail}');";
 
         if(!$db->Exec($sql))
         {
@@ -66,6 +67,7 @@ switch ($action) {
         $fir = $_REQUEST["firstname"];
         $las = $_REQUEST["lastname"];
         $per = $_REQUEST["permission"];
+        $mail = $_REQUEST["mail"];
         $log->Write(basename(__FILE__,".php"),"Изменение пользователя:".$login);
 
         $hpass = crypt($pas, "mc05wBF&IТПШРnw4ton*R +-*/ ☺");
@@ -73,7 +75,7 @@ switch ($action) {
 
         // permission: 0-admin,1-uploader,2-searcher
         $sql = " update `Users` set `Login`='{$login}',".($pas==""?"":"`Password`='{$hpass}',").
-            " `Hash`='1',`FirstName`='{$fir}',`LastName`='{$las}' ,`Permission`='{$per}'  where `id`='{$userid}'";
+            " `Hash`='1',`FirstName`='{$fir}',`LastName`='{$las}' ,`Permission`='{$per}',`Mail`='{$mail}'  where `id`='{$userid}'";
 
         if(!$db->Exec($sql))
         {

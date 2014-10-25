@@ -7,6 +7,7 @@
         <th>Имя</th>
         <th>Фамилия</th>
         <th>Доступ</th>
+        <th>Почта</th>
     </tr>
     </thead>
 
@@ -61,7 +62,8 @@
                         default: return "None";
                     }
 
-                } }
+                } },
+                { data: "Mail" }
             ],
             "columnDefs": [
                 {

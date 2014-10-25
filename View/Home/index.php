@@ -53,7 +53,8 @@
             if(data.trim()!="alive")
             {
                 alert("Время вышло.");
-                window.location = "index.php"
+                Exit();
+                //window.location = "index.php"
             }
         });
     }
@@ -125,8 +126,10 @@
     }
 
     function Exit() {
-        document.cookie = 'session=; expires=Thu, 01 Jan 1970 00:00:01 GMT;';
-        window.location = "index.php";
+        $.get("index.php?c=Account&a=logout",function(data){
+            document.cookie = 'session=; expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+            window.location = "index.php";
+        });
     }
 
 </script>

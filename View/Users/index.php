@@ -47,6 +47,11 @@
 
     <div class="input-group">
         <span class="input-group-addon">#</span>
+        <input type="text" id="mail" class="form-control" placeholder="Почта">
+    </div>
+
+    <div class="input-group">
+        <span class="input-group-addon">#</span>
         <!--<input type="text" class="form-control" placeholder="Доступ">-->
         <select id="perm" class="form-control">
             <option value="0">Администратор</option>
@@ -79,6 +84,7 @@
         $("#last").val("");
         $("#pass").val("");
         $("#perm").val(2);
+        $("#mail").val("");
 
         $( "#add_dialog" ).dialog({
             height:350,
@@ -98,6 +104,7 @@
                                 url+="&firstname="+$("#name").val();
                                 url+="&lastname="+$("#last").val();
                                 url+="&permission="+$("#perm").val();
+                                url+="&mail="+$("#mail").val();
 
 
                                 $.get("index.php?c=Users&a=Create"+url,function(data){
@@ -105,9 +112,9 @@
                                     {
                                         alert(data);
                                     }
+                                    DrawUsers();
                                 });
 
-                                DrawUsers();
                                 $( "#add_dialog" ).dialog( "close" );
                             }
                             else
@@ -156,6 +163,7 @@
             $("#login").val($("tr.active").find('td:eq(0)').text());
             $("#name").val($("tr.active").find('td:eq(1)').text());
             $("#last").val($("tr.active").find('td:eq(2)').text());
+            $("#mail").val($("tr.active").find('td:eq(4)').text());
             $("#pass").val("");
             var per = $("tr.active").find('td:eq(3)').text();
             switch (per)
@@ -185,15 +193,15 @@
                                     url+="&firstname="+$("#name").val();
                                     url+="&lastname="+$("#last").val();
                                     url+="&permission="+$("#perm").val();
+                                    url+="&mail="+$("#mail").val();
 
                                     $.get("index.php?c=Users&a=Edit"+url,function(data){
                                         if(data.trim()!="ok")
                                         {
                                             alert(data);
                                         }
+                                        DrawUsers();
                                     });
-
-                                    DrawUsers();
                                     $( "#add_dialog" ).dialog( "close" );
                                 }
                                 else
