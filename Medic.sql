@@ -82,7 +82,7 @@ CREATE TABLE `Products` (
   `Rest` double(15,3) DEFAULT NULL,
   `Updated` datetime DEFAULT NULL,
   PRIMARY KEY (`Number`)
-) ENGINE=MyISAM AUTO_INCREMENT=71 DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM AUTO_INCREMENT=50000 DEFAULT CHARSET=utf8;
 
 #
 # Structure for the `ProductsSearch` table : 
@@ -94,6 +94,8 @@ CREATE TABLE `ProductsSearch` (
   `ProductId` varchar(36) NOT NULL,
   `SearchString` text,
   PRIMARY KEY (`ProductId`),
+  KEY `ProductId_idx` (`ProductId`),
+  KEY `all_idx` (`ProductId`,`SearchString`(1)),
   FULLTEXT KEY `SearchString_idx` (`SearchString`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
@@ -110,6 +112,7 @@ CREATE TABLE `Provider` (
   `City` varchar(100) DEFAULT NULL,
   `Address` varchar(150) DEFAULT NULL,
   `Phone` varchar(50) DEFAULT NULL,
+  `IIN` varchar(50) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `Name` (`Name`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -127,6 +130,21 @@ CREATE TABLE `Session` (
   `ExpireDate` datetime DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `UserId` (`UserId`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+#
+# Structure for the `TemporaryPasswords` table : 
+#
+
+DROP TABLE IF EXISTS `TemporaryPasswords`;
+
+CREATE TABLE `TemporaryPasswords` (
+  `id` char(36) NOT NULL,
+  `UserId` varchar(36) DEFAULT NULL,
+  `Password` varchar(20) DEFAULT NULL,
+  `DateTime` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 #
@@ -160,46 +178,10 @@ CREATE TABLE `Users` (
   `FirstName` varchar(100) COLLATE utf8_bin DEFAULT NULL,
   `LastName` varchar(100) COLLATE utf8_bin DEFAULT NULL,
   `Permission` int(1) DEFAULT NULL,
+  `Mail` varchar(50) COLLATE utf8_bin DEFAULT NULL,
   UNIQUE KEY `idxLogin` (`Login`),
   KEY `id` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='Users list';
-
-#
-# Definition for the `FixSearch` procedure : 
-#
-
-DROP PROCEDURE IF EXISTS `FixSearch`;
-
-CREATE DEFINER = 'root'@'%' PROCEDURE `FixSearch`()
-    NOT DETERMINISTIC
-    CONTAINS SQL
-    SQL SECURITY DEFINER
-    COMMENT ''
-begin
-                DECLARE done BOOLEAN DEFAULT FALSE;
-                DECLARE _id VARCHAR(36);
-                DECLARE cur  CURSOR FOR select id from `Products` where id not in ( select ProductId from `ProductsSearch`);
-                DECLARE CONTINUE HANDLER FOR NOT FOUND SET done := TRUE;
-
-                delete from `ProductsSearch` where ProductId not in (select id from `Products`);
-
-                OPEN cur;
-
-                testLoop: LOOP
-                 FETCH cur INTO _id;
-                 IF done THEN
-                   LEAVE testLoop;
-                 END IF;
-
-                 insert into `ProductsSearch` (ProductId,SearchString) values (_id,
-                 (select REPLACE(LOWER(concat(`NumberProvider`,p.`Name`,p.`FullName`,`BasicCharacteristics`,`Price`,`Rest`,pr.Name,pr.FullName,City,Address,Phone)),' ','')
-                    from `Products` p,`Provider` pr where pr.id = p.`ProviderId` and p.id=_id));
-
-                END LOOP testLoop;
-
-              CLOSE cur;
-
-            end;
 
 
 
