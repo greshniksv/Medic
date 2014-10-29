@@ -13,6 +13,7 @@
             <ul class="dropdown-menu" role="menu">
                 <li><a href="#"  onclick="GoToSearch()">Поиск</a></li>
                 <li><a href="#"  onclick="GoToUpload()">Загрузить прайс</a></li>
+                <li><a href="#"  onclick="GoToChangePrice()">Изменить прайс</a></li>
                 <li><a href="#" onclick="GoToProvider()">Поставщики</a></li>
 
                 <?php if(Permission::Is(Access::Admin)){ ?>
@@ -38,7 +39,8 @@
 <script type="application/javascript">
 
     $(function() {
-        GoToSearch();
+        GoToChangePrice();
+        //GoToSearch();
         GetSiteStatus();
 
         $("#site_status").click(function(){
@@ -87,6 +89,13 @@
                 $("#status_off").fadeIn(1000);
                 $("#site_status").html("Включить сайт");
             }
+        });
+    }
+
+    function GoToChangePrice()
+    {
+        $.get("index.php?c=ChangePrice",function(data){
+            $( "#main_frame").html(data);
         });
     }
 

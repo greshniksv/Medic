@@ -51,7 +51,7 @@ if (!isset($PHP)) {
     require_once 'Database.php';
     require_once 'FixSearch.php';
 
-    $db = new Database($DB_HOST, $DB_NAME, $DB_USER, $DB_PASS);
+    $db = new Database($CONFIG["DB_HOST"],$CONFIG["DB_NAME"], $CONFIG["DB_USER"], $CONFIG["DB_PASS"]);
     $db -> Connect();
 
     $dateExt   = new DateTime;
@@ -87,7 +87,8 @@ if (!isset($PHP)) {
 
     $dbh;
     try {
-        $dbh = new PDO("mysql:host=$DB_HOST;dbname=$DB_NAME", $DB_USER, $DB_PASS);
+
+       $dbh = new PDO("mysql:host=".$CONFIG["DB_HOST"].";dbname=".$CONFIG["DB_NAME"], $CONFIG["DB_USER"], $CONFIG["DB_PASS"]);
 
         $sql = "SELECT Name,FullName,City,Address,Phone FROM Provider where id='{$argv[1]}' ";
         foreach ($dbh->query($sql) as $row) {
@@ -128,7 +129,7 @@ if (!isset($PHP)) {
             $to_search[count($to_search)]=array("id"=>$guid,"data"=>mb_strtolower($ss, 'UTF-8'));
 
             $sth->execute(array(
-                $guid, $elem[0], $elem[1], $elem[2], $elem[3], $argv[1], $elem[4], $elem[5],$cur_date
+                $guid, $elem[0], $elem[1], $elem[2], $elem[3], $argv[1], $elem[5], $elem[6],$cur_date
             ));
         }
 

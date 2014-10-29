@@ -74,6 +74,25 @@ body{
     height: 50px;
 }
 
+#manage_buttons_change{
+    position: absolute;
+    right: 0px;
+    width: 20%;
+    margin-top: 7px;
+}
+
+#manage_buttons_change div{
+    background-image: url("../images/table_caption.png");
+    background-repeat: repeat-x;
+    height: 66px;
+    margin-top: 1px;
+}
+
+#manage_buttons_change button{
+    width: 100%;
+    height: 50px;
+}
+
 #upload_form{
     #width: 950px;
     height: 400px;
@@ -138,6 +157,23 @@ body{
     height: 400px;
     #background-color: #dcdcdc;
 
+}
+
+#change_list{
+    height: 400px;
+    width: 80%;
+    display: inline-block;
+}
+#change_list TD,TH{
+    font-size:12px
+}
+
+#change_list{
+    margin-top: 10px;
+}
+
+#change_list #example_paginate{
+    font-size: 11;
 }
 
 #search_form{
@@ -384,7 +420,7 @@ span.ui-icon-closethick{
 
 #upload_manage_buttons div{
     display: inline-block;
-    padding: 10px;
+    padding: 15px;
 }
 
 #upload_manage_buttons select{
@@ -394,4 +430,8 @@ span.ui-icon-closethick{
 
 #upload_manage_buttons button{
     display: inline-block;
+}
+
+#search_manage_buttons{
+    text-align: center;
 }
