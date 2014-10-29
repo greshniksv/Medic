@@ -6,33 +6,15 @@
         <div id="upload_manage_buttons">
 
             <div class="row">
-
-                <div class="col-xs-6">
-                    <select id="manuf" name="manf" class="form-control">
+                    <select id="prov" name="manf" class="form-control">
                         <option selected disabled value="0">Выберите поставщика</option>
                     </select>
-                </div>
 
-                <!--
-                <div class="col-xs-2">
-
-                    <button onclick="ClearProvider()" type="" class="btn btn-default">
-                        <span class="glyphicon glyphicon-trash"></span> Очистить </button>
+                    <button id="upload" type="" class="btn upload-button">
+                        <span><img src="images/Upload.png"></span> Загрузить </button>
 
                     <input id="fileupload" name="Выбирите файл" class="form-control" style="display: none" type="file" >
-
-                </div>-->
-
-                <div class="col-sx-2">
-
-                    <button id="upload" type="" class="btn btn-default">
-                        <span class="glyphicon glyphicon-upload"></span> Загрузить </button>
-
-                <input id="fileupload" name="Выбирите файл" class="form-control" style="display: none" type="file" >
-
-                </div>
             </div>
-
 
         </div>
         </form>
@@ -50,7 +32,7 @@
         window.setInterval(function(){ UpdateField(); },1000);
 
         $("#upload").click(function () {
-            if($("#manuf").val()==null)
+            if($("#prov").val()==null)
             {
                 alert("Вы не выбрали производителя!");
                 return;
@@ -60,7 +42,7 @@
         });
 
         DrawUploadList();
-        GetManufList();
+        GetProvList();
 
         // Add events
         $('input[type=file]').on('change', prepareUpload);
@@ -77,13 +59,13 @@
 
     function ClearProvider()
     {
-        if($("#manuf").val()==null)
+        if($("#prov").val()==null)
         {
             alert("Вы не выбрали производителя!");
             return;
         }
 
-        $.get("index.php?c=UploadPrice&a=clear_provider&manuf="+$("#manuf").val(),function(data){
+        $.get("index.php?c=UploadPrice&a=clear_provider&manuf="+$("#prov").val(),function(data){
             alert(data);
         });
     }
@@ -107,7 +89,7 @@
         files=null;
 
         $.ajax({
-            url: 'index.php?c=UploadPrice&a=upload&manuf='+$("#manuf").val(),
+            url: 'index.php?c=UploadPrice&a=upload&manuf='+$("#prov").val(),
             type: 'POST',
             data: data,
             cache: false,
@@ -145,13 +127,13 @@
         });
     }
 
-    function GetManufList()
+    function GetProvList()
     {
         $.get("index.php?c=Provider&a=get_list_data",function(data){
             var obj = JSON.parse(data);
             for(var i=0;i<obj.data.length;i++)
             {
-                $("#manuf").append("<option value='"+obj.data[i].id+"'>"+obj.data[i].Name+"</option>");
+                $("#prov").append("<option value='"+obj.data[i].id+"'>"+obj.data[i].Name+"</option>");
             }
         });
     }

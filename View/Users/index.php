@@ -6,11 +6,11 @@
         <div id="manage_buttons">
             <div> </div>
         <button type="button" class="btn blue-button " onclick="ShowAddForm()">
-            <span class="glyphicon glyphicon-plus"></span>  Добавить </button>
+            <span> <img src="images/add.png"> </span>  Добавить </button>
         <button type="button" class="btn green-button " onclick="ShowEditForm()">
-            <span class="glyphicon glyphicon-pencil"></span>  Редактировать </button>
+            <span><img src="images/edit.png"></span>  Редактировать </button>
         <button type="button" class="btn blue-button " onclick="Remove()">
-            <span class="glyphicon glyphicon-minus"></span>  Удалить </button>
+            <span><img src="images/del.png"></span>  Удалить </button>
         </div>
     </div>
 </div>
@@ -94,7 +94,7 @@
             [
                 {
                     text: "  Добавить",
-                    "class": '',
+                    "class": 'add-button',
                     click: function () {
                         $.get("index.php?c=Users&a=GetIdByLogin&login="+$("#login").val(),function(data){
                             if(data.length<5)
@@ -182,7 +182,7 @@
                 [
                     {
                         text: "  Изменить",
-                        "class": '',
+                        "class": 'edit-button',
                         click: function () {
                             $.get("index.php?c=Users&a=GetIdByLogin&login="+$("#login").val(),function(data){
                                 if(data.length<5 || old_login == $("#login").val())
@@ -247,8 +247,8 @@
             buttons:
             [
                 {
-                    text: "  Закрыть",
-                    "class": '',
+                    text: "  Удалить",
+                    "class": 'delete-button',
                     click: function () {
                         $.get("index.php?c=Users&a=GetIdByLogin&login="+login,function(data){
                             var userid = data.trim();

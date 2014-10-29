@@ -40,7 +40,7 @@
 
     </td><td  valign="top">
 
-                <div id="upload_manage_buttons">
+                <div id="search_manage_buttons">
 
                     <div class="row">
 

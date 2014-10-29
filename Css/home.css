@@ -169,6 +169,7 @@ body{
 
 
 .blue-button{
+
     background: #d7eaf0; /* Old browsers */
     background: -moz-linear-gradient(top,  #d7eaf0 0%, #b5d7e1 100%); /* FF3.6+ */
     background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#d7eaf0), color-stop(100%,#b5d7e1)); /* Chrome,Safari4+ */
@@ -178,6 +179,18 @@ body{
     background: linear-gradient(to bottom,  #d7eaf0 0%,#b5d7e1 100%); /* W3C */
     filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#d7eaf0', endColorstr='#b5d7e1',GradientType=0 ); /* IE6-9 */
 }
+
+.upload-button{
+    background: #81bbe4; /* Old browsers */
+    background: -moz-linear-gradient(top,  #81bbe4 0%, #5b9ed3 49%, #428cc9 100%, #428cc9 100%); /* FF3.6+ */
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#81bbe4), color-stop(49%,#5b9ed3), color-stop(100%,#428cc9), color-stop(100%,#428cc9)); /* Chrome,Safari4+ */
+    background: -webkit-linear-gradient(top,  #81bbe4 0%,#5b9ed3 49%,#428cc9 100%,#428cc9 100%); /* Chrome10+,Safari5.1+ */
+    background: -o-linear-gradient(top,  #81bbe4 0%,#5b9ed3 49%,#428cc9 100%,#428cc9 100%); /* Opera 11.10+ */
+    background: -ms-linear-gradient(top,  #81bbe4 0%,#5b9ed3 49%,#428cc9 100%,#428cc9 100%); /* IE10+ */
+    background: linear-gradient(to bottom,  #81bbe4 0%,#5b9ed3 49%,#428cc9 100%,#428cc9 100%); /* W3C */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#81bbe4', endColorstr='#428cc9',GradientType=0 ); /* IE6-9 */
+}
+
 
 .green-button{
     background: #d4e4b3; /* Old browsers */
@@ -248,6 +261,9 @@ span.ui-icon-closethick{
     text-align: center;
 }
 
+
+
+
 .ui-dialog-buttonset > button:first-of-type{
     width: 140px;
     background: #d7eaf0; /* Old browsers */
@@ -263,7 +279,7 @@ span.ui-icon-closethick{
 .add-button span{
     margin-left: 5px;
     background: url("../images/add.png") no-repeat;
-    background-position: 4px 3px;
+    background-position: 14px 3px;
     color: #428cc9;
     font-family: arial;
 }
@@ -283,15 +299,36 @@ span.ui-icon-closethick{
 .cancel-button span{
     margin-left: 5px;
     background: url("../images/close.png") no-repeat;
-    background-position: 6px 5px;
+    background-position: 21px 5px;
     color: #5f9000;
     font-family: arial;
 }
+
+.edit-button span{
+    margin-left: 5px;
+    background: url("../images/edit_form.png") no-repeat;
+    background-position: 14px 5px;
+    color: #428cc9;
+    font-family: arial;
+}
+
+.delete-button span{
+    margin-left: 5px;
+    background: url("../images/del.png") no-repeat;
+    background-position: 14px 5px;
+    color: #428cc9;
+    font-family: arial;
+}
+
 
 #example tr:first-of-type{
     background-image: url("../images/table_caption.png");
     background-repeat: repeat-x;
     height: 50px;
+}
+
+#example{
+
 }
 
 #example tr{
@@ -306,6 +343,7 @@ span.ui-icon-closethick{
 
 #example tr td{
     vertical-align: middle;
+    word-break: break-all;
 }
 
 
@@ -337,4 +375,23 @@ span.ui-icon-closethick{
 
 .upd{
     margin: 0px;
+}
+
+#upload_manage_buttons{
+     background: #DeE3B8;
+     text-align: center;
+ }
+
+#upload_manage_buttons div{
+    display: inline-block;
+    padding: 10px;
+}
+
+#upload_manage_buttons select{
+    width: 700px;
+    display: inline-block;
+}
+
+#upload_manage_buttons button{
+    display: inline-block;
 }

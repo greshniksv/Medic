@@ -25,7 +25,7 @@ class Mail
 
         $mail->isSMTP();                                      // Set mailer to use SMTP
         $mail->CharSet = 'UTF-8';
-        $mail->Host = $CONFIG["SMTP_HOST"];  // Specify main and backup SMTP servers
+        $mail->Host = $CONFIG["SMTP_HOST"];                     // Specify main and backup SMTP servers
         $mail->SMTPAuth = true;                               // Enable SMTP authentication
         $mail->Username =$CONFIG["SMTP_USER"];                 // SMTP username
         $mail->Password = $CONFIG["SMTP_PASS"];                           // SMTP password

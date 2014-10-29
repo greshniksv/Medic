@@ -1,10 +1,10 @@
 
-<table id="example" class="table table-striped table-bordered" cellspacing="0" width="100%">
+<table id="example" class="table table-striped table-bordered" cellspacing="0">
 
     <thead>
     <tr>
         <th>id</th>
-        <th style="width: 63px;">Код товара в базе МК</th>
+        <th style="width: 55px">Код товара в базе МК</th>
         <th>Код товара в базе постащика</th>
         <th>Наименование товара</th>
         <th>Торговое наименование</th>
@@ -34,6 +34,13 @@
         var table = $('#example').DataTable( {
             lengthChange: true,
             "bSort": false,
+            "bFilter": false,
+
+            "fnInitComplete" : function() {
+                this.fnAdjustColumnSizing();
+                this.fnDraw();
+            },
+
             "oLanguage": {
                 "sLoadingRecords": "Пожалуйста подождите - загружается...",
                 "sProcessing":   "Подождите...",
@@ -71,15 +78,10 @@
                      return "<button type=\"button\" class=\"btn btn-default\" data-toggle=\"tooltip\" data-placement=\"left\" title=\"Tooltip on left\">Tooltip on left</button>";
                  } }*/
             ],
-            "bAutoWidth": false,
             "columnDefs": [
                 {
                     "targets": [ 0 ],
                     "visible": false
-                },
-                {
-                    "targets": [ 1 ],
-                    "width": '65px'
                 }
             ],
             "order": [[ 2, "desc" ]]
@@ -93,7 +95,7 @@
              { sExtends: "editor_remove", editor: editor }
              ]*/
         } );
-        $( tableTools.fnContainer() ).appendTo( '#example_wrapper .col-xs-6:eq(0)' );
+        //$( tableTools.fnContainer() ).appendTo( '#example_wrapper .col-xs-6:eq(0)' );
     } );
 
 </script>

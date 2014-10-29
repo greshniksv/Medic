@@ -4,15 +4,14 @@
 
         <div id="manage_buttons" class="">
             <div> </div>
-            <button type="button" class="btn blue-button" onclick="ShowAddForm()">
-                <span class="glyphicon glyphicon-plus"></span> Добавить
-            </button>
+
+            <button type="button" class="btn blue-button " onclick="ShowAddForm()">
+                <span> <img src="images/add.png"> </span>  Добавить </button>
             <button type="button" class="btn green-button " onclick="ShowEditForm()">
-                <span class="glyphicon glyphicon-pencil"></span> Редактировать
-            </button>
+                <span><img src="images/edit.png"></span>  Редактировать </button>
             <button type="button" class="btn blue-button " onclick="Remove()">
-                <span class="glyphicon glyphicon-minus"></span> Удалить
-            </button>
+                <span><img src="images/del.png"></span>  Удалить </button>
+
         </div>
     </div>
 </div>
@@ -154,7 +153,7 @@
                 [
                     {
                         text: "  Изменить",
-                        "class": '',
+                        "class": 'edit-button',
                         click: function () {
 
                             $.get("index.php?c=Provider&a=GetIdByName&name=" + $("#name").val(), function (data) {
@@ -219,7 +218,7 @@
             [
                 {
                     text: "  Удалить",
-                    "class": '',
+                    "class": 'delete-button',
                     click: function () {
                         $.get("index.php?c=Provider&a=GetIdByName&name=" + name, function (data) {
                             var manufid = data.trim();
