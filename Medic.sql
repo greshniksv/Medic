@@ -81,8 +81,16 @@ CREATE TABLE `Products` (
   `Price` double(15,3) DEFAULT NULL,
   `Rest` double(15,3) DEFAULT NULL,
   `Updated` datetime DEFAULT NULL,
-  PRIMARY KEY (`Number`)
-) ENGINE=MyISAM AUTO_INCREMENT=50000 DEFAULT CHARSET=utf8;
+  PRIMARY KEY (`Number`),
+  UNIQUE KEY `id` (`id`),
+  KEY `idx_ProviderId` (`ProviderId`),
+  KEY `idx_Price` (`Price`),
+  KEY `idx_Rest` (`Rest`),
+  FULLTEXT KEY `idx_BasicCharacteristics` (`BasicCharacteristics`),
+  FULLTEXT KEY `idx_FullName` (`FullName`),
+  FULLTEXT KEY `idx_name` (`Name`),
+  FULLTEXT KEY `idx_NumberProvider` (`NumberProvider`)
+) ENGINE=MyISAM AUTO_INCREMENT=10009 DEFAULT CHARSET=utf8;
 
 #
 # Structure for the `ProductsSearch` table : 
