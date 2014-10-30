@@ -29,7 +29,7 @@ class ProcessPriceWorker
         }
         fclose($handle);
 
-        $new_file = getcwd() . "/Files/" . $guid = $this->id . "";
+        $new_file = getcwd() . "/Files/" . $guid = $this->process_id . "";
         if (!move_uploaded_file($this->file_name, $new_file)) {
             return "Невозможно переместить файл";
         }
@@ -38,7 +38,7 @@ class ProcessPriceWorker
 
         $outputfile = $CONFIG["PRICE_WORKER_LOG"];//"/var/www/Medic/ProcessPriceWorker.log";
         $pidfile = "pid.txt";
-        exec(sprintf("%s > %s 2>&1 & echo $! >> %s", $PHP . " " . __FILE__ . " {$this->id} {$new_file} {$this->process_id}", $outputfile, $pidfile)); //.csv
+        exec(sprintf("%s >> %s 2>&1 & echo $! >> %s", $PHP . " " . __FILE__ . " {$this->id} {$new_file} {$this->process_id}", $outputfile, $pidfile)); //.csv
         return "ok";
     }
 }
@@ -56,7 +56,7 @@ if (!isset($PHP)) {
     $prov_data = "";
     $to_search = new ArrayObject();
 
-    echo "\n\n--------------------------------------------------------------------------------------";
+    echo "\n\n------------------------------------------------------------------------------\n";
     echo "Start process: " . $cur_date . "\n";
     echo "Input params: \n";
     print_r($argv);
@@ -71,7 +71,7 @@ if (!isset($PHP)) {
         die("Error open file!");
     }
 
-    echo "Input file size:" . $filesize;
+    echo "\nInput file size:" . $filesize."\n";
 
     if (($buffer = fgets($handle, 4096)) !== false) {
         if (substr_count($buffer, ';') != 6) {
@@ -147,7 +147,7 @@ if (!isset($PHP)) {
 
         $sql = "insert into `ProductsSearch` (ProductId,SearchString) values (?,?);";
 
-        echo "to_search:" . count($to_search) . "\n";
+        echo "Count of item:" . count($to_search) . "\n";
 
         $progress = 0;
         $col = 0;
