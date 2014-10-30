@@ -100,15 +100,9 @@
         <input type="text" id="mail" class="form-control" placeholder="Остаток">
     </div>
 
-    <div class="input-group">
-        <span class="input-group-addon">#</span>
-
-        <select id="perm" class="form-control">
-            <option value="0">Администратор</option>
-            <option value="1">Журналист</option>
-            <option value="2">Пользователь</option>
-        </select>
-    </div>
+    <select id="prov" class="form-control">
+        <option selected value="0">Поставщик</option>
+    </select>
 
 </div>
 
@@ -126,8 +120,8 @@ function ShowAddForm() {
     $("#mail").val("");
 
     $("#add_dialog").dialog({
-        height: 350,
-        width: 350,
+        height: 400,
+        width: 450,
         modal: true,
         buttons: [
             {
@@ -166,7 +160,13 @@ function ShowAddForm() {
                     $(this).dialog("close");
                 }
             }
-        ]
+        ],
+        focus: function () {
+            var dialogIndex = parseInt($(this).parent().css("z-index"), 10);
+            $(this).find(".ui-autocomplete-input").each(function (i, obj) {
+                $(obj).autocomplete("widget").css("z-index", dialogIndex + 1)
+            });
+        }
 
     });
 }
@@ -199,8 +199,8 @@ function ShowEditForm() {
 
 
     $("#add_dialog").dialog({
-        height: 350,
-        width: 350,
+        height: 400,
+        width: 450,
         modal: true,
         buttons: [
             {
@@ -304,8 +304,8 @@ function Remove() {
         _createAutocomplete: function () {
             var selected = this.element.children(":selected"),
                 value = selected.val() ? selected.text() : "";
-
-            this.input = $("<input>")
+            var id = Math.floor((Math.random() * 1000) + 1);
+            this.input = $("<input id='inp_"+id+"'>")
                 .appendTo(this.wrapper)
                 .val(value)
                 .attr("title", "")
@@ -316,7 +316,7 @@ function Remove() {
                     minLength: 0,
                     source: $.proxy(this, "_source")
                 }).click(function () {
-                    $("input").autocomplete("search", "");
+                    $("#inp_"+id+"").autocomplete("search", "");
                 });
 
             this._on(this.input, {
@@ -394,6 +394,8 @@ function Remove() {
 $(function () {
 
     $("#combobox").combobox();
+    $("#prov").combobox();
+
 
     DrawSearchList();
     GetProviderList();
@@ -419,6 +421,7 @@ function GetProviderList() {
         var obj = JSON.parse(data);
         for (var i = 0; i < obj.data.length; i++) {
             $("#combobox").append("<option value='" + obj.data[i].id + "'>" + obj.data[i].Name + "</option>");
+            $("#prov").append("<option value='" + obj.data[i].id + "'>" + obj.data[i].Name + "</option>");
         }
     });
 }

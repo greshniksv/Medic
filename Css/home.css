@@ -435,3 +435,7 @@ span.ui-icon-closethick{
 #search_manage_buttons{
     text-align: center;
 }
+
+#con.ui-menu{
+    z-index: 1002;
+}

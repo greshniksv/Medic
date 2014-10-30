@@ -30,7 +30,7 @@
                                 <input type="text" id="rest" class="form-control" placeholder="Остаток">
                             </div>
 
-                            <button type="button" class="btn btn-default btn col-xs-12" onclick="DrawSearchList()">
+                            <button type="button" class="btn blue-button col-xs-12" onclick="DrawSearchList()">
                                 <span class="glyphicon glyphicon-search"></span> Найти
                             </button>
 
@@ -55,7 +55,7 @@
 
                         <div class="col-xs-2">
 
-                            <button onclick="DrawSearchList()" type="" class="btn btn-default">
+                            <button onclick="DrawSearchList()" type="" class="btn blue-button">
                                 <span class="glyphicon glyphicon-search"></span> Начать поиск </button>
 
                         </div>
