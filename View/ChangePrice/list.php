@@ -58,7 +58,10 @@
             ajax: "index.php?c=ChangePrice&a=get_list_data"+adv,
             columns: [
                 { data: "id"},
-                { data: "Number"},
+                //{ data: "Number"},
+                { data: null, render: function ( data, type, row ) {
+                    return "<p id='"+data.id+"'>"+data.Number+"</p>";
+                } },
                 { data: "NumberProvider"},
                 { data: "Name" },
                 { data: "FullName" },
