@@ -26,8 +26,7 @@
 
     $(document).ready(function() {
 
-        var adv = "<?php echo "&search=".$DATA["search"]."&fname=".$DATA["fname"].
-        "&provider=".$DATA["provider"]."&price=".$DATA["price"]."&rest=".$DATA["rest"] ?>";
+        var adv = "<?php echo "&search=".$DATA["search"]."&provider=".$DATA["provider"]?>";
 
         var table = $('#example').DataTable( {
             lengthChange: false,
@@ -68,7 +67,10 @@
                 { data: "BasicCharacteristics" },
                 { data: "Price" },
                 { data: "Rest" },
-                { data: "ProviderId" }
+                //{ data: "ProviderId" }
+                { data: null, render: function ( data, type, row ) {
+                    return "<p id='"+data.ProviderId+"'>"+data.Provider+"</p>";
+                } }
                 /*{ data: null, render: function ( data, type, row ) {
                  return "<button type=\"button\" class=\"btn btn-default\" data-toggle=\"tooltip\" data-placement=\"left\" title=\"Tooltip on left\">Tooltip on left</button>";
                  } }*/

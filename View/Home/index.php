@@ -39,8 +39,8 @@
 <script type="application/javascript">
 
     $(function() {
-        GoToChangePrice();
-        //GoToSearch();
+        //GoToChangePrice();
+        GoToSearch();
         GetSiteStatus();
 
         $("#site_status").click(function(){

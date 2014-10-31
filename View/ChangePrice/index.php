@@ -72,32 +72,32 @@
 
     <div class="input-group">
         <span class="input-group-addon">#</span>
-        <input type="text" id="login" onchange="" class="form-control" placeholder="Код товара в базе постащика">
+        <input type="text" id="prov_code" onchange="" class="form-control" placeholder="Код товара в базе постащика">
     </div>
 
     <div class="input-group">
         <span class="input-group-addon">#</span>
-        <input type="password" id="pass" class="form-control" placeholder="Наименование товара">
+        <input type="text" id="pname" class="form-control" placeholder="Наименование товара">
     </div>
 
     <div class="input-group">
         <span class="input-group-addon">#</span>
-        <input type="text" id="name" class="form-control" placeholder="Торговое наименование">
+        <input type="text" id="tpname" class="form-control" placeholder="Торговое наименование">
     </div>
 
     <div class="input-group">
         <span class="input-group-addon">#</span>
-        <input type="text" id="last" class="form-control" placeholder="Основные характеристики">
+        <input type="text" id="prop" class="form-control" placeholder="Основные характеристики">
     </div>
 
     <div class="input-group">
         <span class="input-group-addon">#</span>
-        <input type="text" id="mail" class="form-control" placeholder="Цена в рублях">
+        <input type="text" id="price" class="form-control" placeholder="Цена в рублях">
     </div>
 
     <div class="input-group">
         <span class="input-group-addon">#</span>
-        <input type="text" id="mail" class="form-control" placeholder="Остаток">
+        <input type="text" id="rest" class="form-control" placeholder="Остаток">
     </div>
 
     <select id="prov" class="form-control">
@@ -112,12 +112,13 @@ var files;
 
 
 function ShowAddForm() {
-    $("#login").val("");
-    $("#name").val("");
-    $("#last").val("");
-    $("#pass").val("");
-    $("#perm").val(2);
-    $("#mail").val("");
+    $("#prov_code").val("");
+    $("#pname").val("");
+    $("#tpname").val("");
+    $("#prop").val("");
+    $("#price").val("");
+    $("#rest").val("");
+    $("#prov").val(0);
 
     $("#add_dialog").dialog({
         height: 400,
@@ -128,29 +129,22 @@ function ShowAddForm() {
                 text: "  Добавить",
                 "class": 'add-button',
                 click: function () {
-                    $.get("index.php?c=ChangePrice&a=GetIdByLogin&login=" + $("#login").val(), function (data) {
-                        if (data.length < 5) {
-                            var url = "&login=" + $("#login").val();
-                            url += "&password=" + $("#pass").val();
-                            url += "&firstname=" + $("#name").val();
-                            url += "&lastname=" + $("#last").val();
-                            url += "&permission=" + $("#perm").val();
-                            url += "&mail=" + $("#mail").val();
+                    var url = "&prov_code=" + $("#prov_code").val();
+                    url += "&pname=" + $("#pname").val();
+                    url += "&tpname=" + $("#tpname").val();
+                    url += "&prop=" + $("#prop").val();
+                    url += "&price=" + $("#price").val();
+                    url += "&rest=" + $("#rest").val();
+                    url += "&prov=" + $("#prov").val();
 
-
-                            $.get("index.php?c=ChangePrice&a=Create" + url, function (data) {
-                                if (data.trim() != "ok") {
-                                    alert(data);
-                                }
-                                DrawUsers();
-                            });
-
-                            $("#add_dialog").dialog("close");
+                    $.get("index.php?c=ChangePrice&a=Create" + url, function (data) {
+                        if (data.trim() != "ok") {
+                            alert(data);
                         }
-                        else {
-                            alert("Такой логин уже существует!");
-                        }
+                        DrawSearchList();
                     });
+
+                    $("#add_dialog").dialog("close");
                 }
             },
             {
@@ -179,24 +173,18 @@ function ShowEditForm() {
         return;
     }
 
-    $("#login").val($("tr.active").find('td:eq(0)').text());
-    $("#name").val($("tr.active").find('td:eq(1)').text());
-    $("#last").val($("tr.active").find('td:eq(2)').text());
-    $("#mail").val($("tr.active").find('td:eq(4)').text());
-    $("#pass").val("");
-    var per = $("tr.active").find('td:eq(3)').text();
-    switch (per) {
-        case "Администратор":
-            $("#perm").val(0);
-            break;
-        case "Журналист":
-            $("#perm").val(1);
-            break;
-        default:
-            $("#perm").val(2);
-            break;
-    }
+    $("#prov_code").val($("tr.active").find('td:eq(1)').text());
+    $("#pname").val($("tr.active").find('td:eq(2)').text());
+    $("#tpname").val($("tr.active").find('td:eq(3)').text());
+    $("#prop").val($("tr.active").find('td:eq(4)').text());
+    $("#price").val($("tr.active").find('td:eq(5)').text());
+    $("#rest").val($("tr.active").find('td:eq(6)').text());
+    //$("#prov").val($("tr.active").find('td:eq(6)').text());
 
+    // set auto complete
+    var name = $("tr.active").find('td:eq(7)').find('p').text();
+    var val =$("tr.active").find('td:eq(7)').find('p').attr('id')
+    $('#prov').combobox('autocomplete', name,val);
 
     $("#add_dialog").dialog({
         height: 400,
@@ -207,19 +195,22 @@ function ShowEditForm() {
                 text: "  Изменить",
                 "class": 'edit-button',
                 click: function () {
-                    var url = "&login=" + $("#login").val();
-                    url += "&userid=" + $("#userid").val();
-                    url += "&password=" + $("#pass").val();
-                    url += "&firstname=" + $("#name").val();
-                    url += "&lastname=" + $("#last").val();
+                    var url = "&prov_code=" + $("#prov_code").val();
+                    url += "&pname=" + $("#pname").val();
+                    url += "&tpname=" + $("#tpname").val();
+                    url += "&prop=" + $("#prop").val();
+                    url += "&price=" + $("#price").val();
                     url += "&permission=" + $("#perm").val();
-                    url += "&mail=" + $("#mail").val();
+                    url += "&rest=" + $("#rest").val();
+                    url += "&prov=" + $('#prov').val();
+                    url += "&id=" + id;
+
 
                     $.get("index.php?c=ChangePrice&a=Edit" + url, function (data) {
                         if (data.trim() != "ok") {
                             alert(data);
                         }
-                        DrawUsers();
+                        DrawSearchList();
                     });
                     $("#add_dialog").dialog("close");
                 }
@@ -231,45 +222,48 @@ function ShowEditForm() {
                     $(this).dialog("close");
                 }
             }
-        ]
-
+        ],
+        focus: function () {
+        var dialogIndex = parseInt($(this).parent().css("z-index"), 10);
+        $(this).find(".ui-autocomplete-input").each(function (i, obj) {
+            $(obj).autocomplete("widget").css("z-index", dialogIndex + 1)
+        });
+    }
 
     });
-
 
 }
 
 function Remove() {
-    var login = $("tr.active").find('td:eq(0)').text();
-    var name = $("tr.active").find('td:eq(1)').text();
-    var last = $("tr.active").find('td:eq(2)').text();
+    var code = $("tr.active").find('td:eq(1)').text();
+    var name = $("tr.active").find('td:eq(2)').text();
+    var tname = $("tr.active").find('td:eq(3)').text();
 
-    if (login.length < 1) {
+    var id = $("tr.active").find('td:eq(0)').find('p').attr('id');
+    if (id.length < 1) {
         alert("Ничего не выбрано!");
         return;
     }
-    $("#remove_dialog").html("Вы действительно хотите удалить пользователя ?<br><hr>" +
-        login + " : " + name + " " + last);
+
+    $("#remove_dialog").html("Вы действительно хотите удалить продукт ?<br /><hr>" +
+        "Код: "+code + " <br />- " + name + " <br />- " + tname);
 
     $("#remove_dialog").dialog({
-        height: 250,
-        width: 350,
+        height: 300,
+        width: 360,
         modal: true,
         buttons: [
             {
                 text: "  Удалить",
                 "class": 'delete-button',
                 click: function () {
-                    $.get("index.php?c=ChangePrice&a=GetIdByLogin&login=" + login, function (data) {
-                        var userid = data.trim();
-                        $.get("index.php?c=ChangePrice&a=Delete&userid=" + userid, function (data) {
-                            if (data.trim() != "ok") {
-                                alert(data.trim())
-                            }
+                    $.get("index.php?c=ChangePrice&a=Delete&id=" + id, function (data) {
+                        if (data.trim() != "ok") {
+                            alert(data.trim())
+                        }
 
-                            DrawUsers();
-                            $("#remove_dialog").dialog("close");
-                        });
+                        DrawSearchList();
+                        $("#remove_dialog").dialog("close");
                     });
                 }
             },
@@ -292,8 +286,6 @@ function Remove() {
     $.widget("custom.combobox", {
         _create: function () {
             this.wrapper = $("<div id='con' class='input-group'><span class='input-group-addon'>#</span>")
-                //.addClass( "custom-combobox" )
-                //.append("<div id='con' class='input-group'><span class='input-group-addon'>#</span>")
                 .insertAfter(this.element);
 
             this.element.hide();
@@ -382,6 +374,10 @@ function Remove() {
             }, 2500);
             this.input.autocomplete("instance").term = "";
         },
+        autocomplete : function(value,key) {
+            this.element.val(key);
+            this.input.val(value);
+        },
 
         _destroy: function () {
             this.wrapper.remove();
@@ -393,7 +389,12 @@ function Remove() {
 
 $(function () {
 
-    $("#combobox").combobox();
+    $("#combobox").combobox({
+        select: function (event, ui) {
+            //alert("the selec event has fired!");
+            DrawSearchList();
+        }
+    });
     $("#prov").combobox();
 
 
@@ -410,7 +411,8 @@ $(function () {
 
 
 function DrawSearchList() {
-    $.get("index.php?c=ChangePrice&a=get_list&search=" + $("#search").val().toLowerCase(), function (data) {
+    $.get("index.php?c=ChangePrice&a=get_list&search=" + $("#search").val().toLowerCase()+"&provider="+$("#combobox").val(),
+        function (data) {
         $("#users_list").html(data);
         $("#example").css("width", "0");
     });
