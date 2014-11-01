@@ -439,3 +439,7 @@ span.ui-icon-closethick{
 #con.ui-menu{
     z-index: 1002;
 }
+
+#container{
+    overflow-y: visible;
+}

@@ -38,7 +38,7 @@
                                 <input type="text" id="rest" class="form-control" placeholder="Остаток">
                             </div>
 
-                            <div class="input-group">
+                            <div class="input-group" style="width: 100%">
                                 <select id="provider" class="form-control">
                                     <option selected value="0">Все постащики</option>
                                 </select>
@@ -57,17 +57,22 @@
                         <div class="panel-heading">Корзина для экспорта</div>
                         <div class="panel-body">
 
-                            <div class="input-group">
-                                <span class="input-group-addon">#</span>
-                                <input type="text" id="code" class="form-control" placeholder="Код в базе постащика">
-                            </div>
+                            <p id="basket_selected" style="text-align: center" > Выбрано 0 позиций </p>
 
-                            <button type="button" class="btn blue-button col-xs-12" onclick="DrawSearchList()">
+                            <button type="button" class="btn blue-button col-xs-12" onclick="AddRow()">
+                                <span class="glyphicon glyphicon-plus"></span> Добавить
+                            </button>
+
+                            <button type="button" class="btn blue-button col-xs-12" onclick="Show()">
                                 <span class="glyphicon glyphicon-search"></span> Просмотреть
                             </button>
 
+                            <button type="button" class="btn blue-button col-xs-12" onclick="Clear()">
+                                <span class="glyphicon glyphicon-trash"></span> Очистить
+                            </button>
+
                             <button type="button" class="btn blue-button col-xs-12" onclick="DrawSearchList()">
-                                <span class="glyphicon glyphicon-search"></span> Экспорт
+                                <span class="glyphicon glyphicon-download"></span> Экспорт
                             </button>
 
                         </div>
@@ -112,15 +117,114 @@
 </div>
 
 
+<div id="dialog-confirm" style="display: none" title="Очистить корзину?">
+    <p><span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span>Вы действительно хотите удалить все товары из корзины ?</p>
+</div>
+
+<div id="dialog-show" style="display: none; z-index: " title="Корзина">
+<div id="container"></div>
+</div>
+
+
 
 <script type="application/javascript">
     var files;
+    var basket = new Array();
 
+    function AddRow()
+    {
+        $("input:checked").parent().parent().each(function(i,e){
+            var i = new Object();
+            i.id=$(e).find('td:eq(0)').find('input').attr('id');
+            i.codemk = $(e).find('td:eq(1)').text();
+            i.code = $(e).find('td:eq(2)').text();
+            i.name = $(e).find('td:eq(3)').text();
+            i.tname = $(e).find('td:eq(4)').text();
+            i.char = $(e).find('td:eq(5)').text();
+            i.price = $(e).find('td:eq(6)').text();
+            i.rest = $(e).find('td:eq(7)').text();
+            i.prov = $(e).find('td:eq(8)').text();
+            basket.push(i);
+
+            $(e).find('td:eq(0)').find('input').prop( "checked", false );
+
+            console.log(JSON.stringify(basket));
+        });
+
+        $(basket_selected).text("Выбрано "+basket.length+" позиций ")
+    }
+
+    function Clear()
+    {
+        $( "#dialog-confirm" ).dialog({
+            resizable: false,
+            height:200,
+            width:350,
+            modal: true,
+            buttons: [
+                {
+                    text: "  Удалить",
+                    "class": 'delete-button',
+                    click: function () {
+                        basket = new Array();
+                        AddRow();
+                        $(this).dialog("close");
+                    }
+                },
+                {
+                    text: "  Закрыть",
+                    "class": 'cancel-button',
+                    click: function () {
+                        $(this).dialog("close");
+                    }
+                }
+            ]
+        });
+    }
+
+    function Show()
+    {
+        var o="";
+        for(var i=0;i<30;i++)
+        {
+            o+=i+"<br />";
+        }
+
+
+        $("#container").html(o);
+
+
+        $( "#dialog-show" ).dialog({
+            resizable: false,
+            height:600,
+            width:1200,
+            modal: true,
+            buttons: [
+                {
+                    text: "  Очистить",
+                    "class": 'delete-button',
+                    click: function () {
+                        basket = new Array();
+                        AddRow();
+                        $(this).dialog("close");
+                    }
+                },
+                {
+                    text: "  Закрыть",
+                    "class": 'cancel-button',
+                    click: function () {
+                        $(this).dialog("close");
+                    }
+                }
+            ]
+        });
+        $('.ui-dialog').css('z-index',10001);
+    }
 
     (function ($) {
         $.widget("custom.combobox", {
             _create: function () {
-                this.wrapper = $("<div id='con' class='input-group'><span class='input-group-addon'>#</span>")
+                this.wrapper = $("<div id='con' style='width: 100%' class='input-group'><span class='input-group-addon'>#</span>")
                     .insertAfter(this.element);
 
                 this.element.hide();
@@ -223,6 +327,8 @@
 
 
 
+
+
     $(function() {
 
         $("#provider").combobox();
@@ -238,8 +344,7 @@
 
     });
 
-
-    function DrawSearchList()
+    function DrawSearchListExtend()
     {
         var adv = "&fname="+$("#fname").val()+"&provider="+
             ($("#provider").val()==null ||$("#provider").val()==0 ?"":$("#provider").val())+
@@ -247,6 +352,21 @@
 
         $.get("index.php?c=Search&a=get_list&search="+$("#serach").val().toLowerCase()+adv,function(data){
             $( "#search_list").html(data);
+            //$( "#search_list").css("width","0");
+        });
+    }
+
+
+
+    function DrawSearchList()
+    {
+        var adv = "&fname="+$("#fname").val()+"&provider="+
+            ($("#provider").val()==null ||$("#provider").val()==0 ?"":$("#provider").val())+
+            "&price="+$("#price").val()+"&rest="+$("#rest").val();
+
+        $.get("index.php?c=Search&a=get_list&search="+$("#serach").val().toLowerCase(),function(data){
+            $( "#search_list").html(data);
+            //$( "#search_list").css("width","0");
         });
     }
 

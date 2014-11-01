@@ -3,7 +3,7 @@
 
     <thead>
     <tr>
-        <th>id</th>
+        <th style="width: 5px">*</th>
         <th style="width: 55px">Код товара в базе МК</th>
         <th>Код товара в базе постащика</th>
         <th>Наименование товара</th>
@@ -25,8 +25,6 @@
     var editor; // use a global for the submit and return data rendering in the examples
 
     $(document).ready(function() {
-
-        $('a').tooltip({placement: 'right'});
 
         var adv = "<?php echo "&search=".$DATA["search"]."&fname=".$DATA["fname"].
         "&provider=".$DATA["provider"]."&price=".$DATA["price"]."&rest=".$DATA["rest"] ?>";
@@ -65,7 +63,10 @@
             },
             ajax: "index.php?c=Search&a=get_list_data"+adv,
             columns: [
-                { data: "id"},
+                //{ data: "id"},
+                { data: null, render: function ( data, type, row ) {
+                    return "<input id='"+data.id+"' type='checkbox'>";
+                } },
                 { data: "Number"},
                 { data: "NumberProvider"},
                 { data: "Name" },
@@ -78,12 +79,12 @@
                      return "<button type=\"button\" class=\"btn btn-default\" data-toggle=\"tooltip\" data-placement=\"left\" title=\"Tooltip on left\">Tooltip on left</button>";
                  } }*/
             ],
-            "columnDefs": [
+            /*"columnDefs": [
                 {
                     "targets": [ 0 ],
                     "visible": false
                 }
-            ],
+            ],*/
             "order": [[ 2, "desc" ]]
         } );
 
