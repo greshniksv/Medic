@@ -465,3 +465,26 @@ span.ui-icon-closethick{
     background-repeat: repeat-x;
     height: 50px;
 }
+
+#slider-range{
+    margin-bottom: 10px;
+    margin-left: 15px;
+    margin-right: 5px;
+}
+
+#amount{
+    padding: 10px;
+    font-size: 14px;
+    color: grey;
+}
+
+.ui-slider .ui-slider-handle{
+    #width: 5px;
+    #color: #0000ff;
+}
+
+.ui-widget-content{
+    -webkit-border-radius: 15px;
+    -moz-border-radius: 15px;
+    border-radius: 15px;
+}

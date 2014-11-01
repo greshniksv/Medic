@@ -27,7 +27,7 @@
     $(document).ready(function() {
 
         var adv = "<?php echo "&search=".$DATA["search"]."&fname=".$DATA["fname"].
-        "&provider=".$DATA["provider"]."&price=".$DATA["price"]."&rest=".$DATA["rest"].
+        "&provider=".$DATA["provider"]."&price1=".$DATA["price1"]."&price2=".$DATA["price2"]."&rest=".$DATA["rest"].
         "&prop=".$DATA["prop"]."&pname=".$DATA["pname"]."&rest=".$DATA["rest"]."&code=".$DATA["code"];  ?>";
 
         var table = $('#example').DataTable( {
@@ -88,6 +88,10 @@
             ],*/
             "order": [[ 2, "desc" ]]
         } );
+
+        $('#example').bind("cut copy paste",function(e) {
+            e.preventDefault();
+        });
 
         var tableTools = new $.fn.dataTable.TableTools( table, {
             sRowSelect: "os"/*,

@@ -17,8 +17,20 @@ switch($action)
             $id_qlist.="'".$id_list[$i]."'";
         }
 
-        $sql = "select `Number`,`NumberProvider`,Name,FullName,`BasicCharacteristics`,`Price`,`Rest`, ".
-            " (select Name from Provider where id=`ProviderId`) as ProviderId  ".
+        // Extract provider info
+        $sqlp = "select id, Name,FullName,City,Address,Phone,IIN from Provider order by Name desc";
+        $db->Query($sqlp);
+        while($buf=$db->Fetch())
+        {
+            $providers[]=array("id"=>$buf["id"],"Info"=>$buf["Name"].";".$buf["FullName"].";".$buf["City"].";".
+                $buf["Address"].";".$buf["Phone"].";".$buf["IIN"]);
+
+            //echo iconv("UTF-8", "windows-1251//IGNORE", $buffer);
+        }
+        $db->StopFetch();
+
+        $sql = "select `Number`,`NumberProvider`,Name,FullName,`BasicCharacteristics`,`Price`,`Rest`,ProviderId ".
+            //" (select Name from Provider where id=`ProviderId`) as ProviderId  ".
             " from `Products` where id in ($id_qlist) ";
 
         header('Content-Description: File Transfer');
@@ -30,14 +42,25 @@ switch($action)
         header('Pragma: public');
 
         $buffer = "Код товара в базе поставщика;Наименование товара;Торговое наименование;Основные характеристики товара".
-            ";Название поставщика;Цена в рублях;Остаток;Поставщик\n";
+            ";Название поставщика;Цена в рублях;Остаток;Наименование постащика;ФИО;Город;Адрес;Телефон;ИИН\n";
         echo iconv("UTF-8", "windows-1251//IGNORE", $buffer);
 
         $db->Query($sql);
         while($buf=$db->Fetch())
         {
+            $pinfo ="";
+
+            for($i=0;$i<count($providers);$i++)
+            {
+                if($providers[$i]["id"]==$buf["ProviderId"])
+                {
+                    $pinfo=$providers[$i]["Info"];
+                    break;
+                }
+            }
+
             $buffer = $buf["Number"].";".$buf["NumberProvider"].";".$buf["Name"].";".$buf["FullName"].";".$buf["BasicCharacteristics"].";".
-                $buf["Price"].";".$buf["Rest"].";".$buf["ProviderId"]."\n";
+                $buf["Price"].";".$buf["Rest"].";".$pinfo."\n";
 
             echo iconv("UTF-8", "windows-1251//IGNORE", $buffer);
         }
@@ -48,9 +71,9 @@ switch($action)
     case "get_list":
 
         $data = array("search"=>@$_REQUEST["search"],"fname"=>@$_REQUEST["fname"],
-            "provider"=>@$_REQUEST["provider"],"price"=>@$_REQUEST["price"],"rest"=>@$_REQUEST["rest"],
+            "provider"=>@$_REQUEST["provider"],"price1"=>@$_REQUEST["price1"],"rest"=>@$_REQUEST["rest"],
             "prop"=>@$_REQUEST["prop"],"pname"=>@$_REQUEST["pname"],"rest"=>@$_REQUEST["rest"],
-            "code"=>@$_REQUEST["code"]
+            "code"=>@$_REQUEST["code"],"price2"=>@$_REQUEST["price2"]
         );
 
         Mvc::View(basename(__FILE__,".php"),"list",$data);
@@ -62,7 +85,8 @@ switch($action)
         $pname = @$_REQUEST["pname"];
         $prop = @$_REQUEST["prop"];
         $provider = @$_REQUEST["provider"];
-        $price = @$_REQUEST["price"];
+        $price_from = @$_REQUEST["price1"];
+        $price_to = @$_REQUEST["price2"];
         $rest = @$_REQUEST["rest"];
         $code = @$_REQUEST["code"];
         $search_string = "SearchString like '%{$search}%'";
@@ -89,7 +113,7 @@ switch($action)
             " from `Products` ".
             " where id in (select ProductId from `ProductsSearch` where {$search_string} ) ". //SearchString like '%{$search}%'
             (strlen($fname)>0?" and FullName like '%{$fname}%' ":"").
-            (strlen($price)>0?" and Price like '%{$price}%' ":"").
+            (strlen($price_from)>0?" and (Price >= '$price_from' and Price <= '$price_to' ) ":"").
             (strlen($provider)>0?" and ProviderId ='{$provider}' ":"").
             (strlen($rest)>0?" and Rest like '%{$rest}%' ":"").
             (strlen($prop)>0?" and BasicCharacteristics like '%{$prop}%' ":"").

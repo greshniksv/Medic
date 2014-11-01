@@ -19,6 +19,8 @@ switch($action)
         $cur_date = $dateExt->format("Y-m-d H:i:s");
         $guid = UUID::v4();
 
+        $log->Write(basename(__FILE__,".php"),"Добавлен новый товар: номер $prov_code ");
+
         // create row for search
         $search_sql = "insert into `ProductsSearch` (ProductId,SearchString) values ('$guid','".$prov_code." ".$pname." ".$tpname." ".$prop." ".$price." ".$rest." ".$prov."')";
 
@@ -49,6 +51,8 @@ switch($action)
         $cur_date = $dateExt->format("Y-m-d H:i:s");
         $guid = UUID::v4();
 
+        $log->Write(basename(__FILE__,".php"),"Изменен товар: номер $prov_code ");
+
         // create row for search
         $search_sql = "update `ProductsSearch` set SearchString='".$prov_code." ".$pname." ".$tpname." ".$prop." ".$price." ".$rest." ".$prov."' where ProductId='$productId' ";
 
@@ -69,6 +73,10 @@ switch($action)
     case "Delete":
 
         $productId = @$_REQUEST["id"];
+
+        $num = $db->QueryOne("select NumberProvider from Products where id = '$productId' ");
+
+        $log->Write(basename(__FILE__,".php"),"Удален товар: номер $num ");
 
         $sql="delete from ProductsSearch where ProductId='$productId'";
 

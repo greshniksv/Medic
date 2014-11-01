@@ -81,8 +81,7 @@ switch($action)
         $manuf = $_REQUEST["manuf"];
         if($db->Exec("delete from Products where ProviderId='{$manuf}'; "))
         {
-            $db->Exec("call FixSearch();");
-            die("Продукты данного постащика удалены!");
+            die("Продукты постащика удалены!");
         }
         else
             die("Ошибка удаления товаров!");

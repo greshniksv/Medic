@@ -30,7 +30,15 @@
 
                             <div class="input-group">
                                 <span class="input-group-addon">#</span>
-                                <input type="text" id="price" class="form-control" placeholder="Цена">
+                                <!--<input type="text" id="price" class="form-control" placeholder="Цена">
+
+                                <p>
+                                    <label for="amount">Цена:</label>
+                                    <input type="text" id="amount" readonly >
+                                </p>-->
+
+                                <div id="amount">Цена: </div>
+                                <div id="slider-range"></div>
                             </div>
 
                             <div class="input-group">
@@ -389,6 +397,18 @@
 
     $(function() {
 
+        $( "#slider-range" ).slider({
+            range: true,
+            min: 0,
+            max: 500,
+            values: [ 10, 100 ],
+            slide: function( event, ui ) {
+                $( "#amount" ).html( "Цена: "+ui.values[ 0 ] + "р - " + ui.values[ 1 ]+"р" );
+            }
+        });
+        $( "#amount" ).html("Цена: "+ $( "#slider-range" ).slider( "values", 0 ) +
+            "р - " + $( "#slider-range" ).slider( "values", 1 )+"p" );
+
         $("#provider").combobox();
 
         DrawSearchList();
@@ -406,12 +426,13 @@
     {
         var adv = "&fname="+$("#fname").val()+
             "&provider="+($("#provider").val()==null ||$("#provider").val()==0 ?"":$("#provider").val())+
-            "&price="+$("#price").val()+
+            "&price1="+$( "#slider-range" ).slider( "values", 0 )+
+            "&price2="+$( "#slider-range" ).slider( "values", 1 )+
             "&rest="+$("#rest").val()+
             "&prop="+$("#prop").val()+
             "&code="+$("#code").val()+
             "&pname="+$("#pname").val();
-        
+
         $.get("index.php?c=Search&a=get_list"+adv,function(data){
             $( "#search_list").html(data);
         });
