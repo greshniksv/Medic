@@ -44,7 +44,7 @@
                                 </select>
                             </div>
 
-                            <button type="button" class="btn blue-button col-xs-12" onclick="DrawSearchList()">
+                            <button type="button" class="btn blue-button col-xs-12" onclick="DrawSearchListExtend()">
                                 <span class="glyphicon glyphicon-search"></span> Найти
                             </button>
 
@@ -404,13 +404,16 @@
 
     function DrawSearchListExtend()
     {
-        var adv = "&fname="+$("#fname").val()+"&provider="+
-            ($("#provider").val()==null ||$("#provider").val()==0 ?"":$("#provider").val())+
-            "&price="+$("#price").val()+"&rest="+$("#rest").val();
-
-        $.get("index.php?c=Search&a=get_list&search="+$("#serach").val().toLowerCase()+adv,function(data){
+        var adv = "&fname="+$("#fname").val()+
+            "&provider="+($("#provider").val()==null ||$("#provider").val()==0 ?"":$("#provider").val())+
+            "&price="+$("#price").val()+
+            "&rest="+$("#rest").val()+
+            "&prop="+$("#prop").val()+
+            "&code="+$("#code").val()+
+            "&pname="+$("#pname").val();
+        
+        $.get("index.php?c=Search&a=get_list"+adv,function(data){
             $( "#search_list").html(data);
-            //$( "#search_list").css("width","0");
         });
     }
 

@@ -48,7 +48,10 @@ switch($action)
     case "get_list":
 
         $data = array("search"=>@$_REQUEST["search"],"fname"=>@$_REQUEST["fname"],
-            "provider"=>@$_REQUEST["provider"],"price"=>@$_REQUEST["price"],"rest"=>@$_REQUEST["rest"]);
+            "provider"=>@$_REQUEST["provider"],"price"=>@$_REQUEST["price"],"rest"=>@$_REQUEST["rest"],
+            "prop"=>@$_REQUEST["prop"],"pname"=>@$_REQUEST["pname"],"rest"=>@$_REQUEST["rest"],
+            "code"=>@$_REQUEST["code"]
+        );
 
         Mvc::View(basename(__FILE__,".php"),"list",$data);
         break;
@@ -56,9 +59,12 @@ switch($action)
     case "get_list_data":
         $search = strtolower(@$_REQUEST["search"]);
         $fname = @$_REQUEST["fname"];
+        $pname = @$_REQUEST["pname"];
+        $prop = @$_REQUEST["prop"];
         $provider = @$_REQUEST["provider"];
         $price = @$_REQUEST["price"];
         $rest = @$_REQUEST["rest"];
+        $code = @$_REQUEST["code"];
         $search_string = "SearchString like '%{$search}%'";
 
         $s_item = explode(" ", $search);
@@ -86,6 +92,9 @@ switch($action)
             (strlen($price)>0?" and Price like '%{$price}%' ":"").
             (strlen($provider)>0?" and ProviderId ='{$provider}' ":"").
             (strlen($rest)>0?" and Rest like '%{$rest}%' ":"").
+            (strlen($prop)>0?" and BasicCharacteristics like '%{$prop}%' ":"").
+            (strlen($pname)>0?" and Name like '%{$pname}%' ":"").
+            (strlen($code)>0?" and NumberProvider like '%{$code}%' ":"").
             " order by Name LIMIT 1000";
 
         $db->Query($sql);

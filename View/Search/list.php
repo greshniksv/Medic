@@ -27,7 +27,8 @@
     $(document).ready(function() {
 
         var adv = "<?php echo "&search=".$DATA["search"]."&fname=".$DATA["fname"].
-        "&provider=".$DATA["provider"]."&price=".$DATA["price"]."&rest=".$DATA["rest"] ?>";
+        "&provider=".$DATA["provider"]."&price=".$DATA["price"]."&rest=".$DATA["rest"].
+        "&prop=".$DATA["prop"]."&pname=".$DATA["pname"]."&rest=".$DATA["rest"]."&code=".$DATA["code"];  ?>";
 
         var table = $('#example').DataTable( {
             lengthChange: true,
