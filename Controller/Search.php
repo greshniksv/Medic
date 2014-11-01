@@ -1,10 +1,48 @@
 <?php
-
 switch($action)
 {
     // ACTION =========================
     case "index":
         Mvc::View(basename(__FILE__,".php"));
+        break;
+
+    case "download":
+        $ids = @$_REQUEST["ids"];
+
+        $id_list = explode(";",$ids);
+        $id_qlist="";
+        for($i=0;$i<count($id_list);$i++)
+        {
+            if(strlen($id_qlist)>2) $id_qlist.=",";
+            $id_qlist.="'".$id_list[$i]."'";
+        }
+
+        $sql = "select `Number`,`NumberProvider`,Name,FullName,`BasicCharacteristics`,`Price`,`Rest`, ".
+            " (select Name from Provider where id=`ProviderId`) as ProviderId  ".
+            " from `Products` where id in ($id_qlist) ";
+
+        header('Content-Description: File Transfer');
+        header('Content-Type: text/csv');
+        header('Content-Disposition: attachment; filename="export.csv"'); //<<< Note the " " surrounding the file name
+        header('Connection: Keep-Alive');
+        header('Expires: 0');
+        header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
+        header('Pragma: public');
+
+        $buffer = "Код товара в базе поставщика;Наименование товара;Торговое наименование;Основные характеристики товара".
+            ";Название поставщика;Цена в рублях;Остаток;Поставщик\n";
+        echo iconv("UTF-8", "windows-1251//IGNORE", $buffer);
+
+        $db->Query($sql);
+        while($buf=$db->Fetch())
+        {
+            $buffer = $buf["Number"].";".$buf["NumberProvider"].";".$buf["Name"].";".$buf["FullName"].";".$buf["BasicCharacteristics"].";".
+                $buf["Price"].";".$buf["Rest"].";".$buf["ProviderId"]."\n";
+
+            echo iconv("UTF-8", "windows-1251//IGNORE", $buffer);
+        }
+        $db->StopFetch();
+
         break;
 
     case "get_list":
@@ -68,5 +106,3 @@ switch($action)
 
     default: echo "Controller not found"; break;
 }
-
-

@@ -71,7 +71,7 @@
                                 <span class="glyphicon glyphicon-trash"></span> Очистить
                             </button>
 
-                            <button type="button" class="btn blue-button col-xs-12" onclick="DrawSearchList()">
+                            <button type="button" class="btn blue-button col-xs-12" onclick="Download()">
                                 <span class="glyphicon glyphicon-download"></span> Экспорт
                             </button>
 
@@ -125,11 +125,27 @@
 <div id="container"></div>
 </div>
 
+<iframe id="secretIFrame" src="" style="display:none; visibility:hidden;"></iframe>
+
 
 
 <script type="application/javascript">
     var files;
     var basket = new Array();
+
+    function Download()
+    {
+        var ids="";
+        for(var i=0;i<basket.length;i++)
+        {
+            ids+=basket[i].id+";"
+        }
+        //window.location = 'index.php?c=Search&a=download&ids='+ids;
+        $("#secretIFrame").attr("src",'index.php?c=Search&a=download&ids='+ids);
+        //$('#download').load('index.php?c=Search&a=download&ids='+ids);
+    }
+
+
 
     function AddRow()
     {
@@ -151,7 +167,7 @@
             console.log(JSON.stringify(basket));
         });
 
-        $(basket_selected).text("Выбрано "+basket.length+" позиций ")
+        $(basket_selected).text("Выбрано "+basket.length+" позиций ");
     }
 
     function Clear()
@@ -182,17 +198,59 @@
         });
     }
 
-    function Show()
+    function DrawBasketContent()
     {
-        var o="";
-        for(var i=0;i<30;i++)
+        var out="<table id='basket'>";
+        out+="<tr>"+
+            "<th style='width: 5px'>*</th>"+
+            "<th style='width: 55px'>Код товара в базе МК</th>"+
+            "<th>Код товара в базе постащика</th>"+
+            "<th>Наименование товара</th>"+
+            "<th>Торговое наименование</th>"+
+            "<th>Основные характеристики</th>"+
+            "<th>Цена в рублях</th>"+
+            "<th>Остаток</th>"+
+            "<th>Название постащика</th>"+
+            "</tr>";
+        var odd=true;
+        for(var i=0;i<basket.length;i++)
         {
-            o+=i+"<br />";
+            out+="<tr class='"+(odd?"odd":"even")+"'>" +
+                "<td> <button id='basket_"+basket[i].id+"' onclick='RemoveItem(\""+basket[i].id+"\")' class='btn blue-button'> <span class='glyphicon glyphicon-remove-circle'></span> </button>   </td>"+
+                "<td> "+basket[i].codemk+" </td>"+
+                "<td> "+basket[i].code+" </td>"+
+                "<td> "+basket[i].name+" </td>"+
+                "<td> "+basket[i].tname+" </td>"+
+                "<td> "+basket[i].char+" </td>"+
+                "<td> "+basket[i].price+" </td>"+
+                "<td> "+basket[i].rest+" </td>"+
+                "<td> "+basket[i].prov+" </td>"+
+                "</tr>";
+            odd=!odd;
         }
 
+        $("#container").html(out);
+    }
 
-        $("#container").html(o);
+    function RemoveItem(id)
+    {
+        for(var i=0;i<basket.length;i++)
+        {
+            if(basket[i].id==id)
+            {
+                basket.splice(i,1);
+                break;
+            }
+        }
 
+        $(basket_selected).text("Выбрано "+basket.length+" позиций ");
+        $("#basket_"+id).parent().parent().fadeOut(1000,function(){$("#basket_"+id).parent().parent().remove();});
+    }
+
+    function Show()
+    {
+
+        DrawBasketContent();
 
         $( "#dialog-show" ).dialog({
             resizable: false,

@@ -118,6 +118,3 @@ class UUID {
 // Pseudo-random UUID
 
 //$v4uuid = UUID::v4();
-?>
-
-

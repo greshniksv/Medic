@@ -1,12 +1,16 @@
 <?php
-ini_set('display_errors', 1);
-error_reporting(~0);
+//ini_set('display_errors', 1);
+//error_reporting(~0);
 
 $AJAX=0;
+
 if(!empty($_SERVER['HTTP_X_REQUESTED_WITH']) &&
     strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest') $AJAX=1;
 
-if($AJAX==0){
+$action = @$_REQUEST["a"];
+
+if(($AJAX==0 && $action != "download") && $AJAX==0){
+
 ?>
 
 <html>
@@ -31,8 +35,6 @@ if($AJAX==0){
 <script src="Helper/jquery.collapse.js"></script>
 <script src="Helper/jquery.fileupload.js"></script>
 
-
-
 <body>
 <?php
 }
@@ -49,8 +51,6 @@ require_once 'Helper/Recombination.php';
 require_once 'Helper/FixSearch.php';
 require_once 'Helper/Mailer.php';
 
-
-
 $db = new Database($CONFIG["DB_HOST"], $CONFIG["DB_NAME"],
                         $CONFIG["DB_USER"], $CONFIG["DB_PASS"]);
 $db -> Connect();
@@ -62,8 +62,6 @@ $permission=Permission::Get();
 
 // if session alive prolong it.
 if(Permission::CheckSession()) Permission::Prolong();
-
-
 
 if(strlen($controller)<1)
 {
@@ -83,9 +81,8 @@ $log = new Logging($db,$cookie);
 
 include "Controller/".$controller.".php";
 
-if($AJAX==0){
+if(($AJAX==0 && $action != "download") && $AJAX==0){
 ?>
 </body>
 </html>
 <?php } ?>
-

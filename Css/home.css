@@ -443,3 +443,25 @@ span.ui-icon-closethick{
 #container{
     overflow-y: visible;
 }
+
+#basket{
+    width: 100%;
+}
+
+#basket td{
+    padding: 7px;
+    font-size: 12px;
+}
+
+#basket th{
+    padding: 7px;
+    vertical-align: middle;
+    text-transform: uppercase;
+    font-family: arial;
+}
+
+#basket tr:first-of-type{
+    background-image: url("../images/table_caption.png");
+    background-repeat: repeat-x;
+    height: 50px;
+}
