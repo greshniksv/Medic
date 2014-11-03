@@ -11,6 +11,9 @@ class Permission{
     public static function CheckSession()
     {
         global $db,$cookie;
+        Session::DeleteUnusedSession();
+        Session::DeleteUnusedPasswords();
+
         $r = $db->QueryOne("select count(*) as col from `Session` s where s.id='{$cookie}'");
         return ($r["col"]==0?false:true);
     }

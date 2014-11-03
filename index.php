@@ -61,7 +61,8 @@ $cookie = @$_COOKIE["session"];
 $permission=Permission::Get();
 
 // if session alive prolong it.
-if(Permission::CheckSession()) Permission::Prolong();
+if($controller!="Account")
+    if(Permission::CheckSession()) Permission::Prolong();
 
 if(strlen($controller)<1)
 {

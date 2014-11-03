@@ -109,7 +109,7 @@ switch($action)
 
 
         $sql = "select `id`,`Number`,`NumberProvider`,Name,FullName,`BasicCharacteristics`,`Price`,`Rest`, ".
-            " (select Name from Provider where id=`ProviderId`) as ProviderId  ".
+            " (select Name from Provider where id=`ProviderId`) as Provider,ProviderId  ".
             " from `Products` ".
             " where id in (select ProductId from `ProductsSearch` where {$search_string} ) ". //SearchString like '%{$search}%'
             (strlen($fname)>0?" and FullName like '%{$fname}%' ":"").
@@ -126,7 +126,7 @@ switch($action)
         {
             $data[]=array("id"=>$buf["id"],"Number"=>$buf["Number"],"NumberProvider"=>$buf["NumberProvider"],
                 "Name"=>$buf["Name"],"FullName"=>$buf["FullName"],"BasicCharacteristics"=>$buf["BasicCharacteristics"],
-                "Price"=>$buf["Price"],"Rest"=>$buf["Rest"],"ProviderId"=>$buf["ProviderId"]);
+                "Price"=>$buf["Price"],"Rest"=>$buf["Rest"],"Provider"=>$buf["Provider"],"ProviderId"=>$buf["ProviderId"]);
         }
         $db->StopFetch();
 

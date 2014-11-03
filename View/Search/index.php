@@ -129,6 +129,10 @@
     <p><span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span>Вы действительно хотите удалить все товары из корзины ?</p>
 </div>
 
+<div id="dialog-provider" style="display: none" title="Поставщик">
+
+</div>
+
 <div id="dialog-show" style="display: none; z-index: " title="Корзина">
 <div id="container"></div>
 </div>
@@ -140,6 +144,30 @@
 <script type="application/javascript">
     var files;
     var basket = new Array();
+
+    function ShowProvider(id)
+    {
+        $.get("index.php?c=Provider&a=info&id="+id,function(data){
+            $("#dialog-provider").html(data);
+        });
+
+        $( "#dialog-provider" ).dialog({
+            resizable: false,
+            height:410,
+            width:380,
+            modal: true,
+            buttons: [
+                {
+                    text: "ОК",
+                    "class": 'cancel-button',
+                    click: function () {
+                        $(this).dialog("close");
+                    }
+                }
+            ]
+        });
+
+    }
 
     function Download()
     {

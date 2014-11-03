@@ -9,6 +9,15 @@ switch($action)
         Mvc::View(basename(__FILE__,".php"));
         break;
 
+    case "info":
+        $id = $_REQUEST["id"];
+        $buf = $db->QueryOne("select id,Name,FullName,City,Address,Phone,IIN from Provider where id='$id' ");
+        $data = array("id"=>$buf["id"],"Name"=>$buf["Name"],"FullName"=>$buf["FullName"],
+            "City"=>$buf["City"],"Address"=>$buf["Address"],"Phone"=>$buf["Phone"],"IIN"=>$buf["IIN"]);
+
+        Mvc::View(basename(__FILE__,".php"),"info",$data);
+        break;
+
     case "get_list_data":
         $db->Query("select id, Name,FullName,City,Address,Phone,IIN from Provider order by Name desc");
         while($buf=$db->Fetch())

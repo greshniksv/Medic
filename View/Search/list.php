@@ -75,10 +75,10 @@
                 { data: "BasicCharacteristics" },
                 { data: "Price" },
                 { data: "Rest" },
-                { data: "ProviderId" }
-                /*{ data: null, render: function ( data, type, row ) {
-                     return "<button type=\"button\" class=\"btn btn-default\" data-toggle=\"tooltip\" data-placement=\"left\" title=\"Tooltip on left\">Tooltip on left</button>";
-                 } }*/
+                //{ data: "ProviderId" }
+                { data: null, render: function ( data, type, row ) {
+                     return "<p class='provider_href' onclick='ShowProvider(\""+data.ProviderId+"\")' id='"+data.ProviderId+"'>"+data.Provider+"</p>";
+                 } }
             ],
             /*"columnDefs": [
                 {
