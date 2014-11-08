@@ -29,7 +29,7 @@ switch($action)
         }
         $db->StopFetch();
 
-        $sql = "select `Number`,`NumberProvider`,Name,FullName,`BasicCharacteristics`,`Price`,`Rest`,ProviderId ".
+        $sql = "select `Number`,`NumberProvider`,Name,FullName,`BasicCharacteristics`,`Unit`,`Price`,`Rest`,ProviderId ".
             //" (select Name from Provider where id=`ProviderId`) as ProviderId  ".
             " from `Products` where id in ($id_qlist) ";
 
@@ -42,7 +42,7 @@ switch($action)
         header('Pragma: public');
 
         $buffer = "Код товара в базе поставщика;Наименование товара;Торговое наименование;Основные характеристики товара".
-            ";Название поставщика;Цена в рублях;Остаток;Наименование постащика;ФИО;Город;Адрес;Телефон;ИИН\n";
+            ";Единица измерения;Цена в рублях;Остаток;Наименование постащика;ФИО;Город;Адрес;Телефон;ИИН\n";
         echo iconv("UTF-8", "windows-1251//IGNORE", $buffer);
 
         $db->Query($sql);
@@ -59,8 +59,8 @@ switch($action)
                 }
             }
 
-            $buffer = $buf["Number"].";".$buf["NumberProvider"].";".$buf["Name"].";".$buf["FullName"].";".$buf["BasicCharacteristics"].";".
-                $buf["Price"].";".$buf["Rest"].";".$pinfo."\n";
+            $buffer = $buf["NumberProvider"].";".$buf["Name"].";".$buf["FullName"].";".$buf["BasicCharacteristics"].";".
+                $buf["Unit"].";".$buf["Price"].";".$buf["Rest"].";".$pinfo."\n";
 
             echo iconv("UTF-8", "windows-1251//IGNORE", $buffer);
         }
@@ -108,7 +108,7 @@ switch($action)
         //die($search_string);
 
 
-        $sql = "select `id`,`Number`,`NumberProvider`,Name,FullName,`BasicCharacteristics`,`Price`,`Rest`, ".
+        $sql = "select `id`,`Number`,`NumberProvider`,Name,FullName,`BasicCharacteristics`,`Unit`,`Price`,`Rest`, ".
             " (select Name from Provider where id=`ProviderId`) as Provider,ProviderId  ".
             " from `Products` ".
             " where id in (select ProductId from `ProductsSearch` where {$search_string} ) ". //SearchString like '%{$search}%'
@@ -126,13 +126,13 @@ switch($action)
         {
             $data[]=array("id"=>$buf["id"],"Number"=>$buf["Number"],"NumberProvider"=>$buf["NumberProvider"],
                 "Name"=>$buf["Name"],"FullName"=>$buf["FullName"],"BasicCharacteristics"=>$buf["BasicCharacteristics"],
-                "Price"=>$buf["Price"],"Rest"=>$buf["Rest"],"Provider"=>$buf["Provider"],"ProviderId"=>$buf["ProviderId"]);
+                "Unit"=>$buf["Unit"],"Price"=>$buf["Price"],"Rest"=>$buf["Rest"],"Provider"=>$buf["Provider"],"ProviderId"=>$buf["ProviderId"]);
         }
         $db->StopFetch();
 
         if(@$data==null)
             $data[]=array("id"=>"","Number"=>"","NumberProvider"=>"","Name"=>"","FullName"=>"","BasicCharacteristics"=>"",
-                "Price"=>"","Rest"=>"","ProviderId"=>"");
+                "Unit"=>"","Price"=>"","Rest"=>"","ProviderId"=>"");
 
         die("{\"data\": ".json_encode($data)."}");
         break;

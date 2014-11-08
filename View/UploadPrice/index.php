@@ -13,7 +13,12 @@
                     <button id="upload" type="" class="btn upload-button">
                         <span><img src="images/Upload.png"></span> Загрузить </button>
 
+                    <button id="uploadOrig" type="" class="btn upload-button">
+                        <span><img src="images/Upload.png"></span> Загрузить оригинал </button>
+
                     <input id="fileupload" name="Выбирите файл" class="form-control" style="display: none" type="file" >
+
+                    <input id="uploadPrice" name="Выбирите файл" class="form-control" style="display: none" type="file" >
             </div>
 
         </div>
@@ -27,6 +32,7 @@
 
 <script type="application/javascript">
     var files=null;
+    var orig = false;
 
     $(function() {
         window.setInterval(function(){ UpdateField(); },1000);
@@ -37,8 +43,18 @@
                 alert("Вы не выбрали производителя!");
                 return;
             }
-
+            orig=false;
             $("#fileupload").trigger('click');
+        });
+
+        $("#uploadOrig").click(function () {
+            if($("#prov").val()==null)
+            {
+                alert("Вы не выбрали производителя!");
+                return;
+            }
+            orig=true;
+            $("#uploadPrice").trigger('click');
         });
 
         DrawUploadList();
@@ -89,7 +105,7 @@
         files=null;
 
         $.ajax({
-            url: 'index.php?c=UploadPrice&a=upload&manuf='+$("#prov").val(),
+            url: 'index.php?c=UploadPrice&a=upload&manuf='+$("#prov").val()+"&orig="+(orig?"1":"0"),
             type: 'POST',
             data: data,
             cache: false,

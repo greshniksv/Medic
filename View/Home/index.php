@@ -3,6 +3,11 @@
 
 <div id="header" class="navbar navbar-default navbar-fixed-top" role="navigator">
 
+    <ul class="nav navbar-nav navbar-left">
+        <img id="logo" onclick="GoToSearch()" src="images/logo.png"/>
+    </ul>
+
+
     <ul class="nav navbar-nav navbar-right">
 
         <li id="status_off" class="active"><a href="#" style="padding: 7px;"><img src="images/site_off.png"></a></li>

@@ -111,7 +111,7 @@ if (!isset($PHP)) {
         $dbh->beginTransaction();
 
         $sql = "INSERT INTO `Products`(`id`,`NumberProvider`,`Name`,`FullName`,`BasicCharacteristics`,`ProviderId`," .
-            "`Price`,`Rest`,Updated) VALUE (?,?,?,?,?,?,?,?,?);";
+            "`Unit`,`Price`,`Rest`,Updated) VALUE (?,?,?,?,?,?,?,?,?);";
 
         $sth = $dbh->prepare($sql);
 
@@ -135,11 +135,11 @@ if (!isset($PHP)) {
             $guid = UUID::v4();
 
 
-            $ss = $elem[0] . $elem[1] . $elem[2] . $elem[3] . $argv[1] . $elem[4] . $elem[5] . $prov_data;
+            $ss = $elem[0] . $elem[1] . $elem[2] . $elem[3] . $argv[1] . $elem[4] . $elem[5]. $elem[6] . $prov_data;
             $to_search[count($to_search)] = array("id" => $guid, "data" => mb_strtolower($ss, 'UTF-8'));
 
             $sth->execute(array(
-                $guid, $elem[0], $elem[1], $elem[2], $elem[3], $argv[1], $elem[5], $elem[6], $cur_date
+                $guid, $elem[0], $elem[1], $elem[2], $elem[3], $argv[1],$elem[4], $elem[5], $elem[6], $cur_date
             ));
         }
 

@@ -44,6 +44,12 @@ class Permission{
     public static function Prolong()
     {
         global $db,$cookie;
+
+        $dateExt   = new DateTime;
+        $dateExt->modify( '+15 minutes' );
+        $def = $dateExt->format("Y-m-d H:i:s");
+        $db->Exec("update `Session` set `ExpireDate`='$def' where `id`='$cookie' ");
+
         setcookie("session", $cookie, time()+900);
     }
 

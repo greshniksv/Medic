@@ -9,6 +9,7 @@
         <th>Наименование товара</th>
         <th>Торговое наименование</th>
         <th>Основные характеристики</th>
+        <th>Ед.Изм.</th>
         <th>Цена в рублях</th>
         <th>Остаток</th>
         <th>Название постащика</th>
@@ -65,6 +66,7 @@
                 { data: "Name" },
                 { data: "FullName" },
                 { data: "BasicCharacteristics" },
+                { data: "Unit" },
                 { data: "Price" },
                 { data: "Rest" },
                 //{ data: "ProviderId" }

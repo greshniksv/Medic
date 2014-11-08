@@ -15,6 +15,7 @@ switch($action)
         $price = @$_REQUEST["price"];
         $rest = @$_REQUEST["rest"];
         $prov = @$_REQUEST["prov"];
+        $unit = @$_REQUEST["unit"];
         $dateExt = new DateTime;
         $cur_date = $dateExt->format("Y-m-d H:i:s");
         $guid = UUID::v4();
@@ -22,10 +23,10 @@ switch($action)
         $log->Write(basename(__FILE__,".php"),"Добавлен новый товар: номер $prov_code ");
 
         // create row for search
-        $search_sql = "insert into `ProductsSearch` (ProductId,SearchString) values ('$guid','".$prov_code." ".$pname." ".$tpname." ".$prop." ".$price." ".$rest." ".$prov."')";
+        $search_sql = "insert into `ProductsSearch` (ProductId,SearchString) values ('$guid','".$prov_code." ".$pname." ".$tpname." ".$prop." ".$unit." ".$price." ".$rest." ".$prov."')";
 
         $sql = "INSERT INTO `Products`(`id`,`NumberProvider`,`Name`,`FullName`,`BasicCharacteristics`,`ProviderId`," .
-            "`Price`,`Rest`,Updated) VALUE ('$guid','$prov_code','$pname','$tpname','$prop','$prov','$price','$rest','$cur_date');";
+            "`Unit`,`Price`,`Rest`,Updated) VALUE ('$guid','$prov_code','$pname','$tpname','$prop','$prov','$unit','$price','$rest','$cur_date');";
 
         if(!$db->Exec($search_sql))
             die("Ошибка добавления товара!");
@@ -47,6 +48,7 @@ switch($action)
         $price = @$_REQUEST["price"];
         $rest = @$_REQUEST["rest"];
         $prov = @$_REQUEST["prov"];
+        $unit = @$_REQUEST["unit"];
         $dateExt = new DateTime;
         $cur_date = $dateExt->format("Y-m-d H:i:s");
         $guid = UUID::v4();
@@ -54,11 +56,11 @@ switch($action)
         $log->Write(basename(__FILE__,".php"),"Изменен товар: номер $prov_code ");
 
         // create row for search
-        $search_sql = "update `ProductsSearch` set SearchString='".$prov_code." ".$pname." ".$tpname." ".$prop." ".$price." ".$rest." ".$prov."' where ProductId='$productId' ";
+        $search_sql = "update `ProductsSearch` set SearchString='".$prov_code." ".$pname." ".$tpname." ".$prop." ".$unit." ".$price." ".$rest." ".$prov."' where ProductId='$productId' ";
 
         $sql = "update Products set `NumberProvider`='$prov_code',`Name`='$pname',`FullName`='$tpname',".
             "`BasicCharacteristics`='$prop',`ProviderId`='$prov'," .
-            "`Price`='$price',`Rest`='$rest',Updated = '$cur_date' where id = '$productId'";
+            "`Unit`='$unit',`Price`='$price',`Rest`='$rest',Updated = '$cur_date' where id = '$productId'";
 
         if(!$db->Exec($search_sql))
             die("Ошибка изменения товара!");
@@ -122,7 +124,7 @@ switch($action)
         //die($search_string);
 
 
-        $sql = "select `id`,`Number`,`NumberProvider`,Name,FullName,`BasicCharacteristics`,`Price`,`Rest`, ".
+        $sql = "select `id`,`Number`,`NumberProvider`,Name,FullName,`BasicCharacteristics`,`Unit`,`Price`,`Rest`, ".
             " (select Name from Provider where id=`ProviderId`) as Provider, ProviderId  ".
             " from `Products` ".
             " where id in (select ProductId from `ProductsSearch` where {$search_string} ) ". //SearchString like '%{$search}%'
@@ -134,13 +136,13 @@ switch($action)
         {
             $data[]=array("id"=>$buf["id"],"Number"=>$buf["Number"],"NumberProvider"=>$buf["NumberProvider"],
                 "Name"=>$buf["Name"],"FullName"=>$buf["FullName"],"BasicCharacteristics"=>$buf["BasicCharacteristics"],
-                "Price"=>$buf["Price"],"Rest"=>$buf["Rest"],"Provider"=>$buf["Provider"],"ProviderId"=>$buf["ProviderId"]);
+                "Unit"=>$buf["Unit"],"Price"=>$buf["Price"],"Rest"=>$buf["Rest"],"Provider"=>$buf["Provider"],"ProviderId"=>$buf["ProviderId"]);
         }
         $db->StopFetch();
 
         if(@$data==null)
             $data[]=array("id"=>"","Number"=>"","NumberProvider"=>"","Name"=>"","FullName"=>"","BasicCharacteristics"=>"",
-                "Price"=>"","Rest"=>"","ProviderId"=>"","Provider"=>"");
+                "Unit"=>"","Price"=>"","Rest"=>"","ProviderId"=>"","Provider"=>"");
 
         die("{\"data\": ".json_encode($data)."}");
         break;

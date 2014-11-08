@@ -8,7 +8,7 @@
         <tr><td>Адресс: </td><td> <?php echo $DATA["Address"] ?> </td></tr>
         <tr><td>Телефон: </td><td> <?php echo $DATA["Phone"] ?> </td></tr>
         <tr><td>ИИН: </td><td> <?php echo $DATA["IIN"] ?> </td></tr>
-        <tr><td>Прайс: </td><td> <a onclick="DownloadPrice('<?php echo $DATA["id"] ?>')" href="#"> Скачать </a>  </td></tr>
+        <tr><td>Прайс: </td><td> <a href="<?php echo $DATA["InitialPrice"] ?>"> Скачать </a>  </td></tr>
     </table>
 
 </div>

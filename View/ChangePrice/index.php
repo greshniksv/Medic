@@ -40,22 +40,29 @@
 
                 </div>
 
-                <div id="users_list"></div>
+                <table>
+                    <tr>
+                        <td style="width: 80%">
+                            <div id="users_list"></div>
+                        </td>
+                        <td style="width: 20%">
+                            <div id="manage_buttons_change" style="display: inline-block">
+                                <div></div>
 
-                <div id="manage_buttons_change" style="display: inline-block">
-                    <div></div>
+                                <button type="button" class="btn blue-button " onclick="ShowAddForm()">
+                                    <span> <img src="images/add.png"> </span> Добавить
+                                </button>
+                                <button type="button" class="btn green-button " onclick="ShowEditForm()">
+                                    <span><img src="images/edit.png"></span> Редактировать
+                                </button>
+                                <button type="button" class="btn blue-button " onclick="Remove()">
+                                    <span><img src="images/del.png"></span> Удалить
+                                </button>
 
-                    <button type="button" class="btn blue-button " onclick="ShowAddForm()">
-                        <span> <img src="images/add.png"> </span> Добавить
-                    </button>
-                    <button type="button" class="btn green-button " onclick="ShowEditForm()">
-                        <span><img src="images/edit.png"></span> Редактировать
-                    </button>
-                    <button type="button" class="btn blue-button " onclick="Remove()">
-                        <span><img src="images/del.png"></span> Удалить
-                    </button>
-
-                </div>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
 
             </td>
         </tr>
@@ -64,11 +71,11 @@
 </div>
 
 
-<div id="remove_dialog" style="display: none" title="Добавить пользователя">
+<div id="remove_dialog" style="display: none" title="Удалить товар">
 
 </div>
 
-<div id="add_dialog" style="display: none" title="Добавить пользователя">
+<div id="add_dialog" style="display: none" title="Добавить товар">
 
     <div class="input-group">
         <span class="input-group-addon">#</span>
@@ -88,6 +95,11 @@
     <div class="input-group">
         <span class="input-group-addon">#</span>
         <input type="text" id="prop" class="form-control" placeholder="Основные характеристики">
+    </div>
+
+    <div class="input-group">
+        <span class="input-group-addon">#</span>
+        <input type="text" id="unit" class="form-control" placeholder="Единица измерения">
     </div>
 
     <div class="input-group">
@@ -116,6 +128,7 @@ function ShowAddForm() {
     $("#pname").val("");
     $("#tpname").val("");
     $("#prop").val("");
+    $("#unit").val("");
     $("#price").val("");
     $("#rest").val("");
     $("#prov").val(0);
@@ -136,6 +149,7 @@ function ShowAddForm() {
                     url += "&price=" + $("#price").val();
                     url += "&rest=" + $("#rest").val();
                     url += "&prov=" + $("#prov").val();
+                    url += "&unit=" + $("#unit").val();
 
                     $.get("index.php?c=ChangePrice&a=Create" + url, function (data) {
                         if (data.trim() != "ok") {
@@ -177,13 +191,14 @@ function ShowEditForm() {
     $("#pname").val($("tr.active").find('td:eq(2)').text());
     $("#tpname").val($("tr.active").find('td:eq(3)').text());
     $("#prop").val($("tr.active").find('td:eq(4)').text());
-    $("#price").val($("tr.active").find('td:eq(5)').text());
-    $("#rest").val($("tr.active").find('td:eq(6)').text());
+    $("#unit").val($("tr.active").find('td:eq(5)').text());
+    $("#price").val($("tr.active").find('td:eq(6)').text());
+    $("#rest").val($("tr.active").find('td:eq(7)').text());
     //$("#prov").val($("tr.active").find('td:eq(6)').text());
 
     // set auto complete
-    var name = $("tr.active").find('td:eq(7)').find('p').text();
-    var val =$("tr.active").find('td:eq(7)').find('p').attr('id')
+    var name = $("tr.active").find('td:eq(8)').find('p').text();
+    var val =$("tr.active").find('td:eq(8)').find('p').attr('id')
     $('#prov').combobox('autocomplete', name,val);
 
     $("#add_dialog").dialog({
@@ -203,6 +218,7 @@ function ShowEditForm() {
                     url += "&permission=" + $("#perm").val();
                     url += "&rest=" + $("#rest").val();
                     url += "&prov=" + $('#prov').val();
+                    url += "&unit=" + $('#unit').val();
                     url += "&id=" + id;
 
 
@@ -414,7 +430,7 @@ function DrawSearchList() {
     $.get("index.php?c=ChangePrice&a=get_list&search=" + $("#search").val().toLowerCase()+"&provider="+$("#combobox").val(),
         function (data) {
         $("#users_list").html(data);
-        $("#example").css("width", "0");
+        //$("#example").css("width", "0");
     });
 }
 

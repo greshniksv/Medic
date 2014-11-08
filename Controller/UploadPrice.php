@@ -22,6 +22,7 @@ switch($action)
             $upl_file = $_FILES[0]['tmp_name'];
             $upl_name = $_FILES[0]['name'];
             $manuf = $_REQUEST["manuf"];
+            $orig = $_REQUEST["orig"];
 
             $log->Write(basename(__FILE__,".php"),"Загрузка прайса:".$upl_name);
 
@@ -37,7 +38,23 @@ switch($action)
             $user = Session::GetUserId($cookie);
 
             $db->Exec("insert into Uploads (id, FileName,DateTime,UserId,ProviderId,Status) values ".
-                " ('{$guid}','{$upl_name}','{$date}','{$user}','{$manuf}','Загружено') ");
+                " ('{$guid}','{$upl_name}','{$date}','{$user}','{$manuf}','Готово') ");
+
+
+
+            if($orig=="1")
+            {
+                $new_file = getcwd() . "/Files/InitialPrice/".$upl_name;
+                $dnew_file = "Files/InitialPrice/".$upl_name;
+                @unlink($new_file);
+                $db->Exec("update `Provider` set InitialPrice='{$dnew_file}' where id='{$manuf}' ");
+
+                if (!move_uploaded_file($upl_file, $new_file)) {
+                    return "Невозможно переместить файл";
+                }
+                $data = array('success' => 'Form was submitted');
+                die(json_encode($data));
+            }
 
             // Start price processing
             $worker = new ProcessPriceWorker($manuf,$upl_file,$guid);
