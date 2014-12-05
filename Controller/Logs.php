@@ -21,6 +21,11 @@ switch($action)
         }
         $db->StopFetch();
 
+        if($data==null)
+        {
+            die("{\"data\": []}");
+        }
+
         die("{\"data\": ".json_encode($data)."}");
         break;
 

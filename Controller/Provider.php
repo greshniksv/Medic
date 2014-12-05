@@ -27,7 +27,10 @@ switch($action)
                 "City"=>$buf["City"],"Address"=>$buf["Address"],"Phone"=>$buf["Phone"],"IIN"=>$buf["IIN"]);
         }
         $db->StopFetch();
-        echo "{\"data\": ".json_encode($data)."}";
+        if($data==null)
+            die("{\"data\": []}");
+
+        die("{\"data\": ".json_encode($data)."}");
         break;
 
     case "get_list":

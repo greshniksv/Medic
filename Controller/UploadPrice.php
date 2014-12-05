@@ -101,9 +101,10 @@ switch($action)
         }
         $db->StopFetch();
 
-        echo "{\"data\": ".json_encode($data)."}";
-        //print_r($data);
-        die();
+        if($data==null)
+            die("{\"data\": []}");
+
+        die("{\"data\": ".json_encode($data)."}");
         break;
 
     case "clear_provider":

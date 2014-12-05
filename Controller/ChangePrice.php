@@ -141,8 +141,11 @@ switch($action)
         $db->StopFetch();
 
         if(@$data==null)
-            $data[]=array("id"=>"","Number"=>"","NumberProvider"=>"","Name"=>"","FullName"=>"","BasicCharacteristics"=>"",
-                "Unit"=>"","Price"=>"","Rest"=>"","ProviderId"=>"","Provider"=>"");
+        {
+            die("{\"data\": []}");
+        }
+        //    $data[]=array("id"=>"","Number"=>"","NumberProvider"=>"","Name"=>"","FullName"=>"","BasicCharacteristics"=>"",
+        //        "Unit"=>"","Price"=>"","Rest"=>"","ProviderId"=>"","Provider"=>"");
 
         die("{\"data\": ".json_encode($data)."}");
         break;

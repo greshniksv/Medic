@@ -430,7 +430,10 @@ function DrawSearchList() {
     $.get("index.php?c=ChangePrice&a=get_list&search=" + $("#search").val().toLowerCase()+"&provider="+$("#combobox").val(),
         function (data) {
         $("#users_list").html(data);
-        //$("#example").css("width", "0");
+            if($(".dataTables_empty").lengt)
+            {
+                $("#example").css("width", "0");
+            }
     });
 }
 
