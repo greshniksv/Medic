@@ -59,19 +59,31 @@ switch($action)
             // Start price processing
             $worker = new ProcessPriceWorker($manuf,$upl_file,$guid);
             $ret = $worker->run();
-            if($ret!="ok")
+            /*if($ret!="ok")
             {
                 $data = array('error' => $ret);
                 die(json_encode($data));
             }
 
-            $data = array('success' => 'Form was submitted');
-            die(json_encode($data));
+            $data = array('success' => 'Form was submitted');*/
+            die($ret);
         }
 
         $data = array('error' => 'File not found!');
         die(json_encode($data));
 
+        break;
+
+
+    case "process":
+        $id = $_REQUEST["id"];
+        $file = $_REQUEST["file"];
+        $procid = $_REQUEST["procid"];
+
+        $worker = new ProcessPriceWorker();
+        $ret = $worker->Process($id,$file,$procid);
+
+        die($ret);
         break;
 
 

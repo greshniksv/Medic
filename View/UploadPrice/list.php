@@ -20,7 +20,8 @@
     var editor; // use a global for the submit and return data rendering in the examples
 
     $(document).ready(function() {
-
+		//$.fn.dataTableExt.sErrMode = 'throw'
+		
         var table = $('#example').DataTable( {
             lengthChange: false,
             "oLanguage": {

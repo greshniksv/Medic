@@ -57,8 +57,9 @@
             $("#uploadPrice").trigger('click');
         });
 
-        DrawUploadList();
         GetProvList();
+        DrawUploadList();
+
 
         // Add events
         $('input[type=file]').on('change', prepareUpload);
@@ -114,11 +115,17 @@
             contentType: false, // Set content type to false as jQuery will tell the server its a query string request
             success: function(data, textStatus, jqXHR)
             {
+
                 if(typeof data.error === 'undefined')
                 {
                     // Success so call function to process the form
                     //submitForm(event, data);
                     DrawUploadList();
+
+                    /* Start processing */
+                    $.get("index.php?c=UploadPrice&a=process&id="+data.data.id+"&file="+data.data.file+"&procid="+data.data.procid,function(info){
+                        Console.log(info);
+                    });
                 }
                 else
                 {
