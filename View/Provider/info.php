@@ -5,9 +5,9 @@
         <tr><td>Наименование: </td><td> <?php echo $DATA["Name"] ?> </td></tr>
         <tr><td>ФИО: </td><td> <?php echo $DATA["FullName"] ?> </td></tr>
         <tr><td>Город: </td><td> <?php echo $DATA["City"] ?> </td></tr>
-        <tr><td>Адресс: </td><td> <?php echo $DATA["Address"] ?> </td></tr>
+        <tr><td>Адрес: </td><td> <?php echo $DATA["Address"] ?> </td></tr>
         <tr><td>Телефон: </td><td> <?php echo $DATA["Phone"] ?> </td></tr>
-        <tr><td>ИИН: </td><td> <?php echo $DATA["IIN"] ?> </td></tr>
+        <tr><td>ИНН: </td><td> <?php echo $DATA["IIN"] ?> </td></tr>
         <tr><td>Прайс: </td><td> <a href="<?php echo $DATA["InitialPrice"] ?>"> Скачать </a>  </td></tr>
     </table>
 

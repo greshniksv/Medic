@@ -10,7 +10,7 @@
 
                             <div class="input-group">
                                 <span class="input-group-addon">#</span>
-                                <input type="text" id="code" class="form-control" placeholder="Код в базе постащика">
+                                <input type="text" id="code" class="form-control" placeholder="Код в базе поставщика">
                             </div>
 
                             <div class="input-group">
@@ -48,7 +48,7 @@
 
                             <div class="input-group" style="width: 100%">
                                 <select id="provider" class="form-control">
-                                    <option selected value="0">Все постащики</option>
+                                    <option selected value="0">Все поставщики</option>
                                 </select>
                             </div>
 
