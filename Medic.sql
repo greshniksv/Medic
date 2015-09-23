@@ -72,7 +72,7 @@ DROP TABLE IF EXISTS `Products`;
 
 CREATE TABLE `Products` (
   `id` varchar(36) DEFAULT NULL,
-  `Number` bigint(20) NOT NULL AUTO_INCREMENT,
+  `Number` bigint(20) NULL,
   `NumberProvider` varchar(50) DEFAULT NULL,
   `Name` varchar(100) DEFAULT NULL,
   `FullName` varchar(100) DEFAULT NULL,
@@ -81,7 +81,7 @@ CREATE TABLE `Products` (
   `Price` double(15,3) DEFAULT NULL,
   `Rest` double(15,3) DEFAULT NULL,
   `Updated` datetime DEFAULT NULL,
-  PRIMARY KEY (`Number`),
+  PRIMARY KEY (`id`),
   UNIQUE KEY `id` (`id`),
   KEY `idx_ProviderId` (`ProviderId`),
   KEY `idx_Price` (`Price`),
