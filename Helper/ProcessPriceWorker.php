@@ -20,10 +20,10 @@ class ProcessPriceWorker
         }
 
         if (($buffer = fgets($handle, 4096)) !== false) {
-            $c = substr_count($buffer, ';');
-            if (substr_count($buffer, ';') != 6) {
+            $charCount = substr_count($buffer, ';');
+            if ($charCount != 7) {
                 fclose($handle);
-                return json_encode(array('error' => "Формат файла не верен:" . $c));
+                return json_encode(array('error' => "Формат файла не верен:" . $charCount));
             }
         } else {
             return json_encode(array('error' => "Невозможно открыть файл"));
@@ -43,20 +43,38 @@ class ProcessPriceWorker
         $pidfile = "pid.txt";
         //exec(sprintf("%s >> %s 2>&1 & echo $! >> %s", $PHP . " " . __FILE__ . " {$this->id} {$new_file} {$this->process_id}", $outputfile, $pidfile)); //.csv
         $data=array("id"=>$this->id,"file"=>$new_file,"procid"=>$this->process_id);
-        return "{\"data\": ".json_encode($data)."}";
+        return "{\"data\": ".@json_encode($data)."}";
     }
 
+	public function WriteLog($file, $data)
+	{
+		echo $data;
+		for($i=0; $i<30; $i++)
+		{
+			try
+			{
+				$result = file_put_contents($file, $data, FILE_APPEND | LOCK_EX);
+				if($result !== false){
+					break;
+				}
+			}
+			catch(Exception $e) {}
+		}
+	}
+	
     public function Process($id,$new_file,$process_id)
     {
         global $CONFIG;
+		$outputfile = $CONFIG["PRICE_WORKER_LOG"];
         $dateExt = new DateTime;
         $cur_date = $dateExt->format("Y-m-d H:i:s");
         $prov_data = "";
         $to_search = new ArrayObject();
 
-        echo "\n\n------------------------------------------------------------------------------\n";
-        echo "Start process: " . $cur_date . "\n";
-        echo "Input params: \n";
+        $this->WriteLog($outputfile,"\n\n------------------------------------------------------------------------------\n");
+        $this->WriteLog($outputfile, "Start process: " . $cur_date . "\n");
+        $this->WriteLog($outputfile, "Input params: \n");
+		$this->WriteLog($outputfile, "* id: ".$id."\n* file: ".$new_file."\n* processId: ".$process_id." \n-- \n");
 
         $db = new Database($CONFIG["DB_HOST"], $CONFIG["DB_NAME"], $CONFIG["DB_USER"], $CONFIG["DB_PASS"]);
         $db->Connect();
@@ -65,27 +83,30 @@ class ProcessPriceWorker
         $handle = @fopen($new_file, "r");
         if (!$handle) {
             $db->Exec("update `Uploads` set Status='Ошибка' where id='" . $process_id . "' ;");
+			$this->WriteLog($outputfile, "Error open file! \n");
             die("Error open file!");
         }
 
-        echo "\nInput file size:" . $filesize."\n";
+        $this->WriteLog($outputfile, "\nInput file size:" . $filesize."\n");
 
         if (($buffer = fgets($handle, 4096)) !== false) {
-            if (substr_count($buffer, ';') != 6) {
+			$columnsCount = substr_count($buffer, ';');
+            if ($columnsCount != 7) {
                 fclose($handle);
                 $db->Exec("update `Uploads` set Status='Ошибка' where id='" . $process_id . "' ;");
+				$this->WriteLog($outputfile, "Incorrect file format. Columns count must be: 7. Actual: ".$columnsCount." \n");
                 die("Incorrect file format");
             }
         } else {
             $db->Exec("update `Uploads` set Status='Ошибка' where id='" . $process_id . "' ;");
+			$this->WriteLog($outputfile, "Can't open file or file is empty ! \n");
             die("Can't open file");
         }
 
 
         try {
 
-            echo "Structure of file: OK\n";
-            //echo $buffer;
+            $this->WriteLog($outputfile, "Structure of file: OK\n");
 
             $db->Exec("update `Uploads` set Status='Подготовка 10%' where id='" . $process_id . "' ;");
             $db->Exec("delete from `ProductsSearch` where ProductId in (select id from `Products` where ProviderId='" . $id . "');");
@@ -94,24 +115,29 @@ class ProcessPriceWorker
             $db->Exec("update `Uploads` set Status='Подготовка 70%' where id='" . $process_id . "' ;");
             //$db->Exec("delete from `ProductsSearch` where ProductId not in (select id from `Products`);");
 
-            echo "Clean before process\n";
+            $this->WriteLog($outputfile, "Clean before process\n");
 
 
             $dbh = new PDO("mysql:host=" . $CONFIG["DB_HOST"] . ";dbname=" . $CONFIG["DB_NAME"], $CONFIG["DB_USER"], $CONFIG["DB_PASS"]);
+			$dbh->setAttribute( PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION );
 
             $sql = "SELECT Name,FullName,City,Address,Phone FROM Provider where id='{$id}' ";
             foreach ($dbh->query($sql) as $row) {
                 $prov_data = $row['Name'] . $row['FullName'] . $row['City'] . $row['Address'] . $row['Phone'];
             }
 
-            echo "Prepare to process\n";
+            $this->WriteLog($outputfile, "\nPrepare to process\n");
             $dbh->beginTransaction();
 
-            $sql = "INSERT INTO `Products`(`id`,`NumberProvider`,`Name`,`FullName`,`BasicCharacteristics`,`ProviderId`," .
-                "`Unit`,`Price`,`Rest`,Updated) VALUE (?,?,?,?,?,?,?,?,?,?);";
+            $sql = "INSERT INTO `Products`(`id`,`Number`,`NumberProvider`,`Name`,`FullName`,`BasicCharacteristics`,`ProviderId`," .
+                "`Unit`,`Price`,`Rest`,`Updated`) VALUE (?,?,?,?,?,?,?,?,?,?,?);";
 
             $sth = $dbh->prepare($sql);
-
+			
+			if (!$sth) {
+				$this->WriteLog($outputfile, "PDO::errorInfo():\n" . print_r($dbh->errorInfo(), true));
+			}
+			
             $readed = 0;
             $progress = 0;
             while (($buffer = fgets($handle, 4096)) !== false) {
@@ -119,32 +145,31 @@ class ProcessPriceWorker
 
                 if ($progress != intval(($readed * 100 / $filesize))) {
                     $progress = intval(($readed * 100 / $filesize));
-                    echo "Processing " . $progress . "\n";
+                    $this->WriteLog($outputfile, "Updating product " . $progress . "\n");
 
                     $db->Exec("update `Uploads` set Status='Обработка " . $progress . "%' where id='" . $process_id . "' ;");
                 }
 
                 $buffer = iconv("windows-1251", "UTF-8//IGNORE", $buffer);
-                //$html_utf8 = mb_convert_encoding($html, "utf-8", "windows-1251");
-                //$buffer = mb_strtolower($buffer, 'UTF-8');
-                //echo $buffer."\n";
                 $elem = explode(";", $buffer);
                 $guid = UUID::v4();
 
+				if(!(empty($elem[0]) || empty($elem[1]) || empty($elem[2])))
+				{
+					$ss = $elem[0] . $elem[1] . $elem[2] . $elem[3] . $elem[4] . $id . $elem[5]. $elem[6] . $elem[7] . $prov_data;
+					$to_search[count($to_search)] = array("id" => $guid, "data" => mb_strtolower($ss, 'UTF-8'));
 
-                $ss = $elem[0] . $elem[1] . $elem[2] . $elem[3] . $id . $elem[4] . $elem[5]. $elem[6] . $prov_data;
-                $to_search[count($to_search)] = array("id" => $guid, "data" => mb_strtolower($ss, 'UTF-8'));
-
-                $sth->execute(array(
-                    $guid, $elem[0], $elem[1], $elem[2], $elem[3], $id,$elem[4], $elem[5], $elem[6], $cur_date
-                ));
+					$sth->execute(array(
+						$guid, $elem[0], $elem[1], $elem[2], $elem[3], $elem[4], $id, $elem[5], str_replace(",", ".", $elem[6]), $elem[7], $cur_date
+					));
+				}
             }
 
-            echo "Finished processing\n";
+            $this->WriteLog($outputfile, "Finished processing\n\n");
 
             $sql = "insert into `ProductsSearch` (ProductId,SearchString) values (?,?);";
 
-            echo "Count of item:" . count($to_search) . "\n";
+            $this->WriteLog($outputfile, "Count of item:" . count($to_search) . "\n\n");
 
             $progress = 0;
             $col = 0;
@@ -153,32 +178,41 @@ class ProcessPriceWorker
                 $col++;
                 if ($progress != intval($col * 100 / count($to_search))) {
                     $progress = intval($col * 100 / count($to_search));
-                    echo "Processing " . $progress . "\n";
+                    $this->WriteLog($outputfile, "Optimization search " . $progress . "\n");
                     $db->Exec("update `Uploads` set Status='Постобработка " . $progress . "%' where id='" . $process_id . "' ;");
                 }
 
                 $sth->execute(array($i["id"], $i["data"]));
             }
-            echo "Finished optimization\n";
+            $this->WriteLog($outputfile, "Optimization finished\n");
 
             $dbh->commit();
 
         } catch (PDOException $e) {
             $dbh->rollBack();
             $db->Exec("update `Uploads` set Status='Ошибка' where id='" . $process_id . "' ;");
+			$this->WriteLog($outputfile, "Exception while update product: ".$e->getMessage()."\n");
             die("Error!: " . $e->getMessage() . "<br/>");
         }
+		catch (Exception $e) {
+			$this->WriteLog($outputfile, "Exception while update product: ".$e->getMessage()."\n");
+		}
 
         if (!feof($handle)) {
             $db->Exec("update `Uploads` set Status='Ошибка' where id='" . $process_id . "' ;");
-            echo "Error: unexpected fgets() fail\n";
+            $this->WriteLog($outputfile, "Error: unexpected fgets() fail\n");
         }
 
         $db->Exec("update `Uploads` set Status='Готово' where id='" . $process_id . "' ;");
         fclose($handle);
         sleep(1);
 
-        if($CONFIG["DEBUG"]!=1) unlink($new_file);
+        if($CONFIG["DEBUG"]!=1){ 
+			unlink($new_file); 
+			$this->WriteLog($outputfile, "Remove uploaded file\n");
+		}else{
+			$this->WriteLog($outputfile, "Uploaded file will not be deleted, because debug flag is turned on.\n");
+		}
     }
 
 
