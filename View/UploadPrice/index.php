@@ -124,7 +124,7 @@
 
                     /* Start processing */
                     $.get("index.php?c=UploadPrice&a=process&id="+data.data.id+"&file="+data.data.file+"&procid="+data.data.procid,function(info){
-                        Console.log(info);
+                        console.log(info);
                     });
                 }
                 else
